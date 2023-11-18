@@ -11,6 +11,12 @@
 		C8A0E8912B089C3100ECBD0B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8A0E8902B089C3100ECBD0B /* ContentView.swift */; };
 		C8A0E8932B089C3400ECBD0B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C8A0E8922B089C3400ECBD0B /* Assets.xcassets */; };
 		C8A0E8962B089C3400ECBD0B /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C8A0E8952B089C3400ECBD0B /* Preview Assets.xcassets */; };
+		C8A0E8A32B089CB700ECBD0B /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8A0E8A22B089CB700ECBD0B /* HomeView.swift */; };
+		C8A0E8A52B089CBC00ECBD0B /* ScannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8A0E8A42B089CBC00ECBD0B /* ScannerView.swift */; };
+		C8A0E8A72B089CDE00ECBD0B /* StatsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8A0E8A62B089CDE00ECBD0B /* StatsView.swift */; };
+		C8A0E8AB2B089D5400ECBD0B /* FilesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8A0E8AA2B089D5400ECBD0B /* FilesView.swift */; };
+		C8A0E8AD2B089D9900ECBD0B /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8A0E8AC2B089D9900ECBD0B /* CalendarView.swift */; };
+		C8A0E8AF2B089E2D00ECBD0B /* ScanData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8A0E8AE2B089E2D00ECBD0B /* ScanData.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -19,6 +25,12 @@
 		C8A0E8902B089C3100ECBD0B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		C8A0E8922B089C3400ECBD0B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C8A0E8952B089C3400ECBD0B /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		C8A0E8A22B089CB700ECBD0B /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = HomeView.swift; path = ../HomeView.swift; sourceTree = "<group>"; };
+		C8A0E8A42B089CBC00ECBD0B /* ScannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScannerView.swift; sourceTree = "<group>"; };
+		C8A0E8A62B089CDE00ECBD0B /* StatsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsView.swift; sourceTree = "<group>"; };
+		C8A0E8AA2B089D5400ECBD0B /* FilesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilesView.swift; sourceTree = "<group>"; };
+		C8A0E8AC2B089D9900ECBD0B /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
+		C8A0E8AE2B089E2D00ECBD0B /* ScanData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanData.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -53,6 +65,12 @@
 			children = (
 				C8A0E88E2B089C3100ECBD0B /* SwiftAcceleratorProjectApp.swift */,
 				C8A0E8902B089C3100ECBD0B /* ContentView.swift */,
+				C8A0E8AC2B089D9900ECBD0B /* CalendarView.swift */,
+				C8A0E8A22B089CB700ECBD0B /* HomeView.swift */,
+				C8A0E8AA2B089D5400ECBD0B /* FilesView.swift */,
+				C8A0E8A42B089CBC00ECBD0B /* ScannerView.swift */,
+				C8A0E8AE2B089E2D00ECBD0B /* ScanData.swift */,
+				C8A0E8A62B089CDE00ECBD0B /* StatsView.swift */,
 				C8A0E8922B089C3400ECBD0B /* Assets.xcassets */,
 				C8A0E8942B089C3400ECBD0B /* Preview Content */,
 			);
@@ -137,8 +155,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C8A0E8AF2B089E2D00ECBD0B /* ScanData.swift in Sources */,
+				C8A0E8A32B089CB700ECBD0B /* HomeView.swift in Sources */,
+				C8A0E8AD2B089D9900ECBD0B /* CalendarView.swift in Sources */,
+				C8A0E8A72B089CDE00ECBD0B /* StatsView.swift in Sources */,
+				C8A0E8A52B089CBC00ECBD0B /* ScannerView.swift in Sources */,
 				C8A0E8912B089C3100ECBD0B /* ContentView.swift in Sources */,
 				C8A0E88F2B089C3100ECBD0B /* SwiftAcceleratorProjectApp.swift in Sources */,
+				C8A0E8AB2B089D5400ECBD0B /* FilesView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
