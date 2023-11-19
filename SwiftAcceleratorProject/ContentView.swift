@@ -15,7 +15,7 @@ struct ContentView: View {
                     Label("Home", systemImage: "house")
                 }
             
-            FolderView()
+            FilesView()
                 .tabItem{
                     Label("Files", systemImage: "doc.fill")
                 }
