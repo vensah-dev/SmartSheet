@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct FolderView: View {
+struct FilesView: View {
     @State private var showScannerSheet = false
     @State private var scannedImages: [UIImage] = []
 
@@ -73,5 +73,5 @@ struct ImageDetail: View {
 }
 
 #Preview {
-    FolderView()
+    FilesView()
 }

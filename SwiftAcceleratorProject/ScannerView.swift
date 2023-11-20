@@ -1,12 +1,5 @@
 //
-//  ScanView.swift
-//  SwiftAcceleratorProject
-//
-//  Created by Venkatesh Devendran on 18/11/2023.
-//
-
-//
-//  ScannerView2.swift
+//  ScannerView.swift
 //  Our Titled Project
 //
 //  Created by Venkatesh Devendran on 18/11/2023.
