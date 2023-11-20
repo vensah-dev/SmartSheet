@@ -6,10 +6,12 @@
 //
 
 import SwiftUI
+import VisionKit
 
 struct FilesView: View {
     @State private var showScannerSheet = false
-    @State private var scannedImages: [UIImage] = []
+    @State public var scannedImagesArray: [UIImage] = []
+    @State public var scannedImages: [ScannedImage] = []
 
     var body: some View {
         NavigationView {
@@ -20,10 +22,10 @@ struct FilesView: View {
                     List {
                         ForEach(0..<scannedImages.count, id: \.self) { index in
                             NavigationLink(
-                                destination: ImageDetail(image: scannedImages[index], title: "Image \(index + 1)"),
+                                destination: ImageDetail(image: scannedImages[index].image, title: "Image \(index + 1)"),
                                 label: {
                                     HStack {
-                                        Image(uiImage: scannedImages[index])
+                                        Image(uiImage: scannedImages[index].image)
                                             .resizable()
                                             .aspectRatio(contentMode: .fit)
                                             .frame(height: 80)
@@ -32,6 +34,10 @@ struct FilesView: View {
                                     }
                                 })
                         }
+                        .onDelete(perform: delete)
+                    }
+                    .toolbar {
+                        EditButton()
                     }
                 }
             }
@@ -43,16 +49,25 @@ struct FilesView: View {
                     .font(.title)
             })
             .sheet(isPresented: $showScannerSheet, content: {
-                ScannerView { scannedImages in
-                    if let images = scannedImages {
-                        self.scannedImages.append(contentsOf: images)
+                ScannerView { scannedImage in
+                    if let images = scannedImage {
+                        self.scannedImagesArray.append(contentsOf: images)
+                    }
+                    for image in scannedImagesArray{
+                        let scan = ScannedImage(title: "Default Title", caption: "Default Caption", image: image)
+                        self.scannedImages.append(scan)
                     }
                     self.showScannerSheet = false
                 }
             }))
         }
     }
+    
+    func delete(at offsets: IndexSet) {
+        scannedImages.remove(atOffsets: offsets)
+    }
 }
+
 
 struct ImageDetail: View {
     var image: UIImage
