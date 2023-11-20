@@ -6,13 +6,3 @@
 //
 
 import Foundation
-
-
-struct ScanData2:Identifiable {
-    var id = UUID()
-    let content:String
-    
-    init(content:String) {
-        self.content = content
-    }
-}

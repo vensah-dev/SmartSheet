@@ -30,7 +30,7 @@
 		C8A0E8AA2B089D5400ECBD0B /* FilesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilesView.swift; sourceTree = "<group>"; };
 		C8A0E8AC2B089D9900ECBD0B /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
 		C8A0E8AE2B089E2D00ECBD0B /* ScanData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanData.swift; sourceTree = "<group>"; };
-		C8AAA1FA2B0B2B8200552984 /* MainHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MainHomeView.swift; path = ../MainHomeView.swift; sourceTree = "<group>"; };
+		C8AAA1FA2B0B2B8200552984 /* MainHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MainHomeView.swift; path = /Users/jeffrey/Desktop/HELLO/SwiftAcceleratorProject/MainHomeView.swift; sourceTree = "<absolute>"; };
 		C8AAA1FC2B0B2C1B00552984 /* Main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Main.swift; sourceTree = "<group>"; };
 		C8AAA2002B0B42BD00552984 /* ScannedImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScannedImage.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -49,7 +49,6 @@
 		C8A0E8822B089C3100ECBD0B = {
 			isa = PBXGroup;
 			children = (
-				C8AAA1FC2B0B2C1B00552984 /* Main.swift */,
 				C8A0E88D2B089C3100ECBD0B /* SwiftAcceleratorProject */,
 				C8A0E88C2B089C3100ECBD0B /* Products */,
 			);
@@ -66,6 +65,7 @@
 		C8A0E88D2B089C3100ECBD0B /* SwiftAcceleratorProject */ = {
 			isa = PBXGroup;
 			children = (
+				C8AAA1FC2B0B2C1B00552984 /* Main.swift */,
 				C8A0E8902B089C3100ECBD0B /* ContentView.swift */,
 				C8AAA1FA2B0B2B8200552984 /* MainHomeView.swift */,
 				C8A0E8AC2B089D9900ECBD0B /* CalendarView.swift */,
@@ -301,7 +301,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"SwiftAcceleratorProject/Preview Content\"";
-				DEVELOPMENT_TEAM = 3W9U482L92;
+				DEVELOPMENT_TEAM = 37822KKR43;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSCameraUsageDescription = "Camera is used for scanning worksheets";
@@ -315,7 +315,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = Main.swift;
+				PRODUCT_BUNDLE_IDENTIFIER = jeffzy15.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -333,7 +333,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"SwiftAcceleratorProject/Preview Content\"";
-				DEVELOPMENT_TEAM = 3W9U482L92;
+				DEVELOPMENT_TEAM = 37822KKR43;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSCameraUsageDescription = "Camera is used for scanning worksheets";
@@ -347,7 +347,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = Main.swift;
+				PRODUCT_BUNDLE_IDENTIFIER = jeffzy15.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;

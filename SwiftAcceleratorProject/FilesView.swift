@@ -41,7 +41,7 @@ struct FilesView: View {
                     }
                 }
             }
-            .navigationTitle("Scanned Images")
+            .navigationTitle("Resources")
             .navigationBarItems(trailing: Button(action: {
                 self.showScannerSheet = true
             }, label: {
