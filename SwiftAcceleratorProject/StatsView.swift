@@ -16,30 +16,72 @@ struct StatsView: View {
         Test(title: "Math Paper 1 2024"),
         Test(title: "Math Paper 2 2024"),
     ]
+    @State var DaysOfTheWeek: [String] = [
+        "Sun",
+        "Mon",
+        "Tue",
+        "Wed",
+        "Thu",
+        "Fri",
+        "Sat",
+    ]
+    
     var body: some View {
         NavigationStack{
-            Text("Today's suggestion")
-                .fontWeight(.heavy)
-                .bold()
-            List(suggestions, id: \.id){ i in
-                Text(i.title)
-                    .listRowBackground(Color.red)
-                // Add more items as needed
+            Image("Group 63")
+                .resizable()
+                .scaledToFit()
+            
+            VStack{
+                Text("This week's streak")
+            }
+            .padding()
+            
+            HStack(spacing: 10){
+                ForEach(DaysOfTheWeek, id: \.self){ x in
+                    NavigationLink(destination: EmptyView()) {
+                        VStack{
+                            Image(systemName: "flame.fill")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(height:24)
+                                .foregroundColor(.orange)
+                            
+                            Text(x)
+                                .font(.system(size: 10, weight:.black))
+                        }
+                        .padding(11)
+                    }
+                }
             }
             
             
+            Text("Today's suggestion")
+                .fontWeight(.heavy)
+                .bold()
             
-            
+            List {
+                Section("Today's suggestion") {
+                    ForEach(suggestions, id: \.id){ i in
+                        Text(i.title)
+                            .listRowBackground(Color(UIColor(red: 255/255, green: 153/255, blue:0, alpha: 0.24)))
+                            .cornerRadius(10)
+                        // Add more items as needed
+                    }
+                    
+                }
+            }
+            .background(Color(UIColor(white: 0, alpha: 0)))
+            .scrollContentBackground(.hidden)
+            .navigationTitle("Streaks")
         }
-        
-        
     }
+    
+    
+    
 }
-
-
-
-
 
 #Preview {
     StatsView()
 }
+
