@@ -50,20 +50,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		005825952B0C4441009BF7E6 /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				C8A0E8A62B089CDE00ECBD0B /* StatsView.swift */,
-				C8A0E8AC2B089D9900ECBD0B /* CalendarView.swift */,
-				C8A0E8A42B089CBC00ECBD0B /* ScannerView.swift */,
-				00F3D9B42B0B985E00960F5B /* TopicView.swift */,
-				C8A0E8902B089C3100ECBD0B /* ContentView.swift */,
-				C8AAA1FA2B0B2B8200552984 /* MainHomeView.swift */,
-				00F3D9B22B0B85DD00960F5B /* SubjectView.swift */,
-			);
-			path = Views;
-			sourceTree = "<group>";
-		};
 		C8A0E8822B089C3100ECBD0B = {
 			isa = PBXGroup;
 			children = (
@@ -83,8 +69,14 @@
 		C8A0E88D2B089C3100ECBD0B /* SwiftAcceleratorProject */ = {
 			isa = PBXGroup;
 			children = (
+				C8A0E8A62B089CDE00ECBD0B /* StatsView.swift */,
+				C8A0E8AC2B089D9900ECBD0B /* CalendarView.swift */,
+				C8A0E8A42B089CBC00ECBD0B /* ScannerView.swift */,
+				00F3D9B42B0B985E00960F5B /* TopicView.swift */,
+				C8A0E8902B089C3100ECBD0B /* ContentView.swift */,
+				C8AAA1FA2B0B2B8200552984 /* MainHomeView.swift */,
+				00F3D9B22B0B85DD00960F5B /* SubjectView.swift */,
 				C8AAA1FC2B0B2C1B00552984 /* Main.swift */,
-				005825952B0C4441009BF7E6 /* Views */,
 				C8A0E8AA2B089D5400ECBD0B /* FilesView.swift */,
 				C8AAA2002B0B42BD00552984 /* ScannedImage.swift */,
 				00F3D9B02B0B80DA00960F5B /* WorksheetDetailView.swift */,
