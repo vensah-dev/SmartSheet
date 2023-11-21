@@ -20,7 +20,7 @@
 		C8AAA1FD2B0B2C1B00552984 /* Main.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8AAA1FC2B0B2C1B00552984 /* Main.swift */; };
 		C8D175DE2B0C5CD400883D05 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8D175DD2B0C5CD400883D05 /* HomeView.swift */; };
 		C8D175E22B0C611800883D05 /* GlobalVars.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8D175E12B0C611800883D05 /* GlobalVars.swift */; };
-		C8D175E42B0C632B00883D05 /* CreateEventView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8D175E32B0C632B00883D05 /* CreateEventView.swift */; };
+		C8E1DACE2B0C82E1000EF84A /* CreateNewEventView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8E1DACD2B0C82E1000EF84A /* CreateNewEventView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,7 +38,7 @@
 		C8AAA1FC2B0B2C1B00552984 /* Main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Main.swift; sourceTree = "<group>"; };
 		C8D175DD2B0C5CD400883D05 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		C8D175E12B0C611800883D05 /* GlobalVars.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalVars.swift; sourceTree = "<group>"; };
-		C8D175E32B0C632B00883D05 /* CreateEventView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateEventView.swift; sourceTree = "<group>"; };
+		C8E1DACD2B0C82E1000EF84A /* CreateNewEventView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateNewEventView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -77,7 +77,6 @@
 				C8A0E8902B089C3100ECBD0B /* ContentView.swift */,
 				C8D175DD2B0C5CD400883D05 /* HomeView.swift */,
 				C8A0E8AC2B089D9900ECBD0B /* CalendarView.swift */,
-				C8D175E32B0C632B00883D05 /* CreateEventView.swift */,
 				C8A0E8A62B089CDE00ECBD0B /* StatsView.swift */,
 				C8A0E8AA2B089D5400ECBD0B /* FilesView.swift */,
 				C8A0E8922B089C3400ECBD0B /* Assets.xcassets */,
@@ -97,6 +96,7 @@
 		C8D175DF2B0C5E0B00883D05 /* Scan Worksheet and details */ = {
 			isa = PBXGroup;
 			children = (
+				C8E1DACD2B0C82E1000EF84A /* CreateNewEventView.swift */,
 				C8A0E8A42B089CBC00ECBD0B /* ScannerView.swift */,
 				00F3D9B42B0B985E00960F5B /* TopicView.swift */,
 				00F3D9B22B0B85DD00960F5B /* SubjectView.swift */,
@@ -177,6 +177,7 @@
 			files = (
 				C8A0E8AD2B089D9900ECBD0B /* CalendarView.swift in Sources */,
 				C8AAA1FD2B0B2C1B00552984 /* Main.swift in Sources */,
+				C8E1DACE2B0C82E1000EF84A /* CreateNewEventView.swift in Sources */,
 				C8A0E8A72B089CDE00ECBD0B /* StatsView.swift in Sources */,
 				C8A0E8A52B089CBC00ECBD0B /* ScannerView.swift in Sources */,
 				C8D175E22B0C611800883D05 /* GlobalVars.swift in Sources */,
@@ -184,7 +185,6 @@
 				C8D175DE2B0C5CD400883D05 /* HomeView.swift in Sources */,
 				00F3D9B32B0B85DD00960F5B /* SubjectView.swift in Sources */,
 				00F3D9B52B0B985E00960F5B /* TopicView.swift in Sources */,
-				C8D175E42B0C632B00883D05 /* CreateEventView.swift in Sources */,
 				00F3D9B12B0B80DA00960F5B /* WorksheetDetailView.swift in Sources */,
 				C8A0E8AB2B089D5400ECBD0B /* FilesView.swift in Sources */,
 			);

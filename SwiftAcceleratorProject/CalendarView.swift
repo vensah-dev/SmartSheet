@@ -33,7 +33,7 @@ struct CalendarView: View {
             }
             .navigationTitle("Calendar")
             .navigationBarItems(trailing: NavigationLink(
-                destination: CreateEventView(),
+                destination: CreateNewEventView(),
                 label: {
                     Image(systemName: "plus")
                 }
