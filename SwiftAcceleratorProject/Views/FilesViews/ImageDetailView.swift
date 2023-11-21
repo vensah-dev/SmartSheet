@@ -11,10 +11,13 @@ struct ImageDetail: View {
     @State var image: UIImage
     @Binding var title: String
     @Binding var caption: String
+    @Binding var durationHours: Int?
+    @Binding var durationMinutes: Int?
+    @Binding var lockAfterDuration: Bool?
     
     var body: some View {
         VStack {
-            TextField("", text: $title)
+            TextField("Enter title", text: $title)
                 .font(.title)
                 .padding()
             
@@ -23,6 +26,9 @@ struct ImageDetail: View {
                 .aspectRatio(contentMode: .fit)
                 .navigationBarTitle("", displayMode: .inline)
             
+            if let hours = durationHours, let minutes = durationMinutes, hours > 0 || minutes > 0 {
+                Text("\(hours) hr \(minutes) min")
+            }
         }
     }
 }

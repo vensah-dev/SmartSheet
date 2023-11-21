@@ -54,6 +54,27 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		00DEBE072B0CDD50003AF464 /* Model and ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				C8D175E12B0C611800883D05 /* GlobalVars.swift */,
+			);
+			path = "Model and ViewModel";
+			sourceTree = "<group>";
+		};
+		00DEBE082B0CDD70003AF464 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				C8D175DF2B0C5E0B00883D05 /* FilesViews */,
+				C8A0E8902B089C3100ECBD0B /* ContentView.swift */,
+				C8E1DACD2B0C82E1000EF84A /* CreateNewEventView.swift */,
+				C8D175DD2B0C5CD400883D05 /* HomeView.swift */,
+				C8A0E8AC2B089D9900ECBD0B /* CalendarView.swift */,
+				C8A0E8A62B089CDE00ECBD0B /* StatsView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		C8A0E8822B089C3100ECBD0B = {
 			isa = PBXGroup;
 			children = (
@@ -73,16 +94,9 @@
 		C8A0E88D2B089C3100ECBD0B /* SwiftAcceleratorProject */ = {
 			isa = PBXGroup;
 			children = (
-				C8D175E12B0C611800883D05 /* GlobalVars.swift */,
+				00DEBE082B0CDD70003AF464 /* Views */,
+				00DEBE072B0CDD50003AF464 /* Model and ViewModel */,
 				C8AAA1FC2B0B2C1B00552984 /* Main.swift */,
-				C8D175DF2B0C5E0B00883D05 /* Scan Worksheet and details */,
-				C8A0E8902B089C3100ECBD0B /* ContentView.swift */,
-				0058E0992B0CB4480012E775 /* ImageDetailView.swift */,
-				C8E1DACD2B0C82E1000EF84A /* CreateNewEventView.swift */,
-				C8D175DD2B0C5CD400883D05 /* HomeView.swift */,
-				C8A0E8AC2B089D9900ECBD0B /* CalendarView.swift */,
-				C8A0E8A62B089CDE00ECBD0B /* StatsView.swift */,
-				C8A0E8AA2B089D5400ECBD0B /* FilesView.swift */,
 				C8A0E8922B089C3400ECBD0B /* Assets.xcassets */,
 				C8A0E8942B089C3400ECBD0B /* Preview Content */,
 			);
@@ -97,15 +111,17 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
-		C8D175DF2B0C5E0B00883D05 /* Scan Worksheet and details */ = {
+		C8D175DF2B0C5E0B00883D05 /* FilesViews */ = {
 			isa = PBXGroup;
 			children = (
+				0058E0992B0CB4480012E775 /* ImageDetailView.swift */,
+				C8A0E8AA2B089D5400ECBD0B /* FilesView.swift */,
 				C8A0E8A42B089CBC00ECBD0B /* ScannerView.swift */,
 				00F3D9B42B0B985E00960F5B /* TopicView.swift */,
 				00F3D9B22B0B85DD00960F5B /* SubjectView.swift */,
 				00F3D9B02B0B80DA00960F5B /* WorksheetDetailView.swift */,
 			);
-			path = "Scan Worksheet and details";
+			path = FilesViews;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

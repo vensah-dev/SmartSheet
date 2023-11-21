@@ -22,15 +22,18 @@ struct Event: Identifiable {
 
 }
 
-//scannedImages
+//Files
 struct ScannedImage: Identifiable {
     var id = UUID()
     var title: String
     var caption: String
     var image: UIImage
+    var durationHours: Int?
+    var durationMinutes: Int?
+    var lockAfterDuration: Bool?
 }
 
-//scannedImages
+//Calendar
 struct Test: Identifiable {
     var id = UUID()
     var title: String

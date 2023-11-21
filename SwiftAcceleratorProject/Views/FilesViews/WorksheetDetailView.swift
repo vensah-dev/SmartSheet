@@ -9,7 +9,6 @@ struct WorksheetDetailView: View {
     @State private var showScannerSheet = false
     @Binding var scannedImages: [ScannedImage]
     
-    // Wheel Picker
     @State private var durationHours = 1
     @State private var durationMinutes = 0
     @State private var isDurationPickerPresented = false
@@ -99,9 +98,17 @@ struct WorksheetDetailView: View {
             ScannerView { scannedImage in
                 if let images = scannedImage {
                     for image in images {
-                        let newScannedImage = ScannedImage(title: self.title, caption: self.subtitle, image: image)
-                        self.scannedImages.append(newScannedImage)
-                        dismiss()
+                        if practicePaper == false {
+                            durationHours = 0
+                            durationMinutes = 0
+                            let newScannedImage = ScannedImage(title: self.title, caption: self.subtitle, image: image, durationHours: self.durationHours, durationMinutes: self.durationMinutes, lockAfterDuration: self.lockAfterDuration)
+                            self.scannedImages.append(newScannedImage)
+                            dismiss()
+                        } else {
+                            let newScannedImage = ScannedImage(title: self.title, caption: self.subtitle, image: image, durationHours: self.durationHours, durationMinutes: self.durationMinutes, lockAfterDuration: self.lockAfterDuration)
+                            self.scannedImages.append(newScannedImage)
+                            dismiss()
+                        }
                     }
                 }
                 self.showScannerSheet = false
