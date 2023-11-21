@@ -33,9 +33,9 @@ struct CalendarView: View {
             }
             .navigationTitle("Calendar")
             .navigationBarItems(trailing: NavigationLink(
-                destination: CreateNewEventView(),
+                destination: CreateNewEventView(Events: $Events),
                 label: {
-                    Image(systemName: "plus")
+                    Image(systemName: "plus.circle")
                 }
             ))
         }

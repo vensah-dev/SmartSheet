@@ -73,9 +73,9 @@
 			children = (
 				C8D175E12B0C611800883D05 /* GlobalVars.swift */,
 				C8AAA1FC2B0B2C1B00552984 /* Main.swift */,
-				C8E1DACD2B0C82E1000EF84A /* CreateNewEventView.swift */,
 				C8D175DF2B0C5E0B00883D05 /* Scan Worksheet and details */,
 				C8A0E8902B089C3100ECBD0B /* ContentView.swift */,
+				C8E1DACD2B0C82E1000EF84A /* CreateNewEventView.swift */,
 				C8D175DD2B0C5CD400883D05 /* HomeView.swift */,
 				C8A0E8AC2B089D9900ECBD0B /* CalendarView.swift */,
 				C8A0E8A62B089CDE00ECBD0B /* StatsView.swift */,

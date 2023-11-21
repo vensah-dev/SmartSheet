@@ -17,7 +17,9 @@ struct Event: Identifiable {
     var id = UUID()
     var title: String
     var details: String
-    var date: Date = Date.now
+    var startDate: Date = Date.now
+    var endDate: Date = Date.now
+
 }
 
 //scannedImages
