@@ -17,6 +17,7 @@ struct FilesView: View {
             VStack {
                 if scannedImages.isEmpty {
                     Text("No resources yet")
+                        .font(.title3)
                         .foregroundColor(.gray)
                         .italic()
                 } else {
