@@ -73,8 +73,7 @@
 			children = (
 				C8D175E12B0C611800883D05 /* GlobalVars.swift */,
 				C8AAA1FC2B0B2C1B00552984 /* Main.swift */,
-				C8D175DF2B0C5E0B00883D05 /* Scan Worksheet adn details */,
-				C8D175E02B0C5E4400883D05 /* Views */,
+				C8D175DF2B0C5E0B00883D05 /* Scan Worksheet and details */,
 				C8A0E8902B089C3100ECBD0B /* ContentView.swift */,
 				C8D175DD2B0C5CD400883D05 /* HomeView.swift */,
 				C8A0E8AC2B089D9900ECBD0B /* CalendarView.swift */,
@@ -95,7 +94,7 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
-		C8D175DF2B0C5E0B00883D05 /* Scan Worksheet adn details */ = {
+		C8D175DF2B0C5E0B00883D05 /* Scan Worksheet and details */ = {
 			isa = PBXGroup;
 			children = (
 				C8A0E8A42B089CBC00ECBD0B /* ScannerView.swift */,
@@ -103,14 +102,7 @@
 				00F3D9B22B0B85DD00960F5B /* SubjectView.swift */,
 				00F3D9B02B0B80DA00960F5B /* WorksheetDetailView.swift */,
 			);
-			path = "Scan Worksheet adn details";
-			sourceTree = "<group>";
-		};
-		C8D175E02B0C5E4400883D05 /* Views */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Views;
+			path = "Scan Worksheet and details";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
