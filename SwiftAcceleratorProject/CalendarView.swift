@@ -8,8 +8,40 @@
 import SwiftUI
 
 struct CalendarView: View {
+    @State public var Events: [Event] = [
+        Event(title: "Hello0", details: "bye"),
+        Event(title: "Hello2", details: "bye"),
+        Event(title: "Hello3", details: "bye"),
+        Event(title: "Hello4", details: "bye"),
+    ]
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        NavigationStack{
+            List{
+                ForEach(Events, id: \.id){ i in
+                    NavigationLink(destination:{
+                        Text(i.title)
+                        Text(i.details)
+                    }, label:{
+                        Text(i.title)
+                    })
+                }
+                .onDelete(perform: delete)
+            }
+            .toolbar{
+                EditButton()
+            }
+            .navigationTitle("Calendar")
+            .navigationBarItems(trailing: NavigationLink(
+                destination: CreateEventView(),
+                label: {
+                    Image(systemName: "plus")
+                }
+            ))
+        }
+    }
+    func delete(at offsets: IndexSet) {
+        Events.remove(atOffsets: offsets)
     }
 }
 
