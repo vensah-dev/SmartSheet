@@ -34,7 +34,7 @@ struct FilesView: View {
                                 )
                             ) {
                                 HStack {
-                                    Image(uiImage: scannedImages[index].image)
+                                    Image(uiImage: scannedImages[index].image[0])
                                         .resizable()
                                         .aspectRatio(contentMode: .fill)
                                         .frame(width: 60, height: 60)

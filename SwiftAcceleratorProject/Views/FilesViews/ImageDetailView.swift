@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ImageDetail: View {
-    @State var image: UIImage
+    @State var image: [UIImage]
     @Binding var title: String
     @Binding var caption: String
     @Binding var durationHours: Int?
@@ -21,10 +21,12 @@ struct ImageDetail: View {
                 .font(.title)
                 .padding()
             
-            Image(uiImage: image)
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .navigationBarTitle("", displayMode: .inline)
+            ForEach(image, id: \.self) { image in
+                Image(uiImage: image)
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .navigationBarTitle("", displayMode: .inline)
+            }
             
             if let hours = durationHours, let minutes = durationMinutes, hours > 0 || minutes > 0 {
                 Text("\(hours) hr \(minutes) min")

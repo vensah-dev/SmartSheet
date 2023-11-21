@@ -27,7 +27,7 @@ struct ScannedImage: Identifiable {
     var id = UUID()
     var title: String
     var caption: String
-    var image: UIImage
+    var image: [UIImage]
     var durationHours: Int?
     var durationMinutes: Int?
     var lockAfterDuration: Bool?

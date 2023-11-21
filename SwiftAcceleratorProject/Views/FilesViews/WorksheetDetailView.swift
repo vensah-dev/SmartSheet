@@ -14,6 +14,8 @@ struct WorksheetDetailView: View {
     @State private var isDurationPickerPresented = false
     @State private var selectedDurationLabel = "01:00:00"
     
+    @State private var scannedUIImage: [UIImage] = [] // Array to store multiple scanned images
+    
     var body: some View {
         List {
             Section(header: Text("Worksheet Details")) {
@@ -86,6 +88,7 @@ struct WorksheetDetailView: View {
                 }
                 
                 Button(role: .destructive) {
+                    saveScannedImages()
                     dismiss()
                 } label: {
                     Text("Cancel")
@@ -97,24 +100,44 @@ struct WorksheetDetailView: View {
         .sheet(isPresented: $showScannerSheet) {
             ScannerView { scannedImage in
                 if let images = scannedImage {
-                    for image in images {
-                        if practicePaper == false {
-                            durationHours = 0
-                            durationMinutes = 0
-                            let newScannedImage = ScannedImage(title: self.title, caption: self.subtitle, image: image, durationHours: self.durationHours, durationMinutes: self.durationMinutes, lockAfterDuration: self.lockAfterDuration)
-                            self.scannedImages.append(newScannedImage)
-                            dismiss()
-                        } else {
-                            let newScannedImage = ScannedImage(title: self.title, caption: self.subtitle, image: image, durationHours: self.durationHours, durationMinutes: self.durationMinutes, lockAfterDuration: self.lockAfterDuration)
-                            self.scannedImages.append(newScannedImage)
-                            dismiss()
-                        }
+                    if !practicePaper{
+                        durationHours = 0
+                        durationMinutes = 0
+                        scannedUIImage.append(contentsOf: images)
+                        saveScannedImages()
+                        dismiss()
+                    } else {
+                        scannedUIImage.append(contentsOf: images)
+                        saveScannedImages()
+                        dismiss()
                     }
                 }
                 self.showScannerSheet = false
             }
         }
     }
+    
+    private func saveScannedImages() {
+        if scannedUIImage.isEmpty {
+            return
+        }
+        
+        // Create a single ScannedImage with multiple images
+        let newScannedImage = ScannedImage(
+            title: self.title,
+            caption: self.subtitle,
+            image: scannedUIImage,
+            durationHours: self.durationHours,
+            durationMinutes: self.durationMinutes,
+            lockAfterDuration: self.lockAfterDuration
+        )
+        
+        self.scannedImages.append(newScannedImage)
+        
+        // Clear the array for the next scan
+        scannedUIImage = []
+    }
+    
     private func updateSelectedDurationLabel() {
         selectedDurationLabel = String(format: "%02d:%02d:00", durationHours, durationMinutes)
     }
