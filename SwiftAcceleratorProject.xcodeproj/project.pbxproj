@@ -73,6 +73,7 @@
 			children = (
 				C8D175E12B0C611800883D05 /* GlobalVars.swift */,
 				C8AAA1FC2B0B2C1B00552984 /* Main.swift */,
+				C8E1DACD2B0C82E1000EF84A /* CreateNewEventView.swift */,
 				C8D175DF2B0C5E0B00883D05 /* Scan Worksheet and details */,
 				C8A0E8902B089C3100ECBD0B /* ContentView.swift */,
 				C8D175DD2B0C5CD400883D05 /* HomeView.swift */,
@@ -96,7 +97,6 @@
 		C8D175DF2B0C5E0B00883D05 /* Scan Worksheet and details */ = {
 			isa = PBXGroup;
 			children = (
-				C8E1DACD2B0C82E1000EF84A /* CreateNewEventView.swift */,
 				C8A0E8A42B089CBC00ECBD0B /* ScannerView.swift */,
 				00F3D9B42B0B985E00960F5B /* TopicView.swift */,
 				00F3D9B22B0B85DD00960F5B /* SubjectView.swift */,
