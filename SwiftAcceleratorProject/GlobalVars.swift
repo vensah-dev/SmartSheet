@@ -27,3 +27,9 @@ struct ScannedImage: Identifiable {
     var caption: String
     var image: UIImage
 }
+
+//scannedImages
+struct Test: Identifiable {
+    var id = UUID()
+    var title: String
+}
