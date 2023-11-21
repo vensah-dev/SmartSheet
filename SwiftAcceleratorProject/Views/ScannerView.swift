@@ -48,7 +48,7 @@ struct ScannerView: UIViewControllerRepresentable {
         }
 
         func documentCameraViewController(_ controller: VNDocumentCameraViewController, didFailWithError error: Error) {
-            print("Document camera view controller did finish with error ", error)
+            print("Document camera view controller finished with error ", error)
             completionHandler(nil)
         }
     }

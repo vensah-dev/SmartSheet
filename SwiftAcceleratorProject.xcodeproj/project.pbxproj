@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		00F3D9B12B0B80DA00960F5B /* WorksheetDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00F3D9B02B0B80DA00960F5B /* WorksheetDetailView.swift */; };
+		00F3D9B32B0B85DD00960F5B /* SubjectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00F3D9B22B0B85DD00960F5B /* SubjectView.swift */; };
+		00F3D9B52B0B985E00960F5B /* TopicView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00F3D9B42B0B985E00960F5B /* TopicView.swift */; };
+		00F3D9B72B0BA6BE00960F5B /* ScannedImagesManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00F3D9B62B0BA6BE00960F5B /* ScannedImagesManager.swift */; };
 		C8A0E8912B089C3100ECBD0B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8A0E8902B089C3100ECBD0B /* ContentView.swift */; };
 		C8A0E8932B089C3400ECBD0B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C8A0E8922B089C3400ECBD0B /* Assets.xcassets */; };
 		C8A0E8962B089C3400ECBD0B /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C8A0E8952B089C3400ECBD0B /* Preview Assets.xcassets */; };
@@ -21,6 +25,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		00F3D9B02B0B80DA00960F5B /* WorksheetDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorksheetDetailView.swift; sourceTree = "<group>"; };
+		00F3D9B22B0B85DD00960F5B /* SubjectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubjectView.swift; sourceTree = "<group>"; };
+		00F3D9B42B0B985E00960F5B /* TopicView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopicView.swift; sourceTree = "<group>"; };
+		00F3D9B62B0BA6BE00960F5B /* ScannedImagesManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScannedImagesManager.swift; sourceTree = "<group>"; };
 		C8A0E88B2B089C3100ECBD0B /* SwiftAcceleratorProject.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwiftAcceleratorProject.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C8A0E8902B089C3100ECBD0B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		C8A0E8922B089C3400ECBD0B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -46,10 +54,25 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		005825952B0C4441009BF7E6 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				C8A0E8A62B089CDE00ECBD0B /* StatsView.swift */,
+				C8A0E8AC2B089D9900ECBD0B /* CalendarView.swift */,
+				C8A0E8A42B089CBC00ECBD0B /* ScannerView.swift */,
+				00F3D9B42B0B985E00960F5B /* TopicView.swift */,
+				C8A0E8902B089C3100ECBD0B /* ContentView.swift */,
+				C8AAA1FA2B0B2B8200552984 /* MainHomeView.swift */,
+				00F3D9B22B0B85DD00960F5B /* SubjectView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		C8A0E8822B089C3100ECBD0B = {
 			isa = PBXGroup;
 			children = (
 				C8A0E88D2B089C3100ECBD0B /* SwiftAcceleratorProject */,
+				C8A0E8AE2B089E2D00ECBD0B /* ScanData.swift */,
 				C8A0E88C2B089C3100ECBD0B /* Products */,
 			);
 			sourceTree = "<group>";
@@ -66,14 +89,11 @@
 			isa = PBXGroup;
 			children = (
 				C8AAA1FC2B0B2C1B00552984 /* Main.swift */,
-				C8A0E8902B089C3100ECBD0B /* ContentView.swift */,
-				C8AAA1FA2B0B2B8200552984 /* MainHomeView.swift */,
-				C8A0E8AC2B089D9900ECBD0B /* CalendarView.swift */,
+				005825952B0C4441009BF7E6 /* Views */,
 				C8A0E8AA2B089D5400ECBD0B /* FilesView.swift */,
 				C8AAA2002B0B42BD00552984 /* ScannedImage.swift */,
-				C8A0E8A42B089CBC00ECBD0B /* ScannerView.swift */,
-				C8A0E8AE2B089E2D00ECBD0B /* ScanData.swift */,
-				C8A0E8A62B089CDE00ECBD0B /* StatsView.swift */,
+				00F3D9B62B0BA6BE00960F5B /* ScannedImagesManager.swift */,
+				00F3D9B02B0B80DA00960F5B /* WorksheetDetailView.swift */,
 				C8A0E8922B089C3400ECBD0B /* Assets.xcassets */,
 				C8A0E8942B089C3400ECBD0B /* Preview Content */,
 			);
@@ -162,10 +182,14 @@
 				C8A0E8AD2B089D9900ECBD0B /* CalendarView.swift in Sources */,
 				C8AAA1FD2B0B2C1B00552984 /* Main.swift in Sources */,
 				C8A0E8A72B089CDE00ECBD0B /* StatsView.swift in Sources */,
+				00F3D9B72B0BA6BE00960F5B /* ScannedImagesManager.swift in Sources */,
 				C8A0E8A52B089CBC00ECBD0B /* ScannerView.swift in Sources */,
 				C8A0E8912B089C3100ECBD0B /* ContentView.swift in Sources */,
 				C8AAA2012B0B42BD00552984 /* ScannedImage.swift in Sources */,
+				00F3D9B32B0B85DD00960F5B /* SubjectView.swift in Sources */,
+				00F3D9B52B0B985E00960F5B /* TopicView.swift in Sources */,
 				C8AAA1FB2B0B2B8200552984 /* MainHomeView.swift in Sources */,
+				00F3D9B12B0B80DA00960F5B /* WorksheetDetailView.swift in Sources */,
 				C8A0E8AB2B089D5400ECBD0B /* FilesView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

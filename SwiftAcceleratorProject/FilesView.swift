@@ -10,9 +10,9 @@ import VisionKit
 
 struct FilesView: View {
     @State private var showScannerSheet = false
-    @State public var scannedImagesArray: [UIImage] = []
+    
     @State public var scannedImages: [ScannedImage] = []
-
+    
     var body: some View {
         NavigationView {
             VStack {
@@ -22,15 +22,22 @@ struct FilesView: View {
                     List {
                         ForEach(0..<scannedImages.count, id: \.self) { index in
                             NavigationLink(
-                                destination: ImageDetail(image: scannedImages[index].image, title: "Image \(index + 1)"),
+                                destination: ImageDetail(image: scannedImages[index].image, title: $scannedImages[index].title, caption: $scannedImages[index].caption),
                                 label: {
                                     HStack {
                                         Image(uiImage: scannedImages[index].image)
                                             .resizable()
-                                            .aspectRatio(contentMode: .fit)
-                                            .frame(height: 80)
-
-                                        Text("Image \(index + 1)")
+                                            .aspectRatio(contentMode: .fill)
+                                            .frame(width: 60, height: 60)
+                                            .cornerRadius(5)
+                                        
+                                        VStack(alignment: .leading) {
+                                            Text(scannedImages[index].title)
+                                            if !scannedImages[index].caption.isEmpty {
+                                                Text(scannedImages[index].caption)
+                                                    .font(.caption)
+                                            }
+                                        }
                                     }
                                 })
                         }
@@ -42,24 +49,12 @@ struct FilesView: View {
                 }
             }
             .navigationTitle("Resources")
-            .navigationBarItems(trailing: Button(action: {
-                self.showScannerSheet = true
-            }, label: {
-                Image(systemName: "camera.viewfinder")
-                    .font(.title)
-            })
-            .sheet(isPresented: $showScannerSheet, content: {
-                ScannerView { scannedImage in
-                    if let images = scannedImage {
-                        self.scannedImagesArray.append(contentsOf: images)
-                    }
-                    for image in scannedImagesArray{
-                        let scan = ScannedImage(title: "Default Title", caption: "Default Caption", image: image)
-                        self.scannedImages.append(scan)
-                    }
-                    self.showScannerSheet = false
+            .navigationBarItems(trailing: NavigationLink(
+                destination: WorksheetDetailView(scannedImages: $scannedImages),
+                label: {
+                    Image(systemName: "plus.circle")
                 }
-            }))
+            ))
         }
     }
     
@@ -68,21 +63,22 @@ struct FilesView: View {
     }
 }
 
-
 struct ImageDetail: View {
-    var image: UIImage
-    var title: String
-
+    @State var image: UIImage
+    @Binding var title: String
+    @Binding var caption: String
+    
     var body: some View {
         VStack {
+            TextField("", text: $title)
+                .font(.title)
+                .padding()
+            
             Image(uiImage: image)
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .navigationBarTitle("", displayMode: .inline)
-
-            Text(title)
-                .font(.title)
-                .padding()
+            
         }
     }
 }
