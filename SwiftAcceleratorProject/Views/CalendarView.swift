@@ -15,6 +15,8 @@ struct CalendarView: View {
         Event(title: "Hello4", details: "bye"),
     ]
     
+    @State private var CreateNew = false
+
     var body: some View {
         NavigationStack{
             List{
@@ -32,12 +34,15 @@ struct CalendarView: View {
                 EditButton()
             }
             .navigationTitle("Calendar")
-            .navigationBarItems(trailing: NavigationLink(
-                destination: CreateNewEventView(Events: $Events),
-                label: {
+            .navigationBarItems(trailing:
+                Button{
+                    CreateNew = true
+                }label:{
                     Image(systemName: "plus.circle")
-                }
-            ))
+                })
+            .sheet(isPresented: $CreateNew){
+                CreateNewEventView(Events: $Events)
+            }
         }
     }
     func delete(at offsets: IndexSet) {

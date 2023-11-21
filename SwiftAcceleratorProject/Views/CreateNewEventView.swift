@@ -16,11 +16,13 @@ struct CreateNewEventView: View {
 
     
     var body: some View {
+        
         List{
             Section(header: Text("Details")){
                 TextField("Titles", text: $title)
                 TextField("Description", text: $description)
             }
+            .listRowBackground(Color.orange.opacity(0.8))
             
             Section(header: Text("Date")){
                 DatePicker(
@@ -35,6 +37,8 @@ struct CreateNewEventView: View {
                     displayedComponents: [.date]
                 )
             }
+            .listRowBackground(Color.orange.opacity(0.8))
+            
             Section(header: Text("Create")){
                 Button(){
                     print("Hello")
@@ -43,7 +47,9 @@ struct CreateNewEventView: View {
                     Text("Create")
                 }
             }
+            .listRowBackground(Color.orange.opacity(0.8))
         }
+        .scrollContentBackground(.hidden)
         .navigationTitle("Create New Event")
     }
 }
