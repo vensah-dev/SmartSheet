@@ -13,10 +13,14 @@ struct CreateNewEventView: View {
     @State var description = ""
     @State var EventStartDate: Date = Date.now
     @State var EventEndDate: Date = Date.now
+    
+    @State var Edit: Bool
+    
     @State var showAlert = 0.0
+    @State var alertMSG = "Fill up all details!"
     
     @Environment(\.dismiss) var dismiss
-
+    
     
     var body: some View {
         NavigationStack{
@@ -24,10 +28,9 @@ struct CreateNewEventView: View {
             List{
                 Section(header: Text("Details")){
                     TextField("Titles", text: $title)
-                        
+                    
                     
                     TextField("Description", text: $description)
-                        .foregroundStyle(Color("orangeText"))
                 }
                 .listRowBackground(Color("lightOrange"))
                 
@@ -52,17 +55,34 @@ struct CreateNewEventView: View {
                 }
                 .listRowBackground(Color("lightOrange"))
                 
-                Section(header: Text("Create")){
+                Section(header: Text("Save")){
                     Button(){
                         if(title != "" && description != ""){
-                            Events.append(Event(title: title, details: description, startDate: EventStartDate, endDate: EventEndDate))
-                            dismiss()
+                            var eventExists: Bool = false
+                            
+                            for x in Events{
+                                if(title == x.title){
+                                    eventExists = true
+                                    break
+                                }
+                            }
+                            
+                            if(eventExists){
+                                alertMSG = "Event already exists!"
+                                showAlert = 1.0
+                            }
+                            else{
+                                Events.append(Event(title: title, details: description, startDate: EventStartDate, endDate: EventEndDate))
+                                dismiss()
+                            }
                         }
                         else{
+                            alertMSG = "Fill up all details!"
                             showAlert = 1.0
                         }
+                        
                     }label:{
-                        Text("Create")
+                        Text("Save")
                             .foregroundStyle(Color("orangeText"))
                     }
                     
@@ -79,7 +99,81 @@ struct CreateNewEventView: View {
             .opacity(0.8)
             .navigationTitle("Create New Event")
             
-            Text("Fill up all details!")
+            Text(alertMSG)
+                .opacity(showAlert)
+                .foregroundStyle(.red)
+        }
+    }
+}
+
+
+struct EditEventView: View {
+    @Binding var event: Event
+    @State var showAlert = 0.0
+    @State var title: String
+    @State var description: String
+    @State var EventStartDate: Date
+    @State var EventEndDate: Date
+    
+    @Environment(\.dismiss) var dismiss
+
+    
+    var body: some View {
+        NavigationStack{
+            List{
+                Section(header: Text("Details")){
+                    TextField("Titles", text: $title)
+                    
+                    TextField("Description", text: $description)
+                }
+                .listRowBackground(Color("lightOrange"))
+                
+                
+                Section(header: Text("Date")){
+                    DatePicker(
+                        "Start Date",
+                        selection: $EventStartDate,
+                        displayedComponents: [.date, .hourAndMinute]
+                    )
+                    .foregroundColor(Color("orangeText"))
+                    .tint(Color("darkOrange"))
+                    
+                    DatePicker(
+                        "End Date",
+                        selection: $EventEndDate,
+                        displayedComponents: [.date, .hourAndMinute]
+                    )
+                    .foregroundColor(Color("orangeText"))
+                    .foregroundStyle(Color("darkOrange"))
+                    
+                }
+                .listRowBackground(Color("lightOrange"))
+                
+                Section(header: Text("Save")){
+                    Button(){
+                        if(event.title != "" && event.details != ""){
+                            event = Event(title: title, details: description, startDate: EventStartDate, endDate: EventEndDate)
+                        }
+                        dismiss()
+                    }label:{
+                        Text("Save")
+                            .foregroundStyle(Color("orangeText"))
+                    }
+                    
+                    Button(){
+                        dismiss()
+                    }label:{
+                        Text("Cancel")
+                            .foregroundStyle(.red)
+                    }
+                }
+                .listRowBackground(Color("lightOrange"))
+            }
+            .scrollContentBackground(.hidden)
+            .opacity(0.8)
+            .navigationTitle("Create New Event")
+            
+            Text("Fill up all feilds!")
                 .opacity(showAlert)
                 .foregroundStyle(.red)
         }

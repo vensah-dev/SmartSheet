@@ -8,7 +8,13 @@
 import SwiftUI
 
 struct EventDetailView: View {
-    @State var Event:Event
+    @State var Event: Event
+    @Binding var Events: [Event]
+    @State var showEdit = false
+    @State var index = 0
+    
+    @Environment(\.dismiss) var dismiss
+
     var body: some View {
         NavigationStack{
             List{
@@ -32,12 +38,36 @@ struct EventDetailView: View {
                 .listRowBackground(Color("lightOrange"))
                 
                 Section(header: Text("Description")){
-                    Text(Event.details)
+                    TextField("", text: $Event.details)
                 }
+                .listRowBackground(Color("lightOrange"))
             }
             .scrollContentBackground(.hidden)
             .opacity(0.8)
-            .navigationTitle(Event.title)
+            .navigationTitle($Event.title)
+            .toolbar{
+                Button{
+                    var i = 0
+                    for x in Events{
+                        if(x.title == Event.title){
+                            break
+                        }
+                        i += 1
+                    }
+                    
+                    
+                    showEdit = true
+                    
+                }label: {
+                    Text("Edit")
+                        .foregroundStyle(Color.accentColor)
+                }
+            }
+            .sheet(isPresented: $showEdit, onDismiss:{
+                dismiss()
+            }, content: {
+                EditEventView(event: $Events[index], title: Event.title, description: Event.title.description, EventStartDate: Event.startDate, EventEndDate: Event.endDate)
+            })
         }
     }
 }

@@ -20,19 +20,18 @@ struct CalendarView: View {
     var body: some View {
         NavigationStack{
             List{
-                ForEach(Events, id: \.id){ i in
+                ForEach(Events, id: \.id){ itm in
                     NavigationLink(destination:{
-                        EventDetailView(Event: i)
+                        EventDetailView(Event: itm, Events: $Events)
                     }, label:{
-                        Text(i.title)
+                        Text(itm.title)
                     })
                     .listRowBackground(Color("lightOrange"))
                 }
-                .onDelete(perform: delete)
+                .onDelete{Events.remove(atOffsets: $0)}
             }
             .scrollContentBackground(.hidden)
             .opacity(0.8)
-            .navigationTitle("Create New Event")
             .toolbar{
                 EditButton()
             }
@@ -44,13 +43,12 @@ struct CalendarView: View {
                     Image(systemName: "plus.circle")
                 })
             .sheet(isPresented: $CreateNew){
-                CreateNewEventView(Events: $Events)
+                CreateNewEventView(Events: $Events, Edit: false)
             }
         }
-    }
-    
-    func delete(at offsets: IndexSet) {
-        Events.remove(atOffsets: offsets)
+        .onAppear{
+            
+        }
     }
 }
 
