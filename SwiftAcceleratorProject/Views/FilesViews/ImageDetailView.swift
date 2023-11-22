@@ -19,13 +19,14 @@ struct ImageDetail: View {
 
     var body: some View {
         NavigationLink(destination: ImageDetailView(images: image, currentIndex: index, dataManager: dataManager)) {
-            Image(uiImage: image[0])
-                .resizable()
-                .aspectRatio(contentMode: .fill)
-                .frame(height: 300)
-                .clipped()
-                .cornerRadius(20)
-                .padding(.horizontal, 10)
+            VStack {
+                Image(uiImage: image[0])
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .frame(height: 300)
+                    .cornerRadius(20)
+                    .padding(10)
+            }
         }
         .navigationTitle(title)
         
