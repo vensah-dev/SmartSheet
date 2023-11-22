@@ -9,23 +9,18 @@ import Foundation
 import UIKit
 import SwiftUI
 
-
-class ScannedImagesData: ObservableObject {
-    @Published var scannedImages: [ScannedImage] = []
-}
-
 //Events
-struct Event: Identifiable {
+struct Event: Identifiable, Encodable, Decodable {
     var id = UUID()
     var title: String
     var details: String
     var startDate: Date = Date.now
     var endDate: Date = Date.now
-
+    
 }
 
 //Files
-struct ScannedImage: Identifiable {
+struct ScannedImage: Identifiable, Equatable {
     var id = UUID()
     var title: String
     var caption: String
@@ -33,9 +28,19 @@ struct ScannedImage: Identifiable {
     var durationHours: Int?
     var durationMinutes: Int?
     var lockAfterDuration: Bool?
+    
+    static func == (lhs: ScannedImage, rhs: ScannedImage) -> Bool {
+        return lhs.id == rhs.id
+        && lhs.title == rhs.title
+        && lhs.caption == rhs.caption
+        && lhs.image == rhs.image
+        && lhs.durationHours == rhs.durationHours
+        && lhs.durationMinutes == rhs.durationMinutes
+        && lhs.lockAfterDuration == rhs.lockAfterDuration
+    }
 }
 
-//Calendar
+//StatView
 struct Test: Identifiable {
     var id = UUID()
     var title: String

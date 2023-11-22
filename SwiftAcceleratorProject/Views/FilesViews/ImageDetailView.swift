@@ -15,9 +15,10 @@ struct ImageDetail: View {
     @Binding var durationHours: Int?
     @Binding var durationMinutes: Int?
     @Binding var lockAfterDuration: Bool?
-    
+    @StateObject var dataManager: DataManager
+
     var body: some View {
-        NavigationLink(destination: ImageDetailView(images: image, currentIndex: index)) {
+        NavigationLink(destination: ImageDetailView(images: image, currentIndex: index, dataManager: dataManager)) {
             Image(uiImage: image[0])
                 .resizable()
                 .aspectRatio(contentMode: .fill)
@@ -27,7 +28,7 @@ struct ImageDetail: View {
                 .padding(.horizontal, 10)
         }
         .navigationTitle(title)
-
+        
         Spacer()
     }
 }
@@ -35,12 +36,14 @@ struct ImageDetail: View {
 struct ImageDetailView: View {
     var images: [UIImage]
     var currentIndex: Int
-    
+    @StateObject var dataManager: DataManager
+    @State private var loadedImages: [UIImage] = []
+
     var body: some View {
         ScrollView(.vertical) {
             LazyVStack(spacing: 20) {
-                ForEach(images.indices, id: \.self) { index in
-                    Image(uiImage: images[index])
+                ForEach(loadedImages.indices, id: \.self) { index in
+                    Image(uiImage: loadedImages[index])
                         .resizable()
                         .aspectRatio(contentMode: .fill)
                         .clipped()
@@ -50,5 +53,14 @@ struct ImageDetailView: View {
             .padding(.vertical, 10)
         }
         .navigationBarTitleDisplayMode(.inline)
+        .onAppear {
+            DispatchQueue.global().async {
+                loadedImages = images
+            }
+        }
+        .onDisappear {
+            dataManager.saveEvents()
+            dataManager.saveScannedImages()
+        }
     }
 }

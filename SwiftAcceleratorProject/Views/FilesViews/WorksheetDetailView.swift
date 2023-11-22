@@ -8,13 +8,14 @@ struct WorksheetDetailView: View {
     @Environment(\.dismiss) var dismiss
     @State private var showScannerSheet = false
     @Binding var scannedImages: [ScannedImage]
+    @ObservedObject var dataManager: DataManager
     
     @State private var durationHours = 1
     @State private var durationMinutes = 0
     @State private var isDurationPickerPresented = false
     @State private var selectedDurationLabel = "01:00:00"
     
-    @State private var scannedUIImage: [UIImage] = [] // Array to store multiple scanned images
+    @State private var scannedUIImage: [UIImage] = []
     
     var body: some View {
         List {
@@ -100,7 +101,7 @@ struct WorksheetDetailView: View {
         .sheet(isPresented: $showScannerSheet) {
             ScannerView { scannedImage in
                 if let images = scannedImage {
-                    if !practicePaper{
+                    if !practicePaper {
                         durationHours = 0
                         durationMinutes = 0
                         scannedUIImage.append(contentsOf: images)
@@ -115,6 +116,9 @@ struct WorksheetDetailView: View {
                 self.showScannerSheet = false
             }
         }
+        .onChange(of: scannedImages) { _ in
+            dataManager.saveScannedImages()
+        }
     }
     
     private func saveScannedImages() {
@@ -122,7 +126,6 @@ struct WorksheetDetailView: View {
             return
         }
         
-        // Create a single ScannedImage with multiple images
         let newScannedImage = ScannedImage(
             title: self.title,
             caption: self.subtitle,
@@ -132,9 +135,8 @@ struct WorksheetDetailView: View {
             lockAfterDuration: self.lockAfterDuration
         )
         
-        self.scannedImages.append(newScannedImage)
-        
-        // Clear the array for the next scan
+        scannedImages.append(newScannedImage)
+        dataManager.saveScannedImages()
         scannedUIImage = []
     }
     
@@ -146,7 +148,6 @@ struct WorksheetDetailView: View {
 struct WheelPicker: View {
     @Binding var selection: Int
     let range: Range<Int>
-    
     
     let label: String
     

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		003335DF2B0E11A000ADE188 /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 003335DE2B0E11A000ADE188 /* DataManager.swift */; };
 		0058E09A2B0CB4480012E775 /* ImageDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0058E0992B0CB4480012E775 /* ImageDetailView.swift */; };
 		00F3D9B12B0B80DA00960F5B /* WorksheetDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00F3D9B02B0B80DA00960F5B /* WorksheetDetailView.swift */; };
 		00F3D9B32B0B85DD00960F5B /* SubjectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00F3D9B22B0B85DD00960F5B /* SubjectView.swift */; };
@@ -26,6 +27,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		003335DE2B0E11A000ADE188 /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
 		0058E0992B0CB4480012E775 /* ImageDetailView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageDetailView.swift; sourceTree = "<group>"; };
 		00F3D9B02B0B80DA00960F5B /* WorksheetDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorksheetDetailView.swift; sourceTree = "<group>"; };
 		00F3D9B22B0B85DD00960F5B /* SubjectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubjectView.swift; sourceTree = "<group>"; };
@@ -60,6 +62,7 @@
 			isa = PBXGroup;
 			children = (
 				C8D175E12B0C611800883D05 /* GlobalVars.swift */,
+				003335DE2B0E11A000ADE188 /* DataManager.swift */,
 			);
 			path = "Model and ViewModel";
 			sourceTree = "<group>";
@@ -202,6 +205,7 @@
 				C8E1DACE2B0C82E1000EF84A /* CreateNewEventView.swift in Sources */,
 				0058E09A2B0CB4480012E775 /* ImageDetailView.swift in Sources */,
 				C8A0E8A72B089CDE00ECBD0B /* StatsView.swift in Sources */,
+				003335DF2B0E11A000ADE188 /* DataManager.swift in Sources */,
 				C8A0E8A52B089CBC00ECBD0B /* ScannerView.swift in Sources */,
 				C8310DAE2B0DBEEC00DF2E5F /* EventDetailView.swift in Sources */,
 				C8D175E22B0C611800883D05 /* GlobalVars.swift in Sources */,
@@ -345,7 +349,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"SwiftAcceleratorProject/Preview Content\"";
-				DEVELOPMENT_TEAM = XL5JK4F896;
+				DEVELOPMENT_TEAM = 37822KKR43;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSCameraUsageDescription = "Camera is used for scanning worksheets";

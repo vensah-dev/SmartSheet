@@ -10,8 +10,9 @@ import VisionKit
 
 struct FilesView: View {
     @State private var showScannerSheet = false
-    @State public var scannedImages: [ScannedImage] = []
-
+    @StateObject private var dataManager = DataManager()
+    @State private var scannedImages: [ScannedImage] = []
+    
     var body: some View {
         NavigationView {
             VStack {
@@ -30,7 +31,8 @@ struct FilesView: View {
                                     caption: $scannedImages[index].caption,
                                     durationHours: $scannedImages[index].durationHours,
                                     durationMinutes: $scannedImages[index].durationMinutes,
-                                    lockAfterDuration: $scannedImages[index].lockAfterDuration
+                                    lockAfterDuration: $scannedImages[index].lockAfterDuration,
+                                    dataManager: dataManager
                                 )
                             ) {
                                 HStack {
@@ -39,7 +41,7 @@ struct FilesView: View {
                                         .aspectRatio(contentMode: .fill)
                                         .frame(width: 60, height: 60)
                                         .cornerRadius(5)
-
+                                    
                                     VStack(alignment: .leading) {
                                         Text(scannedImages[index].title)
                                         if !scannedImages[index].caption.isEmpty {
@@ -61,16 +63,18 @@ struct FilesView: View {
             }
             .navigationTitle("Resources")
             .navigationBarItems(trailing: NavigationLink(
-                destination: WorksheetDetailView(scannedImages: $scannedImages),
+                destination: WorksheetDetailView(scannedImages: $scannedImages, dataManager: dataManager),
                 label: {
                     Image(systemName: "plus.circle")
                 }
             ))
         }
     }
-
+    
     func delete(at offsets: IndexSet) {
         scannedImages.remove(atOffsets: offsets)
+        dataManager.scannedImages = scannedImages
+        dataManager.saveScannedImages()
     }
 }
 
