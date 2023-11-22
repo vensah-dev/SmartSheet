@@ -8,6 +8,7 @@
 import Foundation
 import UIKit
 
+
 class ScannedImagesData: ObservableObject {
     @Published var scannedImages: [ScannedImage] = []
 }

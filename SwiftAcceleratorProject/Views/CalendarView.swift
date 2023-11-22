@@ -22,14 +22,17 @@ struct CalendarView: View {
             List{
                 ForEach(Events, id: \.id){ i in
                     NavigationLink(destination:{
-                        Text(i.title)
-                        Text(i.details)
+                        EventDetailView(Event: i)
                     }, label:{
                         Text(i.title)
                     })
+                    .listRowBackground(Color("lightOrange"))
                 }
                 .onDelete(perform: delete)
             }
+            .scrollContentBackground(.hidden)
+            .opacity(0.8)
+            .navigationTitle("Create New Event")
             .toolbar{
                 EditButton()
             }
@@ -45,6 +48,7 @@ struct CalendarView: View {
             }
         }
     }
+    
     func delete(at offsets: IndexSet) {
         Events.remove(atOffsets: offsets)
     }

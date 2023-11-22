@@ -19,54 +19,69 @@ struct CreateNewEventView: View {
 
     
     var body: some View {
-        Text("Fill up all details!")
-            .opacity(showAlert)
-        
-        List{
-            Section(header: Text("Details")){
-                TextField("Titles", text: $title)
-                TextField("Description", text: $description)
-            }
-            .listRowBackground(Color.orange.opacity(0.8))
+        NavigationStack{
             
-            Section(header: Text("Date")){
-                DatePicker(
-                    "Start Date",
-                    selection: $EventStartDate,
-                    displayedComponents: [.date]
-                )
+            List{
+                Section(header: Text("Details")){
+                    TextField("Titles", text: $title)
+                        
+                    
+                    TextField("Description", text: $description)
+                        .foregroundStyle(Color("orangeText"))
+                }
+                .listRowBackground(Color("lightOrange"))
                 
-                DatePicker(
-                    "End Date",
-                    selection: $EventEndDate,
-                    displayedComponents: [.date]
-                )
-            }
-            .listRowBackground(Color.orange.opacity(0.8))
-            
-            Section(header: Text("Create")){
-                Button(){
-                    if(title != "" && description != ""){
-                        Events.append(Event(title: title, details: description, startDate: EventStartDate, endDate: EventEndDate))
+                
+                Section(header: Text("Date")){
+                    DatePicker(
+                        "Start Date",
+                        selection: $EventStartDate,
+                        displayedComponents: [.date, .hourAndMinute]
+                    )
+                    .foregroundColor(Color("orangeText"))
+                    .tint(Color("darkOrange"))
+                    
+                    DatePicker(
+                        "End Date",
+                        selection: $EventEndDate,
+                        displayedComponents: [.date, .hourAndMinute]
+                    )
+                    .foregroundColor(Color("orangeText"))
+                    .foregroundStyle(Color("darkOrange"))
+                    
+                }
+                .listRowBackground(Color("lightOrange"))
+                
+                Section(header: Text("Create")){
+                    Button(){
+                        if(title != "" && description != ""){
+                            Events.append(Event(title: title, details: description, startDate: EventStartDate, endDate: EventEndDate))
+                            dismiss()
+                        }
+                        else{
+                            showAlert = 1.0
+                        }
+                    }label:{
+                        Text("Create")
+                            .foregroundStyle(Color("orangeText"))
+                    }
+                    
+                    Button(){
                         dismiss()
+                    }label:{
+                        Text("Cancel")
+                            .foregroundStyle(.red)
                     }
-                    else{
-                        showAlert = 1.0
-                    }
-                }label:{
-                    Text("Create")
                 }
-                
-                Button(){
-                    dismiss()
-                }label:{
-                    Text("Cancel")
-                        .foregroundStyle(.red)
-                }
+                .listRowBackground(Color("lightOrange"))
             }
-            .listRowBackground(Color.orange.opacity(0.8))
+            .scrollContentBackground(.hidden)
+            .opacity(0.8)
+            .navigationTitle("Create New Event")
+            
+            Text("Fill up all details!")
+                .opacity(showAlert)
+                .foregroundStyle(.red)
         }
-        .scrollContentBackground(.hidden)
-        .navigationTitle("Create New Event")
     }
 }
