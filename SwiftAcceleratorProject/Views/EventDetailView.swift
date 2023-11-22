@@ -8,20 +8,20 @@
 import SwiftUI
 
 struct EventDetailView: View {
-    @State var Event: Event
+    @State var event: Event
     @Binding var Events: [Event]
     @State var showEdit = false
     @State var index = 0
     
     @Environment(\.dismiss) var dismiss
-
+    
     var body: some View {
         NavigationStack{
             List{
                 Section(header: Text("Date")){
                     DatePicker(
                         "Start Date",
-                        selection: $Event.startDate,
+                        selection: $event.startDate,
                         displayedComponents: [.date, .hourAndMinute]
                     )
                     .foregroundColor(Color("orangeText"))
@@ -29,7 +29,7 @@ struct EventDetailView: View {
                     
                     DatePicker(
                         "End Date",
-                        selection: $Event.endDate,
+                        selection: $event.endDate,
                         displayedComponents: [.date, .hourAndMinute]
                     )
                     .foregroundColor(Color("orangeText"))
@@ -38,37 +38,33 @@ struct EventDetailView: View {
                 .listRowBackground(Color("lightOrange"))
                 
                 Section(header: Text("Description")){
-                    TextField("", text: $Event.details)
+                    TextField("", text: $event.details)
                 }
                 .listRowBackground(Color("lightOrange"))
             }
             .scrollContentBackground(.hidden)
             .opacity(0.8)
-            .navigationTitle($Event.title)
-            .toolbar{
-                Button{
-                    var i = 0
-                    for x in Events{
-                        if(x.title == Event.title){
-                            break
-                        }
-                        i += 1
-                    }
-                    
-                    
-                    showEdit = true
-                    
-                }label: {
-                    Text("Edit")
-                        .foregroundStyle(Color.accentColor)
+            .navigationTitle($event.title)
+        }
+        .onAppear{
+            var i = 0
+            
+            for x in Events{
+                if(x.title == event.title){
+                    break
                 }
+                
+                i += 1
             }
-            .sheet(isPresented: $showEdit, onDismiss:{
-                dismiss()
-            }, content: {
-                EditEventView(event: $Events[index], title: Event.title, description: Event.title.description, EventStartDate: Event.startDate, EventEndDate: Event.endDate)
-            })
+            
+            index = i
+        }
+        .onDisappear{
+            for x in Events{
+                Events[index] = event
+            }
         }
     }
 }
+
 

@@ -22,7 +22,7 @@ struct CalendarView: View {
             List{
                 ForEach(Events, id: \.id){ itm in
                     NavigationLink(destination:{
-                        EventDetailView(Event: itm, Events: $Events)
+                        EventDetailView( event: itm, Events: $Events)
                     }, label:{
                         Text(itm.title)
                     })
