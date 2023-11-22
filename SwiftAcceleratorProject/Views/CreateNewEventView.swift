@@ -13,9 +13,14 @@ struct CreateNewEventView: View {
     @State var description = ""
     @State var EventStartDate: Date = Date.now
     @State var EventEndDate: Date = Date.now
+    @State var showAlert = 0.0
+    
+    @Environment(\.dismiss) var dismiss
 
     
     var body: some View {
+        Text("Fill up all details!")
+            .opacity(showAlert)
         
         List{
             Section(header: Text("Details")){
@@ -41,10 +46,22 @@ struct CreateNewEventView: View {
             
             Section(header: Text("Create")){
                 Button(){
-                    print("Hello")
-                    Events.append(Event(title: title, details: description, startDate: EventStartDate, endDate: EventEndDate))
+                    if(title != "" && description != ""){
+                        Events.append(Event(title: title, details: description, startDate: EventStartDate, endDate: EventEndDate))
+                        dismiss()
+                    }
+                    else{
+                        showAlert = 1.0
+                    }
                 }label:{
                     Text("Create")
+                }
+                
+                Button(){
+                    dismiss()
+                }label:{
+                    Text("Cancel")
+                        .foregroundStyle(.red)
                 }
             }
             .listRowBackground(Color.orange.opacity(0.8))
