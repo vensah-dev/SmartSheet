@@ -60,9 +60,7 @@ struct EventDetailView: View {
             index = i
         }
         .onDisappear{
-            for x in Events{
-                Events[index] = event
-            }
+            Events[index] = event
         }
     }
 }
