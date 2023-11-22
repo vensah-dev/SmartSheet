@@ -18,63 +18,92 @@ struct HomeView: View {
     
     var body: some View {
         NavigationStack{
-            //Streaks Widget
-            ZStack {
-                Image("StreaksHome")
-                    .opacity(0.8)
-                
-                VStack{
-                    HStack{
-                        Text("""
-                             Current
-                             Streak
-                             """)
-                            .foregroundStyle(lightOrangeText)
-                            .font(.system(size: 22, weight: .bold, design: .rounded))
-                            .padding(.init(top: 0, leading: 0, bottom: 0, trailing: 0))
+            List{
+                //Streaks Widget
+                Section{
+                    ZStack {
+                        Image("StreaksHome")
+                            .scaledToFit()
+                            .padding(10)
+                            .opacity(0.8)
                         
-                        Text(String(Streak))
-                            .foregroundStyle(OrangeText)
-                            .font(.system(size: 64, weight: .semibold, design: .rounded))
-                            .padding(.init(top: 0, leading: 38, bottom: 0, trailing: 0))
-                    }
-                    .frame(maxWidth: .infinity, maxHeight: 170.4, alignment: .leading)
-                    .padding(.init(top: 310, leading: 25, bottom: 0, trailing: 0))
-                    
-                    Spacer()
-                    
-                    VStack{
+                        VStack{
+                            HStack{
+                                Text("""
+                                     Current
+                                     Streak
+                                     """)
+                                .foregroundStyle(lightOrangeText)
+                                .font(.system(size: 22, weight: .bold, design: .rounded))
+                                .padding(.init(top: 0, leading: 0, bottom: 0, trailing: 0))
+                                
+                                Text(String(Streak))
+                                    .foregroundStyle(OrangeText)
+                                    .font(.system(size: 64, weight: .semibold, design: .rounded))
+                                    .padding(.init(top: 0, leading: 30, bottom: 0, trailing: 0))
+                            }
+                            .frame(maxWidth: .infinity, maxHeight: 170.4, alignment: .leading)
+                            .padding(.init(top: 360, leading: 0, bottom: 0, trailing: 0))
+                            
+                            
+                            VStack{
+                                
+                                ProgressView("", value: StreakCompletion, total: 100)
+                                    .tint(lightOrangeText)
+                                    .frame(width: 202)
+                                
+                                Text("\(NextStreak - Streak) days to go")
+                                    .opacity(0.47)
+                                    .font(.system(size: 12, weight: .medium, design: .rounded))
+                                    .padding(.init(top: 0, leading: 120, bottom: 0, trailing: 0))
+                                
+                            }
+                            .padding(.init(top: 0, leading: 0, bottom: 0, trailing: 133))
+                        }
+                        .padding(.init(top: 0, leading: 15, bottom: 360, trailing: 0))
                         
-                        ProgressView("", value: StreakCompletion, total: 100)
-                            .tint(lightOrangeText)
-                            .frame(width: 202)
-
-                        Text("\(NextStreak - Streak) days to go")
-                            .opacity(0.47)
-                            .font(.system(size: 12, weight: .medium, design: .rounded))
-                            .padding(.init(top: 0, leading: 125, bottom: 0, trailing: 0))
-
+                        VStack{
+                            Text("BestStreak")
+                                .foregroundStyle(OrangeText)
+                                .font(.system(size: 22, weight: .bold, design: .rounded))
+                                .padding(.init(top: 0, leading: 0, bottom: 0, trailing: 3))
+                            
+                            Text(String(BestStreak))
+                                .foregroundStyle(OrangeText)
+                                .font(.system(size: 64, weight: .bold, design: .rounded))
+                                .padding(.init(top: 10, leading: 0, bottom: 0, trailing: 0))
+                            
+                        }
+                        .padding(.init(top: 0, leading: 224, bottom: 0, trailing: 0))
+                        
                     }
-                    .padding(.init(top: 0, leading: 0, bottom: 50, trailing: 135))
+                    .padding(.init(top: -300, leading: 0, bottom: -300, trailing: 0))
                 }
-                .padding(.init(top: 0, leading: 0, bottom: 250, trailing: 0))
-                VStack{
-                    Text("Best Streak")
-                        .foregroundStyle(OrangeText)
-                        .font(.system(size: 22, weight: .bold, design: .rounded))
-                        .padding(.init(top: 0, leading: 0, bottom: 10, trailing: 0))
-                    
-                    Text(String(BestStreak))
-                        .foregroundStyle(OrangeText)
-                        .font(.system(size: 64, weight: .bold, design: .rounded))
-                }
-                .padding(.init(top: 0, leading: 245, bottom: 0, trailing: 0))
+                .listRowBackground(Color.red.opacity(0.0))
                 
+                Section(header: Text("Description")
+                    .font(.system(size: 17 ,weight: .bold, design: .rounded))
+                    .textCase(nil)){
+                        
+                    Text("ihwnd")
+                }
+                .listRowBackground(Color("lightOrange"))
             }
+            .navigationBarTitle("Welcome, Back!")
+            .listStyle(InsetGroupedListStyle())
+            .scrollContentBackground(.hidden)
+            
             
             
         }
+        .navigationTitle("Welcome Back!")
+        .frame(maxWidth: .infinity)
+        .edgesIgnoringSafeArea(.all)
+        .listStyle(GroupedListStyle())
+        .scrollContentBackground(.hidden)
+        .opacity(1)
     }
+    
 }
 
 #Preview {

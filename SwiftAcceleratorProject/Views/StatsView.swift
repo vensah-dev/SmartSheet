@@ -39,19 +39,18 @@ struct StatsView: View {
             
             HStack(spacing: 10){
                 ForEach(DaysOfTheWeek, id: \.self){ x in
-                    NavigationLink(destination: EmptyView()) {
-                        VStack{
-                            Image(systemName: "flame.fill")
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(height:24)
-                                .foregroundColor(.orange)
-                            
-                            Text(x)
-                                .font(.system(size: 10, weight:.black))
-                        }
-                        .padding(11)
+                    VStack{
+                        Image(systemName: "flame.fill")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(height:24)
+                            .foregroundColor(.orange)
+                        
+                        Text(x)
+                            .font(.system(size: 10, weight:.black))
                     }
+                    .padding(11)
+
                 }
             }
             
@@ -63,10 +62,11 @@ struct StatsView: View {
             List {
                 Section("Today's suggestion") {
                     ForEach(suggestions, id: \.id){ i in
-                        Text(i.title)
-                            .listRowBackground(Color(UIColor(red: 255/255, green: 153/255, blue:0, alpha: 0.24)))
-                            .cornerRadius(10)
-                        // Add more items as needed
+                        NavigationLink(destination: EmptyView()) {
+                            Text(i.title)
+                                
+                        }
+                        .listRowBackground(Color("lightOrange"))
                     }
                     
                 }

@@ -31,9 +31,10 @@ struct CalendarView: View {
                 .onDelete{Events.remove(atOffsets: $0)}
             }
             .scrollContentBackground(.hidden)
-            .opacity(0.8)
-            .toolbar{
-                EditButton()
+            .toolbar(){
+                ToolbarItem(placement: .navigationBarLeading) {
+                    EditButton()
+                }
             }
             .navigationTitle("Calendar")
             .navigationBarItems(trailing:
