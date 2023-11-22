@@ -9,43 +9,41 @@ import SwiftUI
 import VisionKit
 
 struct FilesView: View {
-    @State private var showScannerSheet = false
     @StateObject private var dataManager = DataManager()
-    @State private var scannedImages: [ScannedImage] = []
-    
+
     var body: some View {
         NavigationView {
             VStack {
-                if scannedImages.isEmpty {
+                if dataManager.scannedImages.isEmpty {
                     Text("No resources yet")
                         .font(.title3)
                         .foregroundColor(.gray)
                         .italic()
                 } else {
                     List {
-                        ForEach(0..<scannedImages.count, id: \.self) { index in
+                        ForEach(dataManager.scannedImages.indices, id: \.self) { index in
                             NavigationLink(
                                 destination: ImageDetail(
-                                    image: scannedImages[index].image,
-                                    title: $scannedImages[index].title,
-                                    caption: $scannedImages[index].caption,
-                                    durationHours: $scannedImages[index].durationHours,
-                                    durationMinutes: $scannedImages[index].durationMinutes,
-                                    lockAfterDuration: $scannedImages[index].lockAfterDuration,
+                                    image: dataManager.scannedImages[index].image,
+                                    title: $dataManager.scannedImages[index].title,
+                                    caption: $dataManager.scannedImages[index].caption,
+                                    durationHours: $dataManager.scannedImages[index].durationHours,
+                                    durationMinutes: $dataManager.scannedImages[index].durationMinutes,
+                                    lockAfterDuration: $dataManager.scannedImages[index].lockAfterDuration,
                                     dataManager: dataManager
                                 )
                             ) {
                                 HStack {
-                                    Image(uiImage: scannedImages[index].image[0])
+                                    Image(uiImage: dataManager.scannedImages[index].image[0])
                                         .resizable()
                                         .aspectRatio(contentMode: .fill)
                                         .frame(width: 60, height: 60)
                                         .cornerRadius(5)
-                                    
+
                                     VStack(alignment: .leading) {
-                                        Text(scannedImages[index].title)
-                                        if !scannedImages[index].caption.isEmpty {
-                                            Text(scannedImages[index].caption)
+                                        Text(dataManager.scannedImages[index].title)
+                                        if !dataManager.scannedImages[index].caption.isEmpty {
+                                            Text(dataManager.scannedImages[index].caption)
                                                 .font(.caption)
                                         }
                                     }
@@ -63,20 +61,20 @@ struct FilesView: View {
             }
             .navigationTitle("Resources")
             .navigationBarItems(trailing: NavigationLink(
-                destination: WorksheetDetailView(scannedImages: $scannedImages, dataManager: dataManager),
+                destination: WorksheetDetailView(scannedImages: $dataManager.scannedImages, dataManager: dataManager),
                 label: {
                     Image(systemName: "plus.circle")
                 }
             ))
         }
     }
-    
+
     func delete(at offsets: IndexSet) {
-        scannedImages.remove(atOffsets: offsets)
-        dataManager.scannedImages = scannedImages
+        dataManager.scannedImages.remove(atOffsets: offsets)
         dataManager.saveScannedImages()
     }
 }
+
 
 #Preview {
     FilesView()
