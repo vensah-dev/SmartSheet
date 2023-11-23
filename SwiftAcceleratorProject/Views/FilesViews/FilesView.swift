@@ -31,6 +31,8 @@ struct FilesView: View {
                                         durationHours: $dataManager.scannedImages[index].durationHours,
                                         durationMinutes: $dataManager.scannedImages[index].durationMinutes,
                                         lockAfterDuration: $dataManager.scannedImages[index].lockAfterDuration,
+                                        subject: $dataManager.scannedImages[index].subject,
+                                        topic: $dataManager.scannedImages[index].topic,
                                         dataManager: dataManager
                                     )
                                 ) {

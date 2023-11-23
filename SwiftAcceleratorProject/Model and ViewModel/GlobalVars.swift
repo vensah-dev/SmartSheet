@@ -28,6 +28,8 @@ struct ScannedImage: Identifiable, Equatable {
     var durationHours: Int?
     var durationMinutes: Int?
     var lockAfterDuration: Bool?
+    var subject: String
+    var topic: String
     
     static func == (lhs: ScannedImage, rhs: ScannedImage) -> Bool {
         return lhs.id == rhs.id
@@ -37,6 +39,8 @@ struct ScannedImage: Identifiable, Equatable {
         && lhs.durationHours == rhs.durationHours
         && lhs.durationMinutes == rhs.durationMinutes
         && lhs.lockAfterDuration == rhs.lockAfterDuration
+        && lhs.subject == rhs.subject
+        && lhs.topic == rhs.topic
     }
 }
 

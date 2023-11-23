@@ -11,6 +11,7 @@ struct WorksheetDetailView: View {
     @ObservedObject var dataManager: DataManager
     
     @State private var durationHours = 1
+    @State private var selectedSubject: String = ""
     @State private var durationMinutes = 0
     @State private var isDurationPickerPresented = false
     @State private var selectedDurationLabel = "01:00:00"
@@ -25,12 +26,14 @@ struct WorksheetDetailView: View {
             }
             
             Section(header: Text("Additional Details")) {
-                NavigationLink(destination: SubjectView()) {
+                NavigationLink(destination: SubjectView(dataManager: dataManager, selectedSubject: $selectedSubject) { subject in
+                    selectedSubject = subject
+                }) {
                     HStack {
                         Text("Subject")
                         Spacer()
-                        Text("Select")
-                            .foregroundStyle(.gray)
+                        Text(selectedSubject.isEmpty ? "Select" : selectedSubject)
+                            .foregroundColor(selectedSubject.isEmpty ? .gray : .primary)
                     }
                 }
                 
@@ -132,7 +135,9 @@ struct WorksheetDetailView: View {
             image: scannedUIImage,
             durationHours: self.durationHours,
             durationMinutes: self.durationMinutes,
-            lockAfterDuration: self.lockAfterDuration
+            lockAfterDuration: self.lockAfterDuration,
+            subject: self.selectedSubject,
+            topic: ""
         )
         
         scannedImages.append(newScannedImage)

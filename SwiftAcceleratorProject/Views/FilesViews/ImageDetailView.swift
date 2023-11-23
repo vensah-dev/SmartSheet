@@ -15,6 +15,8 @@ struct ImageDetail: View {
     @Binding var durationHours: Int?
     @Binding var durationMinutes: Int?
     @Binding var lockAfterDuration: Bool?
+    @Binding var subject: String
+    @Binding var topic: String
     @StateObject var dataManager: DataManager
 
     var body: some View {
@@ -31,6 +33,8 @@ struct ImageDetail: View {
         .navigationTitle(title)
         
         Spacer()
+        
+        Text(subject)
     }
 }
 
