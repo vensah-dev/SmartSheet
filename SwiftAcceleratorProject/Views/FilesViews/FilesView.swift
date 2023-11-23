@@ -8,27 +8,7 @@ struct FilesView: View {
     var body: some View {
         NavigationView {
             VStack {
-                // Add a Picker for selecting the subject
-                Picker("Subject", selection: $selectedSubjectIndex) {
-                    if dataManager.scannedImages.isEmpty {
-                        // If no subjects, don't display any options
-                    } else {
-                        Text("All").tag(-1)
-                        ForEach(0..<dataManager.scannedImages.count, id: \.self) { index in
-                            Text(dataManager.scannedImages[index].subject)
-                                .tag(index)
-                        }
-                    }
-                }
-                .pickerStyle(SegmentedPickerStyle())
-                .padding()
-                
-                if dataManager.scannedImages.isEmpty {
-                    Text("No resources yet")
-                        .font(.title3)
-                        .foregroundColor(.gray)
-                        .italic()
-                } else {
+                if !dataManager.scannedImages.isEmpty {
                     List {
                         ForEach(dataManager.scannedImages.indices, id: \.self) { index in
                             // Filter the images based on the selected subject
@@ -72,16 +52,47 @@ struct FilesView: View {
                         ToolbarItem(placement: .navigationBarLeading) {
                             EditButton()
                         }
+                        
+                        ToolbarItem(placement: .navigationBarTrailing) {
+                            Picker("Subject", selection: $selectedSubjectIndex) {
+                                if dataManager.scannedImages.isEmpty {
+                                    // If no subjects, don't display any options
+                                } else {
+                                    Text("All").tag(-1)
+                                    ForEach(0..<dataManager.scannedImages.count, id: \.self) { index in
+                                        Text(dataManager.scannedImages[index].subject)
+                                            .tag(index)
+                                    }
+                                }
+                            }
+                            .pickerStyle(MenuPickerStyle())
+                        }
+                        
+                        ToolbarItem(placement: .primaryAction) {
+                            NavigationLink(
+                                destination: WorksheetDetailView(scannedImages: $dataManager.scannedImages, dataManager: dataManager),
+                                label: {
+                                    Image(systemName: "plus.circle")
+                                }
+                            )
+                        }
                     }
+                } else {
+                    Text("No resources yet")
+                        .font(.title3)
+                        .foregroundColor(.gray)
+                        .italic()
                 }
             }
             .navigationTitle("Resources")
-            .navigationBarItems(trailing: NavigationLink(
-                destination: WorksheetDetailView(scannedImages: $dataManager.scannedImages, dataManager: dataManager),
-                label: {
-                    Image(systemName: "plus.circle")
-                }
-            ))
+        }
+    }
+    
+    var selectedSubjectLabel: String {
+        if selectedSubjectIndex == -1 {
+            return "All"
+        } else {
+            return dataManager.scannedImages[selectedSubjectIndex].subject
         }
     }
     
