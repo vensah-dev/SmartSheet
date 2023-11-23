@@ -20,7 +20,7 @@ struct ImageDetail: View {
     var body: some View {
         NavigationLink(destination: ImageDetailView(images: image, currentIndex: index, dataManager: dataManager)) {
             VStack {
-                Image(uiImage: image[0])
+                Image(uiImage: image.first ?? UIImage())
                     .resizable()
                     .aspectRatio(contentMode: .fill)
                     .frame(height: 300)
