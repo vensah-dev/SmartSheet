@@ -12,6 +12,7 @@ struct WorksheetDetailView: View {
     
     @State private var durationHours = 1
     @State private var selectedSubject: String = ""
+    @State private var selectedTopic: String = ""
     @State private var durationMinutes = 0
     @State private var isDurationPickerPresented = false
     @State private var selectedDurationLabel = "01:00:00"
@@ -37,12 +38,14 @@ struct WorksheetDetailView: View {
                     }
                 }
                 
-                NavigationLink(destination: TopicView()) {
+                NavigationLink(destination: TopicView(dataManager: dataManager, selectedTopic: $selectedTopic) { topic in
+                    selectedTopic = topic
+                }) {
                     HStack {
                         Text("Topic")
                         Spacer()
-                        Text("Select")
-                            .foregroundStyle(.gray)
+                        Text(selectedTopic.isEmpty ? "Select" : selectedTopic)
+                            .foregroundColor(selectedSubject.isEmpty ? .gray : .primary)
                     }
                 }
                 
@@ -137,7 +140,7 @@ struct WorksheetDetailView: View {
             durationMinutes: self.durationMinutes,
             lockAfterDuration: self.lockAfterDuration,
             subject: self.selectedSubject,
-            topic: ""
+            topic: self.selectedTopic
         )
         
         scannedImages.append(newScannedImage)
@@ -169,3 +172,4 @@ struct WheelPicker: View {
         }
     }
 }
+
