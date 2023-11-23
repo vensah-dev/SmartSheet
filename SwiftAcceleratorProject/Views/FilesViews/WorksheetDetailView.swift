@@ -2,11 +2,15 @@ import SwiftUI
 
 struct WorksheetDetailView: View {
     @State private var lockAfterDuration = false
+    @State private var showAlert = false
+    @State private var alertTitle = ""
+    @State private var alertMessage = ""
     @State private var title = ""
     @State private var subtitle = ""
     @State private var practicePaper = false
     @Environment(\.dismiss) var dismiss
     @State private var showScannerSheet = false
+    @State private var canScan = false
     @Binding var scannedImages: [ScannedImage]
     @ObservedObject var dataManager: DataManager
     
@@ -89,9 +93,24 @@ struct WorksheetDetailView: View {
             
             Section {
                 Button {
-                    showScannerSheet = true
+                    validateFields()
+                    if canScan {
+                        showScannerSheet = true
+                    } else {
+                        // Set alert properties
+                        alertTitle = "Incomplete Fields"
+                        alertMessage = "Please fill in all required fields before scanning."
+                        showAlert = true
+                    }
                 } label: {
                     Text("Scan worksheet")
+                }
+                .alert(isPresented: $showAlert) {
+                    Alert(
+                        title: Text(alertTitle),
+                        message: Text(alertMessage),
+                        dismissButton: .default(Text("OK"))
+                    )
                 }
                 
                 Button(role: .destructive) {
@@ -125,6 +144,15 @@ struct WorksheetDetailView: View {
         .onChange(of: scannedImages) { _ in
             dataManager.saveScannedImages()
         }
+    }
+    
+    private func validateFields() {
+        let isTestPaperValid = practicePaper && (durationHours > 0 || durationMinutes > 0)
+        
+        canScan = !title.isEmpty &&
+                  !selectedSubject.isEmpty &&
+                  !selectedTopic.isEmpty &&
+                  (!practicePaper || isTestPaperValid)
     }
     
     private func saveScannedImages() {

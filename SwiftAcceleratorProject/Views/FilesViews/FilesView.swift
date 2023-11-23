@@ -1,19 +1,28 @@
-//
-//  FilesView.swift
-//  SwiftAcceleratorProject
-//
-//  Created by Venkatesh Devendran on 18/11/2023.
-//
-
 import SwiftUI
 import VisionKit
 
 struct FilesView: View {
     @StateObject private var dataManager = DataManager()
-
+    @State private var selectedSubjectIndex = 0
+    
     var body: some View {
         NavigationView {
             VStack {
+                // Add a Picker for selecting the subject
+                Picker("Subject", selection: $selectedSubjectIndex) {
+                    if dataManager.scannedImages.isEmpty {
+                        // If no subjects, don't display any options
+                    } else {
+                        Text("All").tag(-1)
+                        ForEach(0..<dataManager.scannedImages.count, id: \.self) { index in
+                            Text(dataManager.scannedImages[index].subject)
+                                .tag(index)
+                        }
+                    }
+                }
+                .pickerStyle(SegmentedPickerStyle())
+                .padding()
+                
                 if dataManager.scannedImages.isEmpty {
                     Text("No resources yet")
                         .font(.title3)
@@ -22,10 +31,13 @@ struct FilesView: View {
                 } else {
                     List {
                         ForEach(dataManager.scannedImages.indices, id: \.self) { index in
-                            if !dataManager.scannedImages[index].image.isEmpty {
+                            // Filter the images based on the selected subject
+                            let images = dataManager.scannedImages[index].image
+                            let subject = dataManager.scannedImages[index].subject
+                            if selectedSubjectIndex == -1 || subject == dataManager.scannedImages[selectedSubjectIndex].subject {
                                 NavigationLink(
                                     destination: ImageDetail(
-                                        image: dataManager.scannedImages[index].image,
+                                        image: images,
                                         title: $dataManager.scannedImages[index].title,
                                         caption: $dataManager.scannedImages[index].caption,
                                         durationHours: $dataManager.scannedImages[index].durationHours,
@@ -72,14 +84,16 @@ struct FilesView: View {
             ))
         }
     }
-
+    
     func delete(at offsets: IndexSet) {
         dataManager.scannedImages.remove(atOffsets: offsets)
         dataManager.saveScannedImages()
     }
 }
 
-
-#Preview {
-    FilesView()
+struct FilesView_Previews: PreviewProvider {
+    static var previews: some View {
+        FilesView()
+    }
 }
+
