@@ -23,7 +23,6 @@ struct TopicView: View {
                 Button(action: {
                     selectedTopic = topic
                     onTopicSelected(selectedTopic)
-                    presentationMode.wrappedValue.dismiss()
                 }) {
                     Text(topic)
                 }
@@ -47,6 +46,7 @@ struct TopicView: View {
                         onTopicSelected(newTopic)
                         newTopic = ""
                         isAddTopicModalPresented = false
+                        presentationMode.wrappedValue.dismiss()
                     }
                 }
                 isAddTopicModalPresented = false

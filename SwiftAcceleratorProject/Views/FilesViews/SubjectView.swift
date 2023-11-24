@@ -16,7 +16,6 @@ struct SubjectView: View {
                 Button(action: {
                     selectedSubject = subject
                     onSubjectSelected(selectedSubject)
-                    presentationMode.wrappedValue.dismiss()
                 }) {
                     Text(subject)
                 }
@@ -41,6 +40,7 @@ struct SubjectView: View {
                         onSubjectSelected(newSubject)
                         newSubject = ""
                         isAddSubjectModalPresented = false
+                        presentationMode.wrappedValue.dismiss()
                     }
                 }
                 isAddSubjectModalPresented = false
