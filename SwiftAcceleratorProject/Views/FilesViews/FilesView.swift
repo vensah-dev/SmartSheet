@@ -22,49 +22,7 @@ struct FilesView: View {
                             let topic = dataManager.scannedImages[index].topic
                             
                             if selectedSubjectIndex == -1 || subject == dataManager.scannedImages[selectedSubjectIndex].subject {
-                                let subjectTopics = Set(dataManager.scannedImages.filter { $0.subject == subject }.map { $0.topic })
-                                
-                                if !subjectTopics.contains(topic) {
-                                    DisclosureGroup(topic, isExpanded: $isExpanded) {
-                                        NavigationLink(
-                                            destination: ImageDetail(
-                                                image: images,
-                                                title: $dataManager.scannedImages[index].title,
-                                                caption: $dataManager.scannedImages[index].caption,
-                                                durationHours: $dataManager.scannedImages[index].durationHours,
-                                                durationMinutes: $dataManager.scannedImages[index].durationMinutes,
-                                                lockAfterDuration: $dataManager.scannedImages[index].lockAfterDuration,
-                                                subject: $dataManager.scannedImages[index].subject,
-                                                topic: $dataManager.scannedImages[index].topic,
-                                                dataManager: dataManager
-                                            )
-                                        ) {
-                                            HStack {
-                                                Image(uiImage: dataManager.scannedImages[index].image.first ?? UIImage())
-                                                    .resizable()
-                                                    .aspectRatio(contentMode: .fill)
-                                                    .frame(width: 60, height: 60)
-                                                    .cornerRadius(5)
-                                                
-                                                VStack(alignment: .leading) {
-                                                    Text(dataManager.scannedImages[index].title)
-                                                        .font(.headline)
-                                                    
-                                                    if !dataManager.scannedImages[index].caption.isEmpty {
-                                                        Text(dataManager.scannedImages[index].caption)
-                                                            .font(.caption)
-                                                            .foregroundColor(.secondary)
-                                                    }
-                                                }
-                                                
-                                                Spacer()
-                                                
-                                                Image(systemName: "chevron.right")
-                                                    .foregroundColor(.accentColor)
-                                            }
-                                        }
-                                    }
-                                } else {
+                                DisclosureGroup(topic, isExpanded: $isExpanded) {
                                     NavigationLink(
                                         destination: ImageDetail(
                                             image: images,
