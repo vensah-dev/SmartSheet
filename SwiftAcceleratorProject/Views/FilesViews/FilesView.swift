@@ -145,4 +145,3 @@ struct FilesView: View {
         dataManager.saveScannedImages()
     }
 }
-

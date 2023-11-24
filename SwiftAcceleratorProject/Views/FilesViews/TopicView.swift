@@ -62,12 +62,6 @@ struct TopicView: View {
             topics = dataManager.scannedImages.map(\.topic).removingDuplicates()
         }
         .onReceive(dataManager.$scannedImages) { _ in
-            for x in dataManager.scannedImages{
-                if(!dataManager.topics.contains(x.topic)){
-                    dataManager.topics.append(x.topic)
-                }
-            }
-            
             topics = dataManager.scannedImages.map(\.topic).removingDuplicates()
         }
     }
