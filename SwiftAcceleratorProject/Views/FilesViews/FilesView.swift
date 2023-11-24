@@ -1,31 +1,5 @@
 import SwiftUI
 
-struct SectionHeaderView: View {
-    var title: String
-    var isExpanded: Bool
-    var toggleAction: () -> Void
-    
-    var body: some View {
-        HStack {
-            Button(action: {
-                toggleAction()
-            }) {
-                HStack {
-                    Text(title)
-                    Spacer()
-                    Image(systemName: isExpanded ? "chevron.down" : "chevron.right")
-                        .imageScale(.medium)
-                        .frame(width: 20, height: 20)
-                }
-            }
-        }
-        .contentShape(Rectangle())
-        .onTapGesture {
-            toggleAction()
-        }
-    }
-}
-
 struct FilesView: View {
     @StateObject private var dataManager = DataManager()
     @State private var selectedSubjectIndex = 0
@@ -48,64 +22,56 @@ struct FilesView: View {
                 } else {
                     ForEach(uniqueTopics.indices, id: \.self) { index in
                         let topic = uniqueTopics[index]
-                        Section(
-                            header: SectionHeaderView(
-                                title: topic,
-                                isExpanded: sectionStates[index],
-                                toggleAction: {
-                                    withAnimation {
-                                        sectionStates[index].toggle()
-                                    }
-                                }
-                            ),
-                            content: {
-                                if sectionStates[index] {
-                                    ForEach(dataManager.scannedImages.indices, id: \.self) { imageIndex in
-                                        let images = dataManager.scannedImages[imageIndex].image
-                                        let subject = dataManager.scannedImages[imageIndex].subject
-                                        let currentTopic = dataManager.scannedImages[imageIndex].topic
-                                        if selectedSubjectIndex == -1 || subject == dataManager.scannedImages[selectedSubjectIndex].subject, currentTopic == topic {
-                                            NavigationLink(
-                                                destination: ImageDetail(
-                                                    image: images,
-                                                    title: $dataManager.scannedImages[imageIndex].title,
-                                                    caption: $dataManager.scannedImages[imageIndex].caption,
-                                                    durationHours: $dataManager.scannedImages[imageIndex].durationHours,
-                                                    durationMinutes: $dataManager.scannedImages[imageIndex].durationMinutes,
-                                                    lockAfterDuration: $dataManager.scannedImages[imageIndex].lockAfterDuration,
-                                                    subject: $dataManager.scannedImages[imageIndex].subject,
-                                                    topic: $dataManager.scannedImages[imageIndex].topic,
-                                                    dataManager: dataManager
-                                                )
-                                            ) {
-                                                HStack {
-                                                    Image(uiImage: dataManager.scannedImages[imageIndex].image.first ?? UIImage())
-                                                        .resizable()
-                                                        .aspectRatio(contentMode: .fill)
-                                                        .frame(width: 60, height: 60)
-                                                        .cornerRadius(5)
+                        Section(isExpanded: $sectionStates[index],
+                                content: {
+                            if sectionStates[index] {
+                                ForEach(dataManager.scannedImages.indices, id: \.self) { imageIndex in
+                                    let images = dataManager.scannedImages[imageIndex].image
+                                    let subject = dataManager.scannedImages[imageIndex].subject
+                                    let currentTopic = dataManager.scannedImages[imageIndex].topic
+                                    if selectedSubjectIndex == -1 || subject == dataManager.scannedImages[selectedSubjectIndex].subject, currentTopic == topic {
+                                        NavigationLink(
+                                            destination: ImageDetail(
+                                                image: images,
+                                                title: $dataManager.scannedImages[imageIndex].title,
+                                                caption: $dataManager.scannedImages[imageIndex].caption,
+                                                durationHours: $dataManager.scannedImages[imageIndex].durationHours,
+                                                durationMinutes: $dataManager.scannedImages[imageIndex].durationMinutes,
+                                                lockAfterDuration: $dataManager.scannedImages[imageIndex].lockAfterDuration,
+                                                subject: $dataManager.scannedImages[imageIndex].subject,
+                                                topic: $dataManager.scannedImages[imageIndex].topic,
+                                                dataManager: dataManager
+                                            )
+                                        ) {
+                                            HStack {
+                                                Image(uiImage: dataManager.scannedImages[imageIndex].image.first ?? UIImage())
+                                                    .resizable()
+                                                    .aspectRatio(contentMode: .fill)
+                                                    .frame(width: 60, height: 60)
+                                                    .cornerRadius(5)
+                                                
+                                                VStack(alignment: .leading) {
+                                                    Text(dataManager.scannedImages[imageIndex].title)
+                                                        .font(.headline)
                                                     
-                                                    VStack(alignment: .leading) {
-                                                        Text(dataManager.scannedImages[imageIndex].title)
-                                                            .font(.headline)
-                                                        
-                                                        if !dataManager.scannedImages[imageIndex].caption.isEmpty {
-                                                            Text(dataManager.scannedImages[imageIndex].caption)
-                                                                .font(.caption)
-                                                                .foregroundColor(.secondary)
-                                                        }
+                                                    if !dataManager.scannedImages[imageIndex].caption.isEmpty {
+                                                        Text(dataManager.scannedImages[imageIndex].caption)
+                                                            .font(.caption)
+                                                            .foregroundColor(.secondary)
                                                     }
-                                                    
-                                                    Spacer()
                                                 }
+                                                
+                                                Spacer()
                                             }
                                         }
                                     }
-                                    .onDelete(perform: { indices in
-                                        delete(at: indices)
-                                    })
                                 }
+                                .onDelete(perform: { indices in
+                                    delete(at: indices)
+                                })
                             }
+                        }, 
+                                header:{ Text(topic)}
                         )
                         .textCase(nil)
                     }
