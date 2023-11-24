@@ -8,6 +8,7 @@
 import Foundation
 import UIKit
 import SwiftUI
+import Swift
 
 //Events
 struct Event: Identifiable, Encodable, Decodable {
@@ -30,6 +31,7 @@ struct ScannedImage: Identifiable, Equatable {
     var lockAfterDuration: Bool?
     var subject: String
     var topic: String
+    var used: Int = 0
     
     static func == (lhs: ScannedImage, rhs: ScannedImage) -> Bool {
         return lhs.id == rhs.id

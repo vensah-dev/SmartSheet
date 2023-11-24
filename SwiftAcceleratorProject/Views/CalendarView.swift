@@ -14,6 +14,7 @@ struct CalendarView: View {
         Event(title: "Hello3", details: "Finsih The StatsView"),
         Event(title: "Hello4", details: "bye"),
     ]
+    @State var DisplayEvents: [Event] = [Event(title: "", details: "")]
     @State var selectedDate: Date = Date()
     @State private var CreateNew = false
 
@@ -33,11 +34,14 @@ struct CalendarView: View {
                     Image(systemName: "plus.circle")
                 })
             .navigationTitle("Calendar")
+            .onChange(of: selectedDate){
+                DisplayEvents = Events.filter { Calendar.current.dateComponents([.day, .month, .year], from: $0.endDate) == Calendar.current.dateComponents([.day, .month, .year], from: selectedDate) }
+            }
             
             List{
                 Section(header: Text("Events").textCase(nil)){
                     
-                    ForEach(Events, id: \.id){ itm in
+                    ForEach(DisplayEvents, id: \.id){ itm in
                         NavigationLink(destination:{
                             EventDetailView( event: itm, Events: $Events)
                         }, label:{
@@ -71,7 +75,7 @@ struct CalendarView: View {
             }
         }
         .onAppear{
-            
+            DisplayEvents = Events.filter { Calendar.current.dateComponents([.day, .month, .year], from: $0.endDate) == Calendar.current.dateComponents([.day, .month, .year], from: selectedDate) }
         }
     }
 }

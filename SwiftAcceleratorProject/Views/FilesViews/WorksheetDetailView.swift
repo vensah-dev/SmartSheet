@@ -150,9 +150,9 @@ struct WorksheetDetailView: View {
         let isTestPaperValid = practicePaper && (durationHours > 0 || durationMinutes > 0)
         
         canScan = !title.isEmpty &&
-                  !selectedSubject.isEmpty &&
-                  !selectedTopic.isEmpty &&
-                  (!practicePaper || isTestPaperValid)
+        !selectedSubject.isEmpty &&
+        !selectedTopic.isEmpty &&
+        (!practicePaper || isTestPaperValid)
     }
     
     private func saveScannedImages() {
