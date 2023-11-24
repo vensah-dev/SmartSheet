@@ -1,10 +1,3 @@
-//
-//  SubjectView.swift
-//  SwiftAcceleratorProject
-//
-//  Created by jeffrey on 20/11/23.
-//
-
 import SwiftUI
 
 struct SubjectView: View {
@@ -16,7 +9,8 @@ struct SubjectView: View {
     var onSubjectSelected: (String) -> Void
 
     var body: some View {
-        var subjects = dataManager.subjects
+        var subjects = dataManager.subjects // Consider using dataManager.scannedImages.map(\.subject).removingDuplicates() directly
+
         List {
             ForEach(subjects, id: \.self) { subject in
                 Button(action: {
@@ -42,7 +36,8 @@ struct SubjectView: View {
                     if subjects.contains(newSubject) {
                         isAddSubjectModalPresented = false
                     } else {
-                        subjects.append(newSubject)
+                        // Add the new subject to dataManager.subjects
+                        dataManager.subjects.append(newSubject)
                         onSubjectSelected(newSubject)
                         newSubject = ""
                         isAddSubjectModalPresented = false
