@@ -7,68 +7,80 @@ struct FilesView: View {
     
     var body: some View {
         NavigationView {
-            if dataManager.scannedImages.isEmpty {
-                Text("No resources yet")
-                    .foregroundColor(.secondary)
-                    .font(.headline)
-                    .padding()
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-            } else {
-                List{
-                    ForEach(dataManager.topics, id: \.self){ x in
-                        DisclosureGroup(x) {
-                            ForEach(dataManager.scannedImages, id: \.id) { item in
-                                NavigationLink{
-                                    ImageDetail(
-                                        title: item.title,
-                                        image: item.image,
-                                        dataManager: dataManager
-                                    )
-                                }label:{
-                                    HStack {
-                                        Image(uiImage: item.image.first ?? UIImage())
-                                            .resizable()
-                                            .aspectRatio(contentMode: .fill)
-                                            .frame(width: 60, height: 60)
-                                            .cornerRadius(5)
-                                        
-                                        VStack(alignment: .leading) {
-                                            Text(item.title)
-                                                .font(.headline)
-                                            
-                                            if !item.caption.isEmpty {
-                                                Text(item.caption)
-                                                    .font(.caption)
-                                                    .foregroundColor(.secondary)
+            VStack() {
+                if dataManager.scannedImages.isEmpty {
+                    Text("No resources yet")
+                        .foregroundColor(.secondary)
+                        .font(.headline)
+                        .padding()
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                } else {
+                    List {
+                        ForEach(dataManager.topics, id: \.self){ x in
+                            Section(
+                                isExpanded: $isExpanded,
+                                content: {
+                                    ForEach(dataManager.scannedImages, id: \.id){ item in
+                                        if selectedSubjectIndex == -1 || dataManager.scannedImages[selectedSubjectIndex].subject  == item.subject{
+                                            NavigationLink(
+                                                destination: ImageDetail(
+                                                    title: item.title,
+                                                    image: item.image,
+                                                    dataManager: dataManager
+                                                )
+                                            ) {
+                                                HStack {
+                                                    Image(uiImage: item.image.first ?? UIImage())
+                                                        .resizable()
+                                                        .aspectRatio(contentMode: .fill)
+                                                        .frame(width: 60, height: 60)
+                                                        .cornerRadius(5)
+                                                    
+                                                    VStack(alignment: .leading) {
+                                                        Text(item.title)
+                                                            .font(.headline)
+                                                        
+                                                        if !item.caption.isEmpty {
+                                                            Text(item.caption)
+                                                                .font(.caption)
+                                                                .foregroundColor(.secondary)
+                                                        }
+                                                    }
+                                                }
                                             }
                                         }
+                                        
                                     }
+                                }, header: {
+                                    Text(x)
                                 }
-                            }
+                            )
                         }
-                        
                     }
+                    .listStyle(.sidebar)
+                    .scrollContentBackground(.hidden)
                 }
-                .navigationBarItems(leading: EditButton(), trailing:
-                                        HStack {
-                    Picker("Subject", selection: $selectedSubjectIndex) {
-                        Text("All").tag(-1)
-                        ForEach(0..<dataManager.scannedImages.count, id: \.self) { index in
-                            Text(dataManager.scannedImages[index].subject)
-                                .tag(index)
-                        }
-                    }
-                    .pickerStyle(MenuPickerStyle())
-                    
-                    NavigationLink(
-                        destination: WorksheetDetailView(scannedImages: $dataManager.scannedImages, dataManager: dataManager),
-                        label: {
-                            Image(systemName: "plus.circle")
-                        }
-                    )
-                })
-                .navigationBarTitle("Resources")
             }
+            .navigationBarTitle("Resources")
+            .navigationBarItems(leading: EditButton(), trailing:
+                                    HStack {
+                                        Picker("Subject", selection: $selectedSubjectIndex) {
+                                            Text("All").tag(-1)
+                                            ForEach(0..<dataManager.scannedImages.count, id: \.self) { index in
+                                                Text(dataManager.scannedImages[index].subject)
+                                                    .tag(index)
+                                            }
+                                        }
+                                        .pickerStyle(MenuPickerStyle())
+                                        
+                                        NavigationLink(
+                                            destination: WorksheetDetailView(scannedImages: $dataManager.scannedImages, dataManager: dataManager),
+                                            label: {
+                                                Image(systemName: "plus.circle")
+                                            }
+                                        )
+                                    }
+            )
         }
     }
     

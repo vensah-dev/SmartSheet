@@ -67,6 +67,7 @@ struct TopicView: View {
                     dataManager.topics.append(x.topic)
                 }
             }
+            
             topics = dataManager.scannedImages.map(\.topic).removingDuplicates()
         }
     }
