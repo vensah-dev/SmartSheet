@@ -1,10 +1,3 @@
-//
-//  CreateNewEventView.swift
-//  SwiftAcceleratorProject
-//
-//  Created by Venkatesh Devendran on 21/11/2023.
-//
-
 import SwiftUI
 
 struct CreateNewEventView: View {
@@ -21,24 +14,20 @@ struct CreateNewEventView: View {
     
     @Environment(\.dismiss) var dismiss
     
-    
     var body: some View {
-        NavigationStack{
-            
-            List{
-                Section(header: Text("Details")){
-                    TextField("Titles", text: $title)
-                    
-                    
+        NavigationStack {
+            List {
+                Section(header: Text("Details")) {
+                    TextField("Title", text: $title)
                     TextField("Description", text: $description)
                 }
                 .listRowBackground(Color("lightOrange"))
                 
-                
-                Section(header: Text("Date")){
+                Section(header: Text("Date")) {
                     DatePicker(
                         "Start Date",
                         selection: $EventStartDate,
+                        in: Date()...,
                         displayedComponents: [.date, .hourAndMinute]
                     )
                     .foregroundColor(Color("orangeText"))
@@ -47,48 +36,50 @@ struct CreateNewEventView: View {
                     DatePicker(
                         "End Date",
                         selection: $EventEndDate,
+                        in: EventStartDate...,
                         displayedComponents: [.date, .hourAndMinute]
                     )
                     .foregroundColor(Color("orangeText"))
                     .foregroundStyle(Color("darkOrange"))
-                    
                 }
                 .listRowBackground(Color("lightOrange"))
                 
-                Section(header: Text("Save")){
-                    Button(){
-                        if(title != "" && description != ""){
-                            var eventExists: Bool = false
-                            
-                            for x in Events{
-                                if(title == x.title){
-                                    eventExists = true
-                                    break
+                Section(header: Text("Save")) {
+                    Button {
+                        if title != "" && description != "" {
+                            let currentDate = Date()
+                            if EventStartDate < currentDate || EventEndDate < currentDate {
+                                alertMSG = "Please select a future date and time!"
+                                showAlert = 1.0
+                            } else {
+                                var eventExists = false
+                                for x in Events {
+                                    if title == x.title {
+                                        eventExists = true
+                                        break
+                                    }
+                                }
+                                
+                                if eventExists {
+                                    alertMSG = "Event already exists!"
+                                    showAlert = 1.0
+                                } else {
+                                    Events.append(Event(title: title, details: description, startDate: EventStartDate, endDate: EventEndDate))
+                                    dismiss()
                                 }
                             }
-                            
-                            if(eventExists){
-                                alertMSG = "Event already exists!"
-                                showAlert = 1.0
-                            }
-                            else{
-                                Events.append(Event(title: title, details: description, startDate: EventStartDate, endDate: EventEndDate))
-                                dismiss()
-                            }
-                        }
-                        else{
+                        } else {
                             alertMSG = "Fill up all details!"
                             showAlert = 1.0
                         }
-                        
-                    }label:{
+                    } label: {
                         Text("Save")
                             .foregroundStyle(Color("orangeText"))
                     }
                     
-                    Button(){
+                    Button {
                         dismiss()
-                    }label:{
+                    } label: {
                         Text("Cancel")
                             .foregroundStyle(.red)
                     }
