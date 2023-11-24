@@ -2,7 +2,7 @@ import SwiftUI
 
 struct FilesView: View {
     @StateObject private var dataManager = DataManager()
-    @State private var selectedSubjectIndex = 0
+    @State private var selectedSubjectIndex = -1
     @State private var isExpanded: [Bool] = [true]
     
     var body: some View {
@@ -39,11 +39,12 @@ struct FilesView: View {
                                                         VStack(alignment: .leading) {
                                                             Text(item.title)
                                                                 .font(.headline)
+                                                                .foregroundStyle(Color("orangeText"))
                                                             
                                                             if !item.caption.isEmpty {
                                                                 Text(item.caption)
                                                                     .font(.caption)
-                                                                    .foregroundColor(.secondary)
+                                                                    .foregroundStyle(Color("orangeText").opacity(0.7))
                                                             }
                                                         }
                                                     }
@@ -56,6 +57,8 @@ struct FilesView: View {
                                     Text(x)
                                 }
                             )
+                            .listRowBackground(Color("lightOrange"))
+
                         }
                         .onDelete(perform: delete)
                     }
@@ -68,8 +71,8 @@ struct FilesView: View {
                                     HStack {
                                         Picker("Subject", selection: $selectedSubjectIndex) {
                                             Text("All").tag(-1)
-                                            ForEach(0..<dataManager.scannedImages.count, id: \.self) { index in
-                                                Text(dataManager.scannedImages[index].subject)
+                                            ForEach(dataManager.subjects.indices, id: \.self) { index in
+                                                Text(dataManager.subjects[index])
                                                     .tag(index)
                                             }
                                         }

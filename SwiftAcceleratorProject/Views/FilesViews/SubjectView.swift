@@ -15,9 +15,8 @@ struct SubjectView: View {
     @State private var newSubject = ""
     var onSubjectSelected: (String) -> Void
 
-    @State private var subjects: [String] = []
-
     var body: some View {
+        var subjects = dataManager.subjects
         List {
             ForEach(subjects, id: \.self) { subject in
                 Button(action: {
@@ -68,7 +67,7 @@ struct SubjectView: View {
 
     private func delete(at offsets: IndexSet) {
         // Handle deletion of subjects
-        let subjectsToRemove = offsets.map { subjects[$0] }
+        let subjectsToRemove = offsets.map { dataManager.subjects[$0] }
 
         // Remove corresponding scannedImages
         dataManager.scannedImages.removeAll { scannedImage in
@@ -76,7 +75,7 @@ struct SubjectView: View {
         }
 
         // Update the subjects
-        subjects.remove(atOffsets: offsets)
+        dataManager.subjects.remove(atOffsets: offsets)
 
         // Save the changes to dataManager
         dataManager.saveScannedImages()

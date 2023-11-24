@@ -14,13 +14,27 @@ class DataManager: ObservableObject {
             saveScannedImages()
         }
     }
-
+    
+    @Published public var topics: [String] = []
+    @Published public var subjects: [String] = []
+    
     init() {
         loadEvents()
         loadScannedImages()
+        
+        for x in scannedImages{
+            if(!topics.contains(x.topic)){
+                topics.append(x.topic)
+            }
+        }
+        
+        for x in scannedImages{
+            if(!subjects.contains(x.subject)){
+                subjects.append(x.subject)
+            }
+        }
     }
-    
-    @Published public var topics: [String] = []
+
 
     // MARK: - Events Persistence
 
@@ -83,9 +97,12 @@ class DataManager: ObservableObject {
     func loadScannedImages() {
         let archiveURL = getScannedImagesArchiveURL()
         let propertyListDecoder = PropertyListDecoder()
+        
+        
 
         if let retrievedImageData = try? Data(contentsOf: archiveURL),
             let scannedImagesWithImageData = try? propertyListDecoder.decode([ScannedImageWithImageData].self, from: retrievedImageData) {
+            
 
             // Convert Data back to UIImage after loading
             scannedImages = scannedImagesWithImageData.map { scannedImageWithImageData in
