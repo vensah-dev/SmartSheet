@@ -40,9 +40,14 @@ struct TopicView: View {
             TextField("New Topic", text: $newTopic)
             Button("Add") {
                 if !newTopic.isEmpty {
-                    topics.append(newTopic)
-                    onTopicSelected(newTopic)
-                    newTopic = ""
+                    if topics.contains(newTopic) {
+                        isAddTopicModalPresented = false
+                    } else {
+                        topics.append(newTopic)
+                        onTopicSelected(newTopic)
+                        newTopic = ""
+                        isAddTopicModalPresented = false
+                    }
                 }
                 isAddTopicModalPresented = false
             }

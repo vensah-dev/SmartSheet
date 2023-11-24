@@ -40,9 +40,14 @@ struct SubjectView: View {
             TextField("New Subject", text: $newSubject)
             Button("Add") {
                 if !newSubject.isEmpty {
-                    subjects.append(newSubject)
-                    onSubjectSelected(newSubject)
-                    newSubject = ""
+                    if subjects.contains(newSubject) {
+                        isAddSubjectModalPresented = false
+                    } else {
+                        subjects.append(newSubject)
+                        onSubjectSelected(newSubject)
+                        newSubject = ""
+                        isAddSubjectModalPresented = false
+                    }
                 }
                 isAddSubjectModalPresented = false
             }
