@@ -8,13 +8,18 @@
 import SwiftUI
 
 struct ImageDetail: View {
-    @State var title: String
     @State var index: Int = 0
     @State var image: [UIImage]
+    @Binding var title: String
+    @Binding var caption: String
+    @Binding var durationHours: Int?
+    @Binding var durationMinutes: Int?
+    @Binding var lockAfterDuration: Bool?
+    @Binding var subject: String
+    @Binding var topic: String
     @StateObject var dataManager: DataManager
 
     var body: some View {
-        var scannedImage = dataManager.scannedImages[index]
         NavigationLink(destination: ImageDetailView(images: image, currentIndex: index, dataManager: dataManager)) {
             VStack {
                 Image(uiImage: image.first ?? UIImage())
@@ -25,21 +30,11 @@ struct ImageDetail: View {
                     .padding(10)
             }
         }
-        .navigationTitle(scannedImage.title)
-        .onAppear{
-            var i = 0
-            
-            for x in dataManager.scannedImages{
-                if(x.title == title){
-                    index = i
-                }
-                i += 1
-            }
-        }
+        .navigationTitle(title)
         
         Spacer()
         
-        Text(scannedImage.subject)
+        Text(subject)
     }
 }
 
