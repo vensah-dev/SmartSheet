@@ -42,9 +42,9 @@ struct CalendarView: View {
                 Section(header: Text("Events").textCase(nil)){
                     
                     ForEach(DisplayEvents, id: \.id){ itm in
-                        NavigationLink(destination:{
+                        NavigationLink{
                             EventDetailView( event: itm, Events: $Events)
-                        }, label:{
+                        }label:{
                             HStack{
                                 VStack(alignment: .leading){
                                     Text(itm.title)
@@ -57,7 +57,7 @@ struct CalendarView: View {
                                 
                                 Text("Due: \(itm.endDate, style: .time)")
                             }
-                        })
+                        }
                         .listRowBackground(Color("lightOrange"))
                     }
                     .onDelete{Events.remove(atOffsets: $0)}

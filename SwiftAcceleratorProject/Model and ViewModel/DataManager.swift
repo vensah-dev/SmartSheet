@@ -19,6 +19,8 @@ class DataManager: ObservableObject {
         loadEvents()
         loadScannedImages()
     }
+    
+    @Published public var topics: [String] = []
 
     // MARK: - Events Persistence
 

@@ -15,9 +15,9 @@ struct TopicView: View {
     @State private var newTopic = ""
     var onTopicSelected: (String) -> Void
 
-    @State private var topics: [String] = []
-
     var body: some View {
+        var topics = dataManager.topics
+        
         List {
             ForEach(topics, id: \.self) { topic in
                 Button(action: {
@@ -43,7 +43,7 @@ struct TopicView: View {
                     if topics.contains(newTopic) {
                         isAddTopicModalPresented = false
                     } else {
-                        topics.append(newTopic)
+                        dataManager.topics.append(newTopic)
                         onTopicSelected(newTopic)
                         newTopic = ""
                         isAddTopicModalPresented = false
@@ -62,13 +62,18 @@ struct TopicView: View {
             topics = dataManager.scannedImages.map(\.topic).removingDuplicates()
         }
         .onReceive(dataManager.$scannedImages) { _ in
+            for x in dataManager.scannedImages{
+                if(!dataManager.topics.contains(x.topic)){
+                    dataManager.topics.append(x.topic)
+                }
+            }
             topics = dataManager.scannedImages.map(\.topic).removingDuplicates()
         }
     }
 
     private func delete(at offsets: IndexSet) {
         // Handle deletion of topics
-        let topicsToRemove = offsets.map { topics[$0] }
+        let topicsToRemove = offsets.map { dataManager.topics[$0] }
 
         // Remove corresponding scannedImages
         dataManager.scannedImages.removeAll { scannedImage in
@@ -76,7 +81,7 @@ struct TopicView: View {
         }
 
         // Update the topics
-        topics.remove(atOffsets: offsets)
+        dataManager.topics.remove(atOffsets: offsets)
 
         // Save the changes to dataManager
         dataManager.saveScannedImages()
