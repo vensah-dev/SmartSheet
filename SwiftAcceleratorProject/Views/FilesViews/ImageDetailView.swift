@@ -14,8 +14,8 @@ struct ImageDetail: View {
     
     // Additional state variables for editing
     @State private var isEditing = false
-    @State private var editedTitle = ""
-    @State private var editedCaption = ""
+    @State private var ShowImage = false
+    
     @State private var selectedSubject = ""
     @State private var selectedTopic = ""
     @State private var practicePaper = false
@@ -24,35 +24,33 @@ struct ImageDetail: View {
     @State private var durationMinutes = 0
     @State private var lockAfterDuration = false
     @State private var selectedDurationLabel = "Select"
+
     
     var body: some View {
         var scannedImage = dataManager.scannedImages[index]
         
-        VStack {
-            NavigationLink(destination: ImageDetailView(images: image, currentIndex: index, dataManager: dataManager)) {
-                Image(uiImage: image.first ?? UIImage())
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .frame(height: 300)
-                    .cornerRadius(20)
-                    .padding(10)
+        List {
+            Section{
+                Button{
+                    ShowImage.toggle()
+                }label:{
+                    Image(uiImage: image.first ?? UIImage())
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                        .frame(height: 300)
+                        .cornerRadius(20)
+                        .padding(10)
+                }
+                .fullScreenCover(isPresented: $ShowImage, content:{
+                    ImageDetailView(images: image, currentIndex: index, dataManager: dataManager)
+                })
             }
-            .navigationTitle(scannedImage.title)
+            .listRowBackground(Color.red.opacity(0.0))
             
-            Spacer()
             
-            List {
-                Section(header: Text("Additional Details")) {
-                    if isEditing {
-                        // Display editable fields when in editing mode
-                        TextField("Title", text: $editedTitle)
-                        TextField("Caption", text: $editedCaption)
-                    } else {
-                        // Display non-editable fields
-                        Text(scannedImage.title)
-                        Text(scannedImage.caption)
-                    }
-                    
+            Section(header: Text("Additional Details")) {
+                if isEditing{
+                    //subjects
                     NavigationLink(destination: SubjectView(dataManager: dataManager, selectedSubject: $selectedSubject) { subject in
                         selectedSubject = subject
                         if isEditing {
@@ -63,12 +61,11 @@ struct ImageDetail: View {
                         HStack {
                             Text("Subject")
                             Spacer()
-                            Text(selectedSubject.isEmpty ? "Select" : selectedSubject)
-                                .foregroundColor(selectedSubject.isEmpty ? .gray : .primary)
+                            Text(scannedImage.subject)
                         }
                     }
-                    .disabled(!isEditing)
                     
+                    //topics
                     NavigationLink(destination: TopicView(dataManager: dataManager, selectedTopic: $selectedTopic) { topic in
                         selectedTopic = topic
                         if isEditing {
@@ -79,66 +76,41 @@ struct ImageDetail: View {
                         HStack {
                             Text("Topic")
                             Spacer()
-                            Text(selectedTopic.isEmpty ? "Select" : selectedTopic)
-                                .foregroundColor(selectedSubject.isEmpty ? .gray : .primary)
+                            Text(scannedImage.topic)
                         }
-                    }
-                    .disabled(!isEditing)
-                    
-                    Toggle("Practice Paper", isOn: $practicePaper)
-                    
-                    if practicePaper {
-                        HStack {
-                            Text("Duration")
-                            Spacer()
-                            Button(action: {
-                                isDurationPickerPresented.toggle()
-                            }) {
-                                HStack {
-                                    Text(selectedDurationLabel)
-                                        .foregroundStyle(.blue)
-                                }
-                            }
-                        }
-                        
-                        if isDurationPickerPresented {
-                            HStack {
-                                Spacer()
-                                WheelPicker(selection: $durationHours, range: 0..<24, label: "Hours")
-                                    .frame(width: 100, height: 120)
-                                
-                                WheelPicker(selection: $durationMinutes, range: 0..<60, label: "Minutes")
-                                    .frame(width: 100, height: 120)
-                                Spacer()
-                            }
-                            .onChange(of: durationHours) { _ in
-                                updateSelectedDurationLabel()
-                            }
-                            .onChange(of: durationMinutes) { _ in
-                                updateSelectedDurationLabel()
-                            }
-                        }
-                        
-                        Toggle("Lock after duration", isOn: $lockAfterDuration)
                     }
                 }
+                else{
+                    //subjects
+                    HStack {
+                        Text("Subject")
+                        Spacer()
+                        Text(scannedImage.subject)
+                    }
+                    
+                    //topics
+                    HStack {
+                        Text("Topic")
+                        Spacer()
+                        Text(selectedTopic.isEmpty ? "Select" : selectedTopic)
+                            .foregroundColor(selectedSubject.isEmpty ? .gray : .primary)
+                    }
+                }
+                
+                TextField("Notes", text: $dataManager.scannedImages[index].caption)
+                    .disabled(!isEditing)
             }
         }
+        .navigationTitle($dataManager.scannedImages[index].title)
+        .navigationBarTitleDisplayMode(isEditing ? .inline : .large)
         .navigationBarItems(trailing: editButton)
+
+
     }
     
     private var editButton: some View {
         Button(action: {
             withAnimation {
-                if isEditing {
-                    // Save changes when exiting editing mode
-                    dataManager.scannedImages[index].title = editedTitle
-                    dataManager.scannedImages[index].caption = editedCaption
-                } else {
-                    // Enter editing mode, initialize editable fields
-                    editedTitle = dataManager.scannedImages[index].title
-                    editedCaption = dataManager.scannedImages[index].caption
-                }
                 isEditing.toggle()
             }
         }) {
@@ -157,28 +129,41 @@ struct ImageDetailView: View {
     @StateObject var dataManager: DataManager
     @State private var loadedImages: [UIImage] = []
     
+    @Environment(\.dismiss) var dismiss
+
+    
     var body: some View {
-        ScrollView(.vertical) {
-            LazyVStack(spacing: 20) {
-                ForEach(loadedImages.indices, id: \.self) { index in
-                    Image(uiImage: loadedImages[index])
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .clipped()
-                        .padding(.horizontal, 10)
+        NavigationStack{
+            ScrollView(.vertical) {
+                LazyVStack(spacing: 20) {
+                    ForEach(loadedImages.indices, id: \.self) { index in
+                        Image(uiImage: loadedImages[index])
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                            .clipped()
+                            .padding(.horizontal, 10)
+                    }
+                }
+                .padding(.vertical, 10)
+            }
+            .toolbar(){
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button{
+                        dismiss()
+                    }label:{
+                        
+                    }
                 }
             }
-            .padding(.vertical, 10)
-        }
-        .navigationBarTitleDisplayMode(.inline)
-        .onAppear {
-            DispatchQueue.global().async {
-                loadedImages = images
+            .onAppear {
+                DispatchQueue.global().async {
+                    loadedImages = images
+                }
             }
-        }
-        .onDisappear {
-            dataManager.saveEvents()
-            dataManager.saveScannedImages()
+            .onDisappear {
+                dataManager.saveEvents()
+                dataManager.saveScannedImages()
+            }
         }
     }
 }

@@ -27,7 +27,7 @@ struct CreateNewEventView: View {
                         "Start Date",
                         selection: $EventStartDate,
                         in: Date()...,
-                        displayedComponents: [.date, .hourAndMinute]
+                        displayedComponents: [.date]
                     )
                     .foregroundStyle(Color.accentColor)
                     .tint(Color.accentColor)
@@ -36,7 +36,7 @@ struct CreateNewEventView: View {
                         "End Date",
                         selection: $EventEndDate,
                         in: EventStartDate...,
-                        displayedComponents: [.date, .hourAndMinute]
+                        displayedComponents: [.date]
                     )
                     .foregroundStyle(Color.accentColor)
                 }
