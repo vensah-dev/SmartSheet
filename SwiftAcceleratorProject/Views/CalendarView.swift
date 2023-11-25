@@ -45,16 +45,11 @@ struct CalendarView: View {
                         
                         let DateRange = StartDate...EndDate
                         
-                        if(EndDate != StartDate){
-                            if(DateRange.contains(selectedDate)){
-                                return true
-                            }
-                            else{
-                                return false
-                            }
+                        if(DateRange.contains(selectedDate)){
+                            return true
                         }
                         else{
-                            return true
+                            return false
                         }
                         
                     }, id: \.id){ itm in

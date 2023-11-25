@@ -1,14 +1,12 @@
 import SwiftUI
 
 struct FilesView: View {
-    @StateObject private var dataManager = DataManager()
+    @StateObject public var dataManager = DataManager()
     @State private var selectedSubjectIndex = 0
+    @State var uniqueSubjects: [String] = []
     @State private var uniqueTopics: [String] = []
     @State private var sectionStates: [Bool] = []
-    
-    var uniqueSubjects: [String] {
-        Array(Set(dataManager.scannedImages.map { $0.subject }))
-    }
+
     
     var body: some View {
         NavigationView {
@@ -64,12 +62,24 @@ struct FilesView: View {
                                     delete(at: indices)
                                 })
                             }
-                        }, 
-                                header:{ Text(topic)}
+                        },
+                                header:{Text(topic)}
                         )
                         .textCase(nil)
                     }
                 }
+            }
+            .onChange(of: dataManager.scannedImages){
+                uniqueSubjects = Array(Set(dataManager.scannedImages.map { $0.subject }))
+
+                uniqueTopics = Array(Set(dataManager.scannedImages.map { $0.topic }))
+                sectionStates = Array(repeating: true, count: uniqueTopics.count)
+            }
+            .onAppear(){
+                uniqueSubjects = Array(Set(dataManager.scannedImages.map { $0.subject }))
+
+                uniqueTopics = Array(Set(dataManager.scannedImages.map { $0.topic }))
+                sectionStates = Array(repeating: true, count: uniqueTopics.count)
             }
             .listStyle(.sidebar)
             .navigationBarTitle("Resources")
@@ -91,12 +101,7 @@ struct FilesView: View {
                         Image(systemName: "plus.circle")
                     }
                 )
-            }
-            )
-            .onAppear {
-                uniqueTopics = Array(Set(dataManager.scannedImages.map { $0.topic }))
-                sectionStates = Array(repeating: true, count: uniqueTopics.count)
-            }
+            })
         }
     }
     

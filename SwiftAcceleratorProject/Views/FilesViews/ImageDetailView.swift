@@ -27,7 +27,6 @@ struct ImageDetail: View {
 
     
     var body: some View {
-        var scannedImage = dataManager.scannedImages[index]
         
         List {
             Section{
@@ -57,13 +56,13 @@ struct ImageDetail: View {
                         selectedSubject = subject
                         if isEditing {
                             // Save edited subject when in editing mode
-                            scannedImage.subject = selectedSubject
+                            dataManager.scannedImages[index].subject = selectedSubject
                         }
                     }) {
                         HStack {
                             Text("Subject")
                             Spacer()
-                            Text(scannedImage.subject)
+                            Text(dataManager.scannedImages[index].subject)
                         }
                     }
                     
@@ -72,13 +71,13 @@ struct ImageDetail: View {
                         selectedTopic = topic
                         if isEditing {
                             // Save edited topic when in editing mode
-                            scannedImage.topic = selectedTopic
+                            dataManager.scannedImages[index].topic = selectedTopic
                         }
                     }) {
                         HStack {
                             Text("Topic")
                             Spacer()
-                            Text(scannedImage.topic)
+                            Text(dataManager.scannedImages[index].topic)
                         }
                     }
                 }
@@ -87,14 +86,14 @@ struct ImageDetail: View {
                     HStack {
                         Text("Subject")
                         Spacer()
-                        Text(scannedImage.subject)
+                        Text(dataManager.scannedImages[index].subject)
                     }
                     
                     //topics
                     HStack {
                         Text("Topic")
                         Spacer()
-                        Text(scannedImage.topic)
+                        Text(dataManager.scannedImages[index].topic)
                     }
                 }
             }

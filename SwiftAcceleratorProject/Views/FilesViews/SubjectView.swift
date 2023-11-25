@@ -2,11 +2,14 @@ import SwiftUI
 
 struct SubjectView: View {
     @ObservedObject var dataManager = DataManager()
-    @Environment(\.presentationMode) var presentationMode
     @State private var isAddSubjectModalPresented = false
     @Binding var selectedSubject: String
     @State private var newSubject = ""
     var onSubjectSelected: (String) -> Void
+    
+    @Environment(\.presentationMode) var presentationMode
+    @Environment(\.dismiss) var dismiss
+
 
     var body: some View {
         var subjects = dataManager.subjects // Consider using dataManager.scannedImages.map(\.subject).removingDuplicates() directly
@@ -16,6 +19,8 @@ struct SubjectView: View {
                 Button(action: {
                     selectedSubject = subject
                     onSubjectSelected(selectedSubject)
+                    dismiss()
+                    
                 }) {
                     Text(subject)
                 }

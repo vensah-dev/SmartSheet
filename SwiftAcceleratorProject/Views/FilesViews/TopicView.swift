@@ -9,11 +9,14 @@ import SwiftUI
 
 struct TopicView: View {
     @ObservedObject var dataManager = DataManager()
-    @Environment(\.presentationMode) var presentationMode
     @State private var isAddTopicModalPresented = false
     @Binding var selectedTopic: String
     @State private var newTopic = ""
     var onTopicSelected: (String) -> Void
+    
+    @Environment(\.presentationMode) var presentationMode
+    @Environment(\.dismiss) var dismiss
+
 
     var body: some View {
         var topics = dataManager.topics
@@ -23,6 +26,7 @@ struct TopicView: View {
                 Button(action: {
                     selectedTopic = topic
                     onTopicSelected(selectedTopic)
+                    dismiss()
                 }) {
                     Text(topic)
                 }

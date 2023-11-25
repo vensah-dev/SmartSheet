@@ -46,7 +46,6 @@ struct CreateNewEventView: View {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button {
                         if(title != ""){
-                            let currentDate = Date()
                             if !(EventEndDate >= EventStartDate) {
                                 alertMSG = "Please select a valid date!"
                                 showAlert = true
