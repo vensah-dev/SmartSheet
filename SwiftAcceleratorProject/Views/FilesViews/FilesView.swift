@@ -6,6 +6,7 @@ struct FilesView: View {
     @State var uniqueSubjects: [String] = []
     @State private var uniqueTopics: [String] = []
     @State private var sectionStates: [Bool] = []
+    @State var showWorksheetView = false
 
     
     var body: some View {
@@ -44,6 +45,7 @@ struct FilesView: View {
                                                 
                                                 VStack(alignment: .leading) {
                                                     Text(dataManager.scannedImages[imageIndex].title)
+                                                        .foregroundColor(Color.accentColor)
                                                         .font(.headline)
                                                     
                                                     if !dataManager.scannedImages[imageIndex].caption.isEmpty {
@@ -94,13 +96,14 @@ struct FilesView: View {
                 }
                 .pickerStyle(MenuPickerStyle())
                 
-                
-                NavigationLink(
-                    destination: WorksheetDetailView(scannedImages: $dataManager.scannedImages, dataManager: dataManager),
-                    label: {
-                        Image(systemName: "plus.circle")
-                    }
-                )
+                Button{
+                    showWorksheetView.toggle()
+                }label:{
+                    Image(systemName: "plus.circle")
+                }
+                .fullScreenCover(isPresented: $showWorksheetView){
+                    WorksheetDetailView(scannedImages: $dataManager.scannedImages, dataManager: dataManager)
+                }
             })
         }
     }

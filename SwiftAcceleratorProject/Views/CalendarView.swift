@@ -8,12 +8,7 @@
 import SwiftUI
 
 struct CalendarView: View {
-    @State public var Events: [Event] = [
-        Event(title: "Hello0", details: "Get Things done"),
-        Event(title: "Hello2", details: "Finish calendar view"),
-        Event(title: "Hello3", details: "Finsih The StatsView"),
-        Event(title: "Hello4", details: "bye"),
-    ]
+    @ObservedObject var dataManager = DataManager()
     @State var DisplayEvents: [Event] = [Event(title: "", details: "")]
     @State var selectedDate: Date = Date()
     @State private var CreateNew = false
@@ -28,7 +23,7 @@ struct CalendarView: View {
                             .datePickerStyle(.graphical)
                     }
                     .navigationBarItems(trailing:
-                                            Button{
+                    Button{
                         CreateNew = true
                     }label:{
                         Image(systemName: "plus.circle")
@@ -39,7 +34,7 @@ struct CalendarView: View {
                 
                 Section(header: Text("Events").textCase(nil)){
                     
-                    ForEach(Events.filter { x in
+                    ForEach(dataManager.Events.filter { x in
                         let StartDate = x.startDate
                         let EndDate = x.endDate
                         
@@ -52,27 +47,26 @@ struct CalendarView: View {
                             return false
                         }
                         
-                    }, id: \.id){ itm in
+                    }, id: \.id){ item in
                         NavigationLink(destination:{
-                            EventDetailView( event: itm, Events: $Events)
+                            EventDetailView( event: item, Events: $dataManager.Events)
                         }, label:{
                             HStack{
                                 VStack(alignment: .leading){
-                                    Text(itm.title)
+                                    Text(item.title)
                                         .bold()
                                         .foregroundStyle(Color.accentColor)
-
-                                    if !itm.details.isEmpty{
-                                        Text(itm.details)
-                                            .font(.caption)
-                                            .opacity(0.7)
-                                    }
+                                    
+                                    Text("Due: \(item.endDate, format: .dateTime.month().day())")
+                                        .foregroundStyle(.secondary)
+                                        .font(.caption)
                                 }
                             }
                         })
-
                     }
-                    .onDelete{Events.remove(atOffsets: $0)}
+                    .onDelete(perform: { indices in
+                        delete(at: indices)
+                    })
                 }
                 
             }
@@ -83,9 +77,16 @@ struct CalendarView: View {
                 }
             }
             .sheet(isPresented: $CreateNew){
-                CreateNewEventView(Events: $Events, Edit: false)
+                CreateNewEventView(Events: $dataManager.Events, Edit: false)
             }
         }
+        .onDisappear{
+            dataManager.saveEvents()
+        }
+    }
+    func delete(at offsets: IndexSet) {
+        dataManager.Events.remove(atOffsets: offsets)
+        dataManager.saveEvents()
     }
 }
 

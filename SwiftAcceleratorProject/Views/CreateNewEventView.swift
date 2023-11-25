@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct CreateNewEventView: View {
+    @ObservedObject var dataManager = DataManager()
     @Binding var Events: [Event]
     @State var title = ""
     @State var description = ""
@@ -70,6 +71,7 @@ struct CreateNewEventView: View {
                             alertMSG = "Enter a title!"
                             showAlert = true
                         }
+                        dataManager.saveEvents()
                     } label: {
                         Text("Save")
                             .foregroundStyle(Color.accentColor)

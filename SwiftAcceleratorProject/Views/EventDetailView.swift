@@ -8,10 +8,11 @@
 import SwiftUI
 
 struct EventDetailView: View {
+    @ObservedObject var dataManager = DataManager()
     @State var event: Event
     @Binding var Events: [Event]
     @State var index = 0
-    @State var editModeActive = false
+    @State var isEditing = false
     
     @Environment(\.dismiss) var dismiss
     
@@ -26,7 +27,7 @@ struct EventDetailView: View {
                     )
                     .foregroundColor(Color.accentColor)
                     .tint(Color.accentColor)
-                    .disabled(!editModeActive)
+                    .disabled(!isEditing)
                     
                     DatePicker(
                         "End Date",
@@ -35,26 +36,19 @@ struct EventDetailView: View {
                     )
                     .foregroundColor(Color.accentColor)
                     .tint(Color.accentColor)
-                    .disabled(!editModeActive)
+                    .disabled(!isEditing)
                 }
                 
                 Section(header: Text("Description")){
                     TextField("", text: $event.details)
-                        .disabled(!editModeActive)
+                        .disabled(!isEditing)
                 }
             }
             .opacity(0.8)
             .navigationTitle($event.title)
-            .navigationBarTitleDisplayMode(editModeActive ? .inline : .large)
+            .navigationBarTitleDisplayMode(isEditing ? .inline : .large)
         }
-        .navigationBarItems(trailing:
-            Button(action: {
-            editModeActive.toggle()
-            }) {
-                Text(editModeActive ? "Done" : "Edit")
-            }
-        )
-        .animation(.default)
+        .navigationBarItems(trailing: editButton)
         .onAppear{
             var i = 0
             
@@ -70,6 +64,18 @@ struct EventDetailView: View {
         }
         .onDisappear{
             Events[index] = event
+        }
+    }
+    private var editButton: some View {
+        Button(action: {
+            if(!isEditing){
+                dataManager.saveEvents()
+            }
+            withAnimation {
+                isEditing.toggle()
+            }
+        }) {
+            Text(isEditing ? "Done" : "Edit")
         }
     }
 }

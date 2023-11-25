@@ -30,21 +30,26 @@ struct ImageDetail: View {
         
         List {
             Section{
-                Button{
-                    ShowImage.toggle()
-                }label:{
-                    Image(uiImage: image.first ?? UIImage())
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .frame(height: 300)
-                        .cornerRadius(20)
-                        .padding(10)
+                VStack{
+                    Button{
+                        ShowImage.toggle()
+                    }label:{
+                        Image(uiImage: image.first ?? UIImage())
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                            .frame(height: 300)
+                            .cornerRadius(20)
+                            .padding(10)
+                    }
+                    .fullScreenCover(isPresented: $ShowImage, content:{
+                        ImageDetailView(images: image, currentIndex: index, dataManager: dataManager)
+                    })
+                    if(!dataManager.scannedImages[index].caption.isEmpty || isEditing){
+                        TextField("Notes", text: $dataManager.scannedImages[index].caption)
+                            .disabled(!isEditing)
+                            .foregroundStyle(.secondary)
+                    }
                 }
-                .fullScreenCover(isPresented: $ShowImage, content:{
-                    ImageDetailView(images: image, currentIndex: index, dataManager: dataManager)
-                })
-                TextField("Notes", text: $dataManager.scannedImages[index].caption)
-                    .disabled(!isEditing)
             }
             .listRowBackground(Color.red.opacity(0.0))
             

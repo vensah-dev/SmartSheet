@@ -24,125 +24,132 @@ struct WorksheetDetailView: View {
     @State private var scannedUIImage: [UIImage] = []
     
     var body: some View {
-        List {
-            Section(header: Text("Worksheet Details")) {
-                TextField("Enter a title", text: $title)
-                TextField("Enter a subtitle", text: $subtitle)
-            }
-            
-            Section(header: Text("Additional Details")) {
-                NavigationLink(destination: SubjectView(dataManager: dataManager, selectedSubject: $selectedSubject) { subject in
-                    selectedSubject = subject
-                }) {
-                    HStack {
-                        Text("Subject")
-                        Spacer()
-                        Text(selectedSubject.isEmpty ? "Select" : selectedSubject)
-                            .foregroundColor(selectedSubject.isEmpty ? .gray : .primary)
-                    }
+        NavigationStack{
+            List {
+                Section(header: Text("Worksheet Details")) {
+                    TextField("Enter a title", text: $title)
+                    TextField("Enter a subtitle", text: $subtitle)
                 }
                 
-                NavigationLink(destination: TopicView(dataManager: dataManager, selectedTopic: $selectedTopic) { topic in
-                    selectedTopic = topic
-                }) {
-                    HStack {
-                        Text("Topic")
-                        Spacer()
-                        Text(selectedTopic.isEmpty ? "Select" : selectedTopic)
-                            .foregroundColor(selectedSubject.isEmpty ? .gray : .primary)
+                Section(header: Text("Additional Details")) {
+                    NavigationLink(destination: SubjectView(dataManager: dataManager, selectedSubject: $selectedSubject) { subject in
+                        selectedSubject = subject
+                    }) {
+                        HStack {
+                            Text("Subject")
+                            Spacer()
+                            Text(selectedSubject.isEmpty ? "Select" : selectedSubject)
+                                .foregroundColor(selectedSubject.isEmpty ? .gray : .primary)
+                        }
                     }
-                }
-                
-                Toggle("Practice Paper", isOn: $practicePaper)
-                
-                if practicePaper {
-                    HStack {
-                        Text("Duration")
-                        Spacer()
-                        Button(action: {
-                            isDurationPickerPresented.toggle()
-                        }) {
-                            HStack {
-                                Text(selectedDurationLabel)
-                                    .foregroundStyle(.blue)
+                    
+                    NavigationLink(destination: TopicView(dataManager: dataManager, selectedTopic: $selectedTopic) { topic in
+                        selectedTopic = topic
+                    }) {
+                        HStack {
+                            Text("Topic")
+                            Spacer()
+                            Text(selectedTopic.isEmpty ? "Select" : selectedTopic)
+                                .foregroundColor(selectedSubject.isEmpty ? .gray : .primary)
+                        }
+                    }
+                    
+                    Toggle("Practice Paper", isOn: $practicePaper)
+                    
+                    if practicePaper {
+                        HStack {
+                            Text("Duration")
+                            Spacer()
+                            Button(action: {
+                                isDurationPickerPresented.toggle()
+                            }) {
+                                HStack {
+                                    Text(selectedDurationLabel)
+                                        .foregroundStyle(.blue)
+                                }
                             }
                         }
+                        
+                        if isDurationPickerPresented {
+                            HStack {
+                                Spacer()
+                                WheelPicker(selection: $durationHours, range: 0..<24, label: "Hours")
+                                    .frame(width: 100, height: 120)
+                                
+                                WheelPicker(selection: $durationMinutes, range: 0..<60, label: "Minutes")
+                                    .frame(width: 100, height: 120)
+                                Spacer()
+                            }
+                            .onChange(of: durationHours) { _ in
+                                updateSelectedDurationLabel()
+                            }
+                            .onChange(of: durationMinutes) { _ in
+                                updateSelectedDurationLabel()
+                            }
+                        }
+                        
+                        Toggle("Lock after duration", isOn: $lockAfterDuration)
                     }
-                    
-                    if isDurationPickerPresented {
-                        HStack {
-                            Spacer()
-                            WheelPicker(selection: $durationHours, range: 0..<24, label: "Hours")
-                                .frame(width: 100, height: 120)
-                            
-                            WheelPicker(selection: $durationMinutes, range: 0..<60, label: "Minutes")
-                                .frame(width: 100, height: 120)
-                            Spacer()
-                        }
-                        .onChange(of: durationHours) { _ in
-                            updateSelectedDurationLabel()
-                        }
-                        .onChange(of: durationMinutes) { _ in
-                            updateSelectedDurationLabel()
-                        }
-                    }
-                    
-                    Toggle("Lock after duration", isOn: $lockAfterDuration)
                 }
             }
-            
-            Section {
-                Button {
-                    validateFields()
-                    if canScan {
-                        showScannerSheet = true
-                    } else {
-                        // Set alert properties
-                        alertTitle = "Incomplete Fields"
-                        alertMessage = "Please fill in all required fields before scanning."
-                        showAlert = true
-                    }
-                } label: {
-                    Text("Scan worksheet")
-                }
-                .alert(isPresented: $showAlert) {
-                    Alert(
-                        title: Text(alertTitle),
-                        message: Text(alertMessage),
-                        dismissButton: .default(Text("OK"))
-                    )
-                }
-                
-                Button(role: .destructive) {
-                    saveScannedImages()
-                    dismiss()
-                } label: {
-                    Text("Cancel")
-                }
-            }
-        }
-        .listStyle(InsetGroupedListStyle())
-        .navigationTitle("New Worksheet")
-        .sheet(isPresented: $showScannerSheet) {
-            ScannerView { scannedImage in
-                if let images = scannedImage {
-                    if !practicePaper {
-                        durationHours = 0
-                        durationMinutes = 0
-                        scannedUIImage.append(contentsOf: images)
+            .toolbar(){
+                ToolbarItem(placement: .navigationBarLeading){
+                    Button{
                         saveScannedImages()
                         dismiss()
-                    } else {
-                        scannedUIImage.append(contentsOf: images)
-                        saveScannedImages()
-                        dismiss()
+                    } label: {
+                        Text("Cancel")
+                            .foregroundStyle(.red)
                     }
                 }
-                self.showScannerSheet = false
+                ToolbarItem(placement: .navigationBarTrailing){
+                    Button {
+                        validateFields()
+                        if canScan {
+                            showScannerSheet = true
+                        } else {
+                            // Set alert properties
+                            alertTitle = "Incomplete Fields"
+                            alertMessage = "Please fill in all required fields before scanning."
+                            showAlert = true
+                        }
+                    } label: {
+                        Text("Scan worksheet")
+                            .bold()
+                            .foregroundStyle(Color.accentColor)
+                    }
+                    .alert(isPresented: $showAlert) {
+                        Alert(
+                            title: Text(alertTitle),
+                            message: Text(alertMessage),
+                            dismissButton: .default(Text("OK"))
+                        )
+                    }
+                }
             }
-        }
-        .onChange(of: scannedImages) { _ in
-            dataManager.saveScannedImages()
+            .listStyle(InsetGroupedListStyle())
+            .navigationTitle("New Worksheet")
+            .sheet(isPresented: $showScannerSheet) {
+                ScannerView { scannedImage in
+                    if let images = scannedImage {
+                        if !practicePaper {
+                            durationHours = 0
+                            durationMinutes = 0
+                            scannedUIImage.append(contentsOf: images)
+                            saveScannedImages()
+                            dismiss()
+                        } else {
+                            scannedUIImage.append(contentsOf: images)
+                            saveScannedImages()
+                            dismiss()
+                        }
+                    }
+                    self.showScannerSheet = false
+                }
+            }
+            .onChange(of: scannedImages) { _ in
+                dataManager.saveScannedImages()
+            }
         }
     }
     

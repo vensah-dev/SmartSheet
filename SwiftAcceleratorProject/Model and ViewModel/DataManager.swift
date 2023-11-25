@@ -3,7 +3,7 @@ import UIKit
 import Combine
 
 class DataManager: ObservableObject {
-    @Published var events: [Event] = [] {
+    @Published var Events: [Event] = [] {
         didSet {
             saveEvents()
         }
@@ -47,7 +47,7 @@ class DataManager: ObservableObject {
     func saveEvents() {
         let archiveURL = getEventsArchiveURL()
         let propertyListEncoder = PropertyListEncoder()
-        let encodedEvents = try? propertyListEncoder.encode(events)
+        let encodedEvents = try? propertyListEncoder.encode(Events)
         try? encodedEvents?.write(to: archiveURL, options: .noFileProtection)
     }
 
@@ -57,7 +57,7 @@ class DataManager: ObservableObject {
 
         if let retrievedEventData = try? Data(contentsOf: archiveURL),
             let eventsDecoded = try? propertyListDecoder.decode([Event].self, from: retrievedEventData) {
-            events = eventsDecoded
+            Events = eventsDecoded
         }
     }
 
