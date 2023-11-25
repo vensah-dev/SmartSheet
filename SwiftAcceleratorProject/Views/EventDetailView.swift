@@ -10,8 +10,8 @@ import SwiftUI
 struct EventDetailView: View {
     @State var event: Event
     @Binding var Events: [Event]
-    @State var showEdit = false
     @State var index = 0
+    @State var editModeActive = false
     
     @Environment(\.dismiss) var dismiss
     
@@ -26,6 +26,7 @@ struct EventDetailView: View {
                     )
                     .foregroundColor(Color("orangeText"))
                     .tint(Color("darkOrange"))
+                    .disabled(!editModeActive)
                     
                     DatePicker(
                         "End Date",
@@ -34,11 +35,13 @@ struct EventDetailView: View {
                     )
                     .foregroundColor(Color("orangeText"))
                     .tint(Color("darkOrange"))
+                    .disabled(!editModeActive)
                 }
                 .listRowBackground(Color("lightOrange"))
                 
                 Section(header: Text("Description")){
                     TextField("", text: $event.details)
+                        .disabled(!editModeActive)
                 }
                 .listRowBackground(Color("lightOrange"))
             }
@@ -46,6 +49,14 @@ struct EventDetailView: View {
             .opacity(0.8)
             .navigationTitle($event.title)
         }
+        .navigationBarItems(trailing:
+            Button(action: {
+            editModeActive.toggle()
+            }) {
+                Text(editModeActive ? "Done" : "Edit")
+            }
+        )
+        .animation(.default)
         .onAppear{
             var i = 0
             
