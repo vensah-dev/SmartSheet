@@ -58,12 +58,18 @@ struct CalendarView: View {
                             HStack{
                                 VStack(alignment: .leading){
                                     Text(itm.title)
-                                    
-                                    Text(itm.details)
-                                        .font(.caption)
+                                        .bold()
+                                        .foregroundStyle(Color.accentColor)
+
+                                    if !itm.details.isEmpty{
+                                        Text(itm.details)
+                                            .font(.caption)
+                                            .opacity(0.7)
+                                    }
                                 }
                             }
                         })
+
                     }
                     .onDelete{Events.remove(atOffsets: $0)}
                 }

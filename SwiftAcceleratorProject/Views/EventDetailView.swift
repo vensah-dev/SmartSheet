@@ -37,17 +37,15 @@ struct EventDetailView: View {
                     .tint(Color("darkOrange"))
                     .disabled(!editModeActive)
                 }
-                .listRowBackground(Color("lightOrange"))
                 
                 Section(header: Text("Description")){
                     TextField("", text: $event.details)
                         .disabled(!editModeActive)
                 }
-                .listRowBackground(Color("lightOrange"))
             }
-            .scrollContentBackground(.hidden)
             .opacity(0.8)
             .navigationTitle($event.title)
+            .navigationBarTitleDisplayMode(editModeActive ? .inline : .large)
         }
         .navigationBarItems(trailing:
             Button(action: {
