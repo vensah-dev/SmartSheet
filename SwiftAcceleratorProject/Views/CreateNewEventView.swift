@@ -47,7 +47,7 @@ struct CreateNewEventView: View {
                     Button {
                         if(title != ""){
                             let currentDate = Date()
-                            if EventEndDate < EventStartDate {
+                            if !(EventEndDate >= EventStartDate) {
                                 alertMSG = "Please select a valid date!"
                                 showAlert = true
                             } else {
