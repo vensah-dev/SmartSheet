@@ -32,14 +32,8 @@ struct FilesView: View {
                                     if selectedSubjectIndex == -1 || subject == dataManager.scannedImages[selectedSubjectIndex].subject, currentTopic == topic {
                                         NavigationLink(
                                             destination: ImageDetail(
+                                                index: imageIndex,
                                                 image: images,
-                                                title: $dataManager.scannedImages[imageIndex].title,
-                                                caption: $dataManager.scannedImages[imageIndex].caption,
-                                                durationHours: $dataManager.scannedImages[imageIndex].durationHours,
-                                                durationMinutes: $dataManager.scannedImages[imageIndex].durationMinutes,
-                                                lockAfterDuration: $dataManager.scannedImages[imageIndex].lockAfterDuration,
-                                                subject: $dataManager.scannedImages[imageIndex].subject,
-                                                topic: $dataManager.scannedImages[imageIndex].topic,
                                                 dataManager: dataManager
                                             )
                                         ) {
