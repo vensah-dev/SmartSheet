@@ -114,7 +114,7 @@ struct WorksheetDetailView: View {
                             showAlert = true
                         }
                     } label: {
-                        Text("Scan worksheet")
+                        Text("Scan")
                             .bold()
                             .foregroundStyle(Color.accentColor)
                     }
