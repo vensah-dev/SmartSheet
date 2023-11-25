@@ -131,11 +131,9 @@ struct ImageDetail: View {
         Button(action: {
             withAnimation {
                 if isEditing {
-                    // Save changes when exiting editing mode
                     dataManager.scannedImages[index].title = editedTitle
                     dataManager.scannedImages[index].caption = editedCaption
                 } else {
-                    // Enter editing mode, initialize editable fields
                     editedTitle = dataManager.scannedImages[index].title
                     editedCaption = dataManager.scannedImages[index].caption
                 }
@@ -177,7 +175,6 @@ struct ImageDetailView: View {
             }
         }
         .onDisappear {
-            dataManager.saveEvents()
             dataManager.saveScannedImages()
         }
     }
