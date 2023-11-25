@@ -23,8 +23,9 @@ struct ImageDetail: View {
     @State private var durationHours = 0
     @State private var durationMinutes = 0
     @State private var lockAfterDuration = false
+    @State private var isCompleted = false
     @State private var selectedDurationLabel = "Select"
-
+    
     
     var body: some View {
         
@@ -85,6 +86,57 @@ struct ImageDetail: View {
                             Text(dataManager.scannedImages[index].topic)
                         }
                     }
+                    
+                    Toggle("Practice Paper", isOn: $practicePaper)
+                    
+                    if practicePaper {
+                        HStack {
+                            Text("Duration")
+                            Spacer()
+                            Button(action: {
+                                isDurationPickerPresented.toggle()
+                            }) {
+                                HStack {
+                                    Text(selectedDurationLabel)
+                                        .foregroundStyle(.blue)
+                                }
+                            }
+                        }
+                        
+                        if isDurationPickerPresented {
+                            HStack {
+                                Spacer()
+                                WheelPicker(selection: $durationHours, range: 0..<24, label: "Hours")
+                                    .frame(width: 100, height: 120)
+                                
+                                WheelPicker(selection: $durationMinutes, range: 0..<60, label: "Minutes")
+                                    .frame(width: 100, height: 120)
+                                Spacer()
+                            }
+                            .onChange(of: durationHours) { _ in
+                                updateSelectedDurationLabel()
+                                dataManager.scannedImages[index].durationHours = durationHours
+                                dataManager.saveScannedImages()
+                            }
+                            .onChange(of: durationMinutes) { _ in
+                                updateSelectedDurationLabel()
+                                dataManager.scannedImages[index].durationMinutes = durationMinutes
+                                dataManager.saveScannedImages()
+                            }
+                        }
+                        
+                        Toggle("Lock after duration", isOn: $lockAfterDuration)
+                            .onChange(of: lockAfterDuration) { _ in
+                                dataManager.scannedImages[index].lockAfterDuration = lockAfterDuration
+                                dataManager.saveScannedImages()
+                            }
+                    }
+                    
+                    Toggle("Completed", isOn: $isCompleted)
+                        .onChange(of: isCompleted) { _ in
+                            dataManager.scannedImages[index].completed = isCompleted
+                            dataManager.saveScannedImages()
+                        }
                 }
                 else{
                     //subjects
@@ -100,14 +152,29 @@ struct ImageDetail: View {
                         Spacer()
                         Text(dataManager.scannedImages[index].topic)
                     }
+                    
+                    Toggle("Practice Paper", isOn: $practicePaper)
+                        .disabled(true)
+                    
+                    HStack {
+                        Text("Duration")
+                        Spacer()
+                        Text(selectedDurationLabel)
+                    }
+                    
+                    Toggle("Lock after duration", isOn: $lockAfterDuration)
+                        .disabled(true)
+                    
+                    Toggle("Completed", isOn: $isCompleted)
+                        .disabled(true)
                 }
             }
         }
         .navigationTitle($dataManager.scannedImages[index].title)
         .navigationBarTitleDisplayMode(isEditing ? .inline : .large)
         .navigationBarItems(trailing: editButton)
-
-
+        
+        
     }
     
     private var editButton: some View {
@@ -132,7 +199,7 @@ struct ImageDetailView: View {
     @State private var loadedImages: [UIImage] = []
     
     @Environment(\.dismiss) var dismiss
-
+    
     
     var body: some View {
         NavigationStack{
