@@ -54,7 +54,7 @@ struct CalendarView: View {
                             }
                         }
                         else{
-                            return false
+                            return true
                         }
                         
                     }, id: \.id){ itm in
