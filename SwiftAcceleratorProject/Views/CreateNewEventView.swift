@@ -10,8 +10,7 @@ struct CreateNewEventView: View {
     
     @State var Edit: Bool
     
-    @State var showAlert = false
-    @State var alertMSG = "Fill up all details!"
+    @State var DisableCreate = false
     
     @Environment(\.dismiss) var dismiss
     
@@ -19,8 +18,10 @@ struct CreateNewEventView: View {
         NavigationStack {
             List {
                 Section(header: Text("Details")) {
-                    TextField("Title", text: $title)
+                    TextField("Title", text: $title, onCommit: Validate)
+                        .disableAutocorrection(true)
                     TextField("Description", text: $description)
+                        .disableAutocorrection(true)
                 }
                 
                 Section(header: Text("Date")) {
@@ -46,36 +47,15 @@ struct CreateNewEventView: View {
             .toolbar(){
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button {
-                        if(title != ""){
-                            if !(EventEndDate >= EventStartDate) {
-                                alertMSG = "Please select a valid date!"
-                                showAlert = true
-                            } else {
-                                var eventExists = false
-                                for x in Events {
-                                    if title == x.title {
-                                        eventExists = true
-                                        break
-                                    }
-                                }
-                                
-                                if eventExists {
-                                    alertMSG = "Event already exists!"
-                                    showAlert = true
-                                } else {
-                                    Events.append(Event(title: title, details: description, startDate: EventStartDate, endDate: EventEndDate))
-                                    dismiss()
-                                }
-                            }
-                        } else {
-                            alertMSG = "Enter a title!"
-                            showAlert = true
-                        }
-                        dataManager.saveEvents()
+                        Events.append(Event(title: title, details: description, startDate: EventStartDate, endDate: EventEndDate))
+                        dismiss()
                     } label: {
                         Text("Save")
                             .foregroundStyle(Color.accentColor)
                     }
+                    .onAppear(perform: Validate)
+                    .foregroundStyle(Color.accentColor)
+                    .disabled(DisableCreate)
                 }
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button {
@@ -89,9 +69,30 @@ struct CreateNewEventView: View {
             .opacity(0.8)
             .navigationTitle("Create New Event")
             .navigationBarTitleDisplayMode(.inline)
-            .alert(alertMSG, isPresented: $showAlert) {
-                Button("OK", role: .cancel) { }
+        }
+    }
+    
+    func Validate(){
+        if(title != ""){
+            if (EventEndDate >= EventStartDate) {
+                DisableCreate = false
+            } else {
+                var eventExists = false
+                for x in Events {
+                    if title == x.title {
+                        eventExists = true
+                        break
+                    }
+                }
+                
+                if eventExists {
+                    DisableCreate = true
+                } else {
+                    DisableCreate = false
+                }
             }
+        } else {
+            DisableCreate = true
         }
     }
 }

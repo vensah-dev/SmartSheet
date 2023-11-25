@@ -2,9 +2,7 @@ import SwiftUI
 
 struct WorksheetDetailView: View {
     @State private var lockAfterDuration = false
-    @State private var showAlert = false
-    @State private var alertTitle = ""
-    @State private var alertMessage = ""
+    @State var ShowCreate = false
     @State private var title = ""
     @State private var subtitle = ""
     @State private var practicePaper = false
@@ -20,15 +18,18 @@ struct WorksheetDetailView: View {
     @State private var durationMinutes = 0
     @State private var isDurationPickerPresented = false
     @State private var selectedDurationLabel = "01:00:00"
-    
+        
     @State private var scannedUIImage: [UIImage] = []
     
     var body: some View {
         NavigationStack{
             List {
                 Section(header: Text("Worksheet Details")) {
-                    TextField("Enter a title", text: $title)
+                    TextField("Enter a title", text: $title, onCommit: validateFields)
+                        .disableAutocorrection(true)
+                    
                     TextField("Enter a subtitle", text: $subtitle)
+                        .disableAutocorrection(true)
                 }
                 
                 Section(header: Text("Additional Details")) {
@@ -104,27 +105,20 @@ struct WorksheetDetailView: View {
                 }
                 ToolbarItem(placement: .navigationBarTrailing){
                     Button {
-                        validateFields()
-                        if canScan {
-                            showScannerSheet = true
-                        } else {
-                            // Set alert properties
-                            alertTitle = "Incomplete Fields"
-                            alertMessage = "Please fill in all required fields before scanning."
-                            showAlert = true
-                        }
+                        showScannerSheet = true
                     } label: {
                         Text("Scan")
                             .bold()
                             .foregroundStyle(Color.accentColor)
                     }
-                    .alert(isPresented: $showAlert) {
-                        Alert(
-                            title: Text(alertTitle),
-                            message: Text(alertMessage),
-                            dismissButton: .default(Text("OK"))
-                        )
+                    .onChange(of: selectedTopic){
+                        validateFields()
                     }
+                    .onChange(of: selectedSubject){
+                        validateFields()
+                    }
+                    .disabled(!ShowCreate)
+                    .foregroundStyle(Color.accentColor)
                 }
             }
             .listStyle(InsetGroupedListStyle())
@@ -156,7 +150,7 @@ struct WorksheetDetailView: View {
     private func validateFields() {
         let isTestPaperValid = practicePaper && (durationHours > 0 || durationMinutes > 0)
         
-        canScan = !title.isEmpty &&
+        ShowCreate = !title.isEmpty &&
         !selectedSubject.isEmpty &&
         !selectedTopic.isEmpty &&
         (!practicePaper || isTestPaperValid)

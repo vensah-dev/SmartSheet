@@ -8,7 +8,7 @@ struct SubjectView: View {
     var onSubjectSelected: (String) -> Void
     
     @Environment(\.presentationMode) var presentationMode
-    @Environment(\.dismiss) var dismiss
+    @Environment(\.dismiss) private var dismiss
 
 
     var body: some View {
