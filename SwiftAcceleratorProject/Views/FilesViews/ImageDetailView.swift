@@ -111,13 +111,6 @@ struct ImageDetail: View {
     private var editButton: some View {
         Button(action: {
             withAnimation {
-                if isEditing {
-                    dataManager.scannedImages[index].title = editedTitle
-                    dataManager.scannedImages[index].caption = editedCaption
-                } else {
-                    editedTitle = dataManager.scannedImages[index].title
-                    editedCaption = dataManager.scannedImages[index].caption
-                }
                 isEditing.toggle()
             }
         }) {
