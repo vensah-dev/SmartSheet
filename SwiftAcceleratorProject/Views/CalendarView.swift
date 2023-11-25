@@ -17,7 +17,7 @@ struct CalendarView: View {
     @State var DisplayEvents: [Event] = [Event(title: "", details: "")]
     @State var selectedDate: Date = Date()
     @State private var CreateNew = false
-
+    
     var body: some View {
         NavigationStack{
             VStack() {
@@ -28,27 +28,36 @@ struct CalendarView: View {
                 Divider()
             }
             .navigationBarItems(trailing:
-                Button{
-                    CreateNew = true
-                }label:{
-                    Image(systemName: "plus.circle")
-                })
+                                    Button{
+                CreateNew = true
+            }label:{
+                Image(systemName: "plus.circle")
+            })
             .navigationTitle("Calendar")
-            .onChange(of: selectedDate){
-                DisplayEvents = Events.filter { Calendar.current.dateComponents([.day, .month, .year], from: $0.endDate) == Calendar.current.dateComponents([.day, .month, .year], from: selectedDate) }
-            }
-            
             List{
                 Section(header: Text("Events").textCase(nil)){
                     
-                    ForEach(DisplayEvents, id: \.id){ itm in
-                        NavigationLink{
+                    ForEach(Events.filter { x in
+                        let StartDate = x.startDate
+                        let EndDate = x.endDate
+                        
+                        let DateRange = StartDate...EndDate
+                        
+                        if(DateRange.contains(selectedDate)){
+                            return true
+                        }
+                        else{
+                            return false
+                        }
+                        
+                    }, id: \.id){ itm in
+                        NavigationLink(destination:{
                             EventDetailView( event: itm, Events: $Events)
-                        }label:{
+                        }, label:{
                             HStack{
                                 VStack(alignment: .leading){
                                     Text(itm.title)
-                                
+                                    
                                     Text(itm.details)
                                         .font(.caption)
                                 }
@@ -56,13 +65,16 @@ struct CalendarView: View {
                                 Spacer()
                                 
                                 Text("Due: \(itm.endDate, style: .time)")
+                                    .padding(.init(top: 10, leading: 10, bottom: 10, trailing: 10))
+                                    .background(.gray.opacity(0.1))
+                                    .cornerRadius(10)
                             }
-                        }
+                        })
                         .listRowBackground(Color("lightOrange"))
                     }
                     .onDelete{Events.remove(atOffsets: $0)}
                 }
-
+                
             }
             .scrollContentBackground(.hidden)
             .toolbar(){
@@ -73,9 +85,6 @@ struct CalendarView: View {
             .sheet(isPresented: $CreateNew){
                 CreateNewEventView(Events: $Events, Edit: false)
             }
-        }
-        .onAppear{
-            DisplayEvents = Events.filter { Calendar.current.dateComponents([.day, .month, .year], from: $0.endDate) == Calendar.current.dateComponents([.day, .month, .year], from: selectedDate) }
         }
     }
 }
