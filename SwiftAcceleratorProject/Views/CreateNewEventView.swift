@@ -9,7 +9,7 @@ struct CreateNewEventView: View {
     
     @State var Edit: Bool
     
-    @State var showAlert = 0.0
+    @State var showAlert = false
     @State var alertMSG = "Fill up all details!"
     
     @Environment(\.dismiss) var dismiss
@@ -21,7 +21,6 @@ struct CreateNewEventView: View {
                     TextField("Title", text: $title)
                     TextField("Description", text: $description)
                 }
-                .listRowBackground(Color("lightOrange"))
                 
                 Section(header: Text("Date")) {
                     DatePicker(
@@ -30,8 +29,8 @@ struct CreateNewEventView: View {
                         in: Date()...,
                         displayedComponents: [.date, .hourAndMinute]
                     )
-                    .foregroundColor(Color("orangeText"))
-                    .tint(Color("darkOrange"))
+                    .foregroundStyle(Color.accentColor)
+                    .tint(Color.accentColor)
                     
                     DatePicker(
                         "End Date",
@@ -39,18 +38,17 @@ struct CreateNewEventView: View {
                         in: EventStartDate...,
                         displayedComponents: [.date, .hourAndMinute]
                     )
-                    .foregroundColor(Color("orangeText"))
-                    .foregroundStyle(Color("darkOrange"))
+                    .foregroundStyle(Color.accentColor)
                 }
-                .listRowBackground(Color("lightOrange"))
-                
-                Section(header: Text("Save")) {
+            }
+            .toolbar(){
+                ToolbarItem(placement: .navigationBarTrailing) {
                     Button {
-                        if title != "" && description != "" {
+                        if(title != ""){
                             let currentDate = Date()
                             if EventStartDate < currentDate || EventEndDate < currentDate {
                                 alertMSG = "Please select a future date and time!"
-                                showAlert = 1.0
+                                showAlert = true
                             } else {
                                 var eventExists = false
                                 for x in Events {
@@ -62,21 +60,22 @@ struct CreateNewEventView: View {
                                 
                                 if eventExists {
                                     alertMSG = "Event already exists!"
-                                    showAlert = 1.0
+                                    showAlert = true
                                 } else {
                                     Events.append(Event(title: title, details: description, startDate: EventStartDate, endDate: EventEndDate))
                                     dismiss()
                                 }
                             }
                         } else {
-                            alertMSG = "Fill up all details!"
-                            showAlert = 1.0
+                            alertMSG = "Enter a title!"
+                            showAlert = true
                         }
                     } label: {
                         Text("Save")
-                            .foregroundStyle(Color("orangeText"))
+                            .foregroundStyle(Color.accentColor)
                     }
-                    
+                }
+                ToolbarItem(placement: .navigationBarLeading) {
                     Button {
                         dismiss()
                     } label: {
@@ -84,15 +83,13 @@ struct CreateNewEventView: View {
                             .foregroundStyle(.red)
                     }
                 }
-                .listRowBackground(Color("lightOrange"))
             }
-            .scrollContentBackground(.hidden)
             .opacity(0.8)
             .navigationTitle("Create New Event")
-            
-            Text(alertMSG)
-                .opacity(showAlert)
-                .foregroundStyle(.red)
+            .navigationBarTitleDisplayMode(.inline)
+            .alert(alertMSG, isPresented: $showAlert) {
+                Button("OK", role: .cancel) { }
+            }
         }
     }
 }

@@ -20,21 +20,22 @@ struct CalendarView: View {
     
     var body: some View {
         NavigationStack{
-            VStack() {
-                Divider()
-                DatePicker("Select Date", selection: $selectedDate, displayedComponents: [.date])
-                    .padding(.horizontal)
-                    .datePickerStyle(.graphical)
-                Divider()
-            }
-            .navigationBarItems(trailing:
-                                    Button{
-                CreateNew = true
-            }label:{
-                Image(systemName: "plus.circle")
-            })
-            .navigationTitle("Calendar")
             List{
+                Section{
+                    VStack() {
+                        DatePicker("Select Date", selection: $selectedDate, displayedComponents: [.date])
+                            .padding(.horizontal)
+                            .datePickerStyle(.graphical)
+                    }
+                    .navigationBarItems(trailing:
+                                            Button{
+                        CreateNew = true
+                    }label:{
+                        Image(systemName: "plus.circle")
+                    })
+                    .navigationTitle("Calendar")
+                }
+                
                 Section(header: Text("Events").textCase(nil)){
                     
                     ForEach(Events.filter { x in
@@ -57,26 +58,24 @@ struct CalendarView: View {
                             HStack{
                                 VStack(alignment: .leading){
                                     Text(itm.title)
-                                    
-                                    Text(itm.details)
-                                        .font(.caption)
+                                        .bold()
+                                        .foregroundStyle(Color.accentColor)
+
+                                    if !itm.details.isEmpty{
+                                        Text(itm.details)
+                                            .font(.caption)
+                                            .opacity(0.7)
+                                    }
                                 }
-                                
-                                Spacer()
-                                
-                                Text("Due: \(itm.endDate, style: .time)")
-                                    .padding(.init(top: 10, leading: 10, bottom: 10, trailing: 10))
-                                    .background(.gray.opacity(0.1))
-                                    .cornerRadius(10)
                             }
                         })
-                        .listRowBackground(Color("lightOrange"))
+
                     }
                     .onDelete{Events.remove(atOffsets: $0)}
                 }
                 
             }
-            .scrollContentBackground(.hidden)
+            .listStyle(.sidebar)
             .toolbar(){
                 ToolbarItem(placement: .navigationBarLeading) {
                     EditButton()
