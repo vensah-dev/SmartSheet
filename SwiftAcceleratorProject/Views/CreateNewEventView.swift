@@ -39,6 +39,7 @@ struct CreateNewEventView: View {
                         displayedComponents: [.date]
                     )
                     .foregroundStyle(Color.accentColor)
+                    .tint(Color.accentColor)
                 }
             }
             .toolbar(){

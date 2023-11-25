@@ -92,8 +92,7 @@ struct ImageDetail: View {
                     HStack {
                         Text("Topic")
                         Spacer()
-                        Text(selectedTopic.isEmpty ? "Select" : selectedTopic)
-                            .foregroundColor(selectedSubject.isEmpty ? .gray : .primary)
+                        Text(scannedImage.topic)
                     }
                 }
                 
@@ -151,7 +150,8 @@ struct ImageDetailView: View {
                     Button{
                         dismiss()
                     }label:{
-                        
+                        Text("Done")
+                            .foregroundStyle(Color.accentColor)
                     }
                 }
             }

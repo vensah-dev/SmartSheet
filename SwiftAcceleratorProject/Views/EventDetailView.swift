@@ -24,8 +24,8 @@ struct EventDetailView: View {
                         selection: $event.startDate,
                         displayedComponents: [.date, .hourAndMinute]
                     )
-                    .foregroundColor(Color("orangeText"))
-                    .tint(Color("darkOrange"))
+                    .foregroundColor(Color.accentColor)
+                    .tint(Color.accentColor)
                     .disabled(!editModeActive)
                     
                     DatePicker(
@@ -33,8 +33,8 @@ struct EventDetailView: View {
                         selection: $event.endDate,
                         displayedComponents: [.date, .hourAndMinute]
                     )
-                    .foregroundColor(Color("orangeText"))
-                    .tint(Color("darkOrange"))
+                    .foregroundColor(Color.accentColor)
+                    .tint(Color.accentColor)
                     .disabled(!editModeActive)
                 }
                 
