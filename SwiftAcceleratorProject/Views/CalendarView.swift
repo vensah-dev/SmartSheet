@@ -34,6 +34,7 @@ struct CalendarView: View {
                         Image(systemName: "plus.circle")
                     })
                     .navigationTitle("Calendar")
+                    .navigationBarTitleDisplayMode(.large)
                 }
                 
                 Section(header: Text("Events").textCase(nil)){

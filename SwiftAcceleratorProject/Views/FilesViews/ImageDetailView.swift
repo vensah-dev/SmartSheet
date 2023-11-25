@@ -44,6 +44,8 @@ struct ImageDetail: View {
                 .fullScreenCover(isPresented: $ShowImage, content:{
                     ImageDetailView(images: image, currentIndex: index, dataManager: dataManager)
                 })
+                TextField("Notes", text: $dataManager.scannedImages[index].caption)
+                    .disabled(!isEditing)
             }
             .listRowBackground(Color.red.opacity(0.0))
             
@@ -95,9 +97,6 @@ struct ImageDetail: View {
                         Text(scannedImage.topic)
                     }
                 }
-                
-                TextField("Notes", text: $dataManager.scannedImages[index].caption)
-                    .disabled(!isEditing)
             }
         }
         .navigationTitle($dataManager.scannedImages[index].title)
