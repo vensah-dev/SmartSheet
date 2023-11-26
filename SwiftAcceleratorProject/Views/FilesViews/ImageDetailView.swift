@@ -36,11 +36,11 @@ struct ImageDetail: View {
                     Button{
                         ShowImage.toggle()
                     }label:{
-                        Image(uiImage: image.first ?? UIImage())
+                        Image(uiImage: image[0])
                             .resizable()
                             .aspectRatio(contentMode: .fill)
                             .frame(height: 300)
-                            .cornerRadius(20)
+                            .cornerRadius(22)
                             .padding(10)
                     }
                     .fullScreenCover(isPresented: $ShowImage, content:{
