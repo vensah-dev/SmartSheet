@@ -58,7 +58,7 @@ struct ImageDetail: View {
             Section(header: Text("Additional Details")) {
                 if isEditing{
                     //subjects
-                    NavigationLink(destination: SubjectView(dataManager: dataManager, selectedSubject: $selectedSubject) { subject in
+                    NavigationLink(destination: SubjectView(dataManager: dataManager, selectedSubject: $selectedSubject, edit: true) { subject in
                         selectedSubject = subject
                         if isEditing {
                             // Save edited subject when in editing mode
@@ -73,7 +73,7 @@ struct ImageDetail: View {
                     }
                     
                     //topics
-                    NavigationLink(destination: TopicView(dataManager: dataManager, selectedTopic: $selectedTopic) { topic in
+                    NavigationLink(destination: TopicView(dataManager: dataManager, selectedTopic: $selectedTopic, edit: true) { topic in
                         selectedTopic = topic
                         if isEditing {
                             // Save edited topic when in editing mode

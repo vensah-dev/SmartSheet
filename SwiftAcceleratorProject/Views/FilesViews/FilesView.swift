@@ -13,7 +13,7 @@ struct FilesView: View {
         NavigationView {
             List {
                 if dataManager.scannedImages.isEmpty {
-                    Text("No resources yet")
+                    Text("No files yet")
                         .foregroundColor(.secondary)
                         .font(.headline)
                         .padding()
@@ -84,7 +84,7 @@ struct FilesView: View {
                 sectionStates = Array(repeating: true, count: uniqueTopics.count)
             }
             .listStyle(.sidebar)
-            .navigationBarTitle("Resources")
+            .navigationBarTitle("Files")
             .navigationBarItems(leading: EditButton(), trailing:
                                     HStack {
                 Picker("Subject", selection: $selectedSubjectIndex) {

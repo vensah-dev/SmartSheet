@@ -18,7 +18,7 @@ struct CalendarView: View {
             List{
                 Section{
                     VStack() {
-                        DatePicker("Select Date", selection: $selectedDate, displayedComponents: [.date, .hourAndMinute])
+                        DatePicker("Select Date", selection: $selectedDate, displayedComponents: [.date])
                             .padding(.horizontal)
                             .datePickerStyle(.graphical)
                     }
@@ -29,7 +29,6 @@ struct CalendarView: View {
                         Image(systemName: "plus.circle")
                     })
                     .navigationTitle("Calendar")
-                    .navigationBarTitleDisplayMode(.large)
                 }
                 
                 Section(header: Text("Events").textCase(nil)){
