@@ -110,9 +110,8 @@ struct FilesView: View {
                             })
                         }
                     },
-                            header:{Text(topic)}
+                            header:{Text(topic).textCase(.uppercase)}
                     )
-                    .textCase(nil)
                 }
                 
             }

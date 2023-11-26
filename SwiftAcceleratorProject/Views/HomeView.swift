@@ -8,7 +8,11 @@
 import SwiftUI
 
 struct HomeView: View {
+    @State public var suggestions: [ScannedImage] = []
+    @State var DisplayEvents: [Event] = [Event(title: "", details: "")]
+    @State var selectedDate: Date = Date()
     @State private var streak: Int
+    @ObservedObject var dataManager = DataManager()
     @State var DaysOfTheWeek: [String] = [
         "Sun",
         "Mon",
@@ -50,21 +54,92 @@ struct HomeView: View {
                     }
                 }
                 
+                List {
+                    Section(header: Text("Suggestions").textCase(.uppercase)){
+                        ForEach(suggestions, id: \.id){ scannedImage in
+                            NavigationLink(destination: ImageDetail(
+                                title: scannedImage.title,
+                                image: scannedImage.image,
+                                dataManager: dataManager
+                            )) {
+                                HStack{
+                                    Image(uiImage: scannedImage.image.first ?? UIImage())
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fill)
+                                        .frame(width: 60, height: 60)
+                                        .cornerRadius(5)
+                                    
+                                    VStack {
+                                        Text(scannedImage.title)
+                                        if !scannedImage.caption.isEmpty {
+                                            Text(scannedImage.caption)
+                                        }
+                                    }
+                                    
+                                    Spacer()
+                                    
+                                    Text("Details")
+                                }
+                            }
+                        }
+                    }
+                    
+                    Section(header: Text("Events").textCase(.uppercase)){
+                        
+                        ForEach(dataManager.Events.filter { x in
+                            let cal = Calendar.current
+                            let startStartDate = cal.date(bySettingHour: 0, minute: 0, second: 0, of: x.startDate) ?? x.startDate
+                            let endEndDate = cal.date(bySettingHour: 23, minute: 59, second: 59, of: x.endDate) ?? x.endDate
+                            
+                            let DateRange = startStartDate...endEndDate
+                            
+                            if(DateRange.contains(selectedDate)){
+                                return true
+                            }
+                            else{
+                                return false
+                            }
+                            
+                        }, id: \.id){ item in
+                            NavigationLink(destination:{
+                                EventDetailView( event: item, Events: $dataManager.Events)
+                            }, label:{
+                                HStack{
+                                    VStack(alignment: .leading){
+                                        Text(item.title)
+                                            .bold()
+                                            .foregroundStyle(Color.accentColor)
+                                        
+                                        Text("Due: \(item.endDate, format: .dateTime.month().day())")
+                                            .foregroundStyle(.secondary)
+                                            .font(.caption)
+                                    }
+                                    
+                                    Spacer()
+                                }
+                            })
+                        }
+                    }
+                }
             }
+            .listStyle(InsetGroupedListStyle())
             .navigationTitle("Hey there!")
-            .frame(maxWidth: .infinity)
-            .edgesIgnoringSafeArea(.all)
-            .listStyle(GroupedListStyle())
-            .scrollContentBackground(.hidden)
-            .opacity(1)
         }
+        .navigationTitle("Hey there!")
         .onAppear {
+            refreshSuggestions()
             NotificationCenter.default.addObserver(forName: UIApplication.willEnterForegroundNotification, object: nil, queue: .main) { _ in
                 updateImage()
             }
         }
         .onDisappear {
             NotificationCenter.default.removeObserver(self, name: UIApplication.willEnterForegroundNotification, object: nil)
+        }
+    }
+    
+    private func refreshSuggestions() {
+        DispatchQueue.main.async {
+            self.suggestions = self.dataManager.scannedImages.filter { $0.used < 5 }
         }
     }
     

@@ -31,7 +31,7 @@ struct CalendarView: View {
                     .navigationTitle("Calendar")
                 }
                 
-                Section(header: Text("Events").textCase(nil)){
+                Section(header: Text("Events").textCase(.uppercase)){
                     
                     ForEach(dataManager.Events.filter { x in
                         let cal = Calendar.current
