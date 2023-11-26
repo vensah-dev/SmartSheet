@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct CalendarView: View {
+    @UIApplicationDelegateAdaptor private var appDelegate: AppDelegate
     @ObservedObject var dataManager = DataManager()
     @State var DisplayEvents: [Event] = [Event(title: "", details: "")]
     @State var selectedDate: Date = Date()
@@ -81,7 +82,13 @@ struct CalendarView: View {
             }
         }
         .onDisappear{
+            
             dataManager.saveEvents()
+            for x in dataManager.Events{
+                if(!x.sentNotification){
+                    appDelegate.scheduleLocalNotification(date: x.endDate, title: "Event Reminder", caption: x.title)
+                }
+            }
         }
     }
     func delete(at offsets: IndexSet) {

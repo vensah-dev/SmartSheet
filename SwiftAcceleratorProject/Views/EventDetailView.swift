@@ -69,6 +69,7 @@ struct EventDetailView: View {
     private var editButton: some View {
         Button(action: {
             if(!isEditing){
+                Events[index].sentNotification = false
                 dataManager.saveEvents()
             }
             withAnimation {

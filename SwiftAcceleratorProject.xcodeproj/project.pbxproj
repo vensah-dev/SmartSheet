@@ -25,6 +25,7 @@
 		C8D175DE2B0C5CD400883D05 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8D175DD2B0C5CD400883D05 /* HomeView.swift */; };
 		C8D175E22B0C611800883D05 /* GlobalVars.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8D175E12B0C611800883D05 /* GlobalVars.swift */; };
 		C8E1DACE2B0C82E1000EF84A /* CreateNewEventView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8E1DACD2B0C82E1000EF84A /* CreateNewEventView.swift */; };
+		C8FA7F2E2B138E68004490C5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8FA7F2D2B138E68004490C5 /* AppDelegate.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -47,6 +48,7 @@
 		C8D175DD2B0C5CD400883D05 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		C8D175E12B0C611800883D05 /* GlobalVars.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalVars.swift; sourceTree = "<group>"; };
 		C8E1DACD2B0C82E1000EF84A /* CreateNewEventView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateNewEventView.swift; sourceTree = "<group>"; };
+		C8FA7F2D2B138E68004490C5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,6 +65,7 @@
 		00DEBE072B0CDD50003AF464 /* Model and ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				C8FA7F2D2B138E68004490C5 /* AppDelegate.swift */,
 				C8D175E12B0C611800883D05 /* GlobalVars.swift */,
 				003335DE2B0E11A000ADE188 /* DataManager.swift */,
 			);
@@ -218,6 +221,7 @@
 				00F3D9B32B0B85DD00960F5B /* SubjectView.swift in Sources */,
 				00F3D9B12B0B80DA00960F5B /* WorksheetDetailView.swift in Sources */,
 				C8A0E8AB2B089D5400ECBD0B /* FilesView.swift in Sources */,
+				C8FA7F2E2B138E68004490C5 /* AppDelegate.swift in Sources */,
 				004623DE2B0F83CA00721AA1 /* TopicView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

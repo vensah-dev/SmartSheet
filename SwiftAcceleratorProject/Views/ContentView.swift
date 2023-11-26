@@ -7,7 +7,9 @@
 
 import SwiftUI
 
-struct ContentView: View {    
+
+struct ContentView: View {
+    @UIApplicationDelegateAdaptor private var appDelegate: AppDelegate
     var body: some View {
         TabView{
             HomeView()
@@ -24,6 +26,9 @@ struct ContentView: View {
                 .tabItem{
                     Label("Calendar", systemImage: "calendar")
                 }
+        }
+        .onAppear{
+            appDelegate.requestAuthForLocalNotifications()
         }
     }
 }

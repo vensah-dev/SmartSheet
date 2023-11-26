@@ -29,96 +29,99 @@ struct HomeView: View {
     
     var body: some View {
         NavigationView {
-            VStack {
-                Image("\(streak)")
-                    .resizable()
-                    .scaledToFit()
-                    .padding([.leading, .trailing], 16)
-                    .onAppear {
-                        updateImage()
-                    }
-                
-                HStack(spacing: 10) {
-                    ForEach(DaysOfTheWeek, id: \.self) { x in
-                        VStack {
-                            Image(systemName: isDayInStreak(day: x) ? "flame.fill" : "flame")
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(height: 24)
-                                .foregroundColor(isDayInStreak(day: x) ? .orange : .gray)
-                            
-                            Text(x)
-                                .font(.system(size: 10, weight: .black))
+            List {
+                Section{
+                    VStack{
+                        Image("\(streak)")
+                            .resizable()
+                            .scaledToFit()
+                            .padding([.leading, .trailing], 16)
+                            .onAppear {
+                                updateImage()
+                            }
+                        
+                        HStack(spacing: 10) {
+                            ForEach(DaysOfTheWeek, id: \.self) { x in
+                                VStack {
+                                    Image(systemName: isDayInStreak(day: x) ? "flame.fill" : "flame")
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fit)
+                                        .frame(height: 24)
+                                        .foregroundColor(isDayInStreak(day: x) ? .orange : .gray)
+                                    
+                                    Text(x)
+                                        .font(.system(size: 10, weight: .black))
+                                }
+                                .padding(11)
+                            }
                         }
-                        .padding(11)
+                    }
+                }
+                .frame(width: 400)
+                .listRowBackground(Color.red.opacity(0.0))
+                Section(header: Text("Suggestions").textCase(.uppercase)){
+                    ForEach(suggestions, id: \.id){ scannedImage in
+                        NavigationLink(destination: ImageDetail(
+                            title: scannedImage.title,
+                            image: scannedImage.image,
+                            dataManager: dataManager
+                        )) {
+                            HStack{
+                                Image(uiImage: scannedImage.image.first ?? UIImage())
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fill)
+                                    .frame(width: 60, height: 60)
+                                    .cornerRadius(5)
+                                
+                                VStack {
+                                    Text(scannedImage.title)
+                                    if !scannedImage.caption.isEmpty {
+                                        Text(scannedImage.caption)
+                                    }
+                                }
+                                
+                                Spacer()
+                                
+                                Text("Details")
+                            }
+                        }
                     }
                 }
                 
-                List {
-                    Section(header: Text("Suggestions").textCase(.uppercase)){
-                        ForEach(suggestions, id: \.id){ scannedImage in
-                            NavigationLink(destination: ImageDetail(
-                                title: scannedImage.title,
-                                image: scannedImage.image,
-                                dataManager: dataManager
-                            )) {
-                                HStack{
-                                    Image(uiImage: scannedImage.image.first ?? UIImage())
-                                        .resizable()
-                                        .aspectRatio(contentMode: .fill)
-                                        .frame(width: 60, height: 60)
-                                        .cornerRadius(5)
-                                    
-                                    VStack {
-                                        Text(scannedImage.title)
-                                        if !scannedImage.caption.isEmpty {
-                                            Text(scannedImage.caption)
-                                        }
-                                    }
-                                    
-                                    Spacer()
-                                    
-                                    Text("Details")
-                                }
-                            }
-                        }
-                    }
+                Section(header: Text("Events").textCase(.uppercase)){
                     
-                    Section(header: Text("Events").textCase(.uppercase)){
+                    ForEach(dataManager.Events.filter { x in
+                        let cal = Calendar.current
+                        let startStartDate = cal.date(bySettingHour: 0, minute: 0, second: 0, of: x.startDate) ?? x.startDate
+                        let endEndDate = cal.date(bySettingHour: 23, minute: 59, second: 59, of: x.endDate) ?? x.endDate
                         
-                        ForEach(dataManager.Events.filter { x in
-                            let cal = Calendar.current
-                            let startStartDate = cal.date(bySettingHour: 0, minute: 0, second: 0, of: x.startDate) ?? x.startDate
-                            let endEndDate = cal.date(bySettingHour: 23, minute: 59, second: 59, of: x.endDate) ?? x.endDate
-                            
-                            let DateRange = startStartDate...endEndDate
-                            
-                            if(DateRange.contains(selectedDate)){
-                                return true
-                            }
-                            else{
-                                return false
-                            }
-                            
-                        }, id: \.id){ item in
-                            NavigationLink(destination:{
-                                EventDetailView( event: item, Events: $dataManager.Events)
-                            }, label:{
-                                HStack{
-                                    VStack(alignment: .leading){
-                                        Text(item.title)
-                                            .bold()
-                                            .foregroundStyle(Color.accentColor)
-                                        
-                                        Text("Due: \(item.endDate, format: .dateTime.month().day())")
-                                            .foregroundStyle(.secondary)
-                                            .font(.caption)
-                                    }
-                                    
-                                    Spacer()
-                                }
-                            })
+                        let DateRange = startStartDate...endEndDate
+                        
+                        if(DateRange.contains(selectedDate)){
+                            return true
                         }
+                        else{
+                            return false
+                        }
+                        
+                    }, id: \.id){ item in
+                        NavigationLink(destination:{
+                            EventDetailView( event: item, Events: $dataManager.Events)
+                        }, label:{
+                            HStack{
+                                VStack(alignment: .leading){
+                                    Text(item.title)
+                                        .bold()
+                                        .foregroundStyle(Color.accentColor)
+                                    
+                                    Text("Due: \(item.endDate, format: .dateTime.month().day())")
+                                        .foregroundStyle(.secondary)
+                                        .font(.caption)
+                                }
+                                
+                                Spacer()
+                            }
+                        })
                     }
                 }
             }
