@@ -5,6 +5,7 @@ struct SubjectView: View {
     @State private var isAddSubjectModalPresented = false
     @Binding var selectedSubject: String
     @State private var newSubject = ""
+    @State var edit: Bool
     var onSubjectSelected: (String) -> Void
     
     @Environment(\.presentationMode) var presentationMode
@@ -28,34 +29,41 @@ struct SubjectView: View {
             .onDelete(perform: delete)
         }
         .navigationTitle("Subjects")
-        .navigationBarItems(trailing: Button(action: {
-            isAddSubjectModalPresented = true
-        }) {
-            Image(systemName: "plus.circle")
-        })
-        .alert("Add Subject", isPresented: $isAddSubjectModalPresented) {
-            TextField("New Subject", text: $newSubject)
-            Button("Add") {
-                if !newSubject.isEmpty {
-                    if subjects.contains(newSubject) {
-                        isAddSubjectModalPresented = false
-                    } else {
-                        // Add the new subject to dataManager.subjects
-                        dataManager.subjects.append(newSubject)
-                        onSubjectSelected(newSubject)
-                        newSubject = ""
-                        isAddSubjectModalPresented = false
-                        presentationMode.wrappedValue.dismiss()
+        .toolbar(){
+            ToolbarItem(placement: .navigationBarTrailing) {
+                if !edit{
+                    Button{
+                        isAddSubjectModalPresented = true
+                    }label:{
+                        Image(systemName: "plus.circle")
+                    }
+                    .alert("Add Subject", isPresented: $isAddSubjectModalPresented) {
+                        TextField("New Subject", text: $newSubject)
+                        Button("Add") {
+                            if !newSubject.isEmpty {
+                                if subjects.contains(newSubject) {
+                                    isAddSubjectModalPresented = false
+                                } else {
+                                    // Add the new subject to dataManager.subjects
+                                    dataManager.subjects.append(newSubject)
+                                    onSubjectSelected(newSubject)
+                                    newSubject = ""
+                                    isAddSubjectModalPresented = false
+                                    presentationMode.wrappedValue.dismiss()
+                                }
+                            }
+                            isAddSubjectModalPresented = false
+                        }
+                        Button("Cancel") {
+                            newSubject = ""
+                            isAddSubjectModalPresented = false
+                        }
+                    } message: {
+                        Text("Please enter your subject.")
                     }
                 }
-                isAddSubjectModalPresented = false
             }
-            Button("Cancel") {
-                newSubject = ""
-                isAddSubjectModalPresented = false
-            }
-        } message: {
-            Text("Please enter your subject.")
+            
         }
         .onAppear {
             subjects = dataManager.scannedImages.map(\.subject).removingDuplicates()

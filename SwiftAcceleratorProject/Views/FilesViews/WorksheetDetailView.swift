@@ -33,7 +33,7 @@ struct WorksheetDetailView: View {
                 }
                 
                 Section(header: Text("Additional Details")) {
-                    NavigationLink(destination: SubjectView(dataManager: dataManager, selectedSubject: $selectedSubject) { subject in
+                    NavigationLink(destination: SubjectView(dataManager: dataManager, selectedSubject: $selectedSubject, edit: false) { subject in
                         selectedSubject = subject
                     }) {
                         HStack {
@@ -44,7 +44,7 @@ struct WorksheetDetailView: View {
                         }
                     }
                     
-                    NavigationLink(destination: TopicView(dataManager: dataManager, selectedTopic: $selectedTopic) { topic in
+                    NavigationLink(destination: TopicView(dataManager: dataManager, selectedTopic: $selectedTopic, edit: false) { topic in
                         selectedTopic = topic
                     }) {
                         HStack {

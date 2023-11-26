@@ -12,6 +12,7 @@ struct TopicView: View {
     @State private var isAddTopicModalPresented = false
     @Binding var selectedTopic: String
     @State private var newTopic = ""
+    @State var edit: Bool
     var onTopicSelected: (String) -> Void
     
     @Environment(\.presentationMode) var presentationMode
@@ -34,33 +35,40 @@ struct TopicView: View {
             .onDelete(perform: delete)
         }
         .navigationTitle("Topics")
-        .navigationBarItems(trailing: Button(action: {
-            isAddTopicModalPresented = true
-        }) {
-            Image(systemName: "plus.circle")
-        })
-        .alert("Add Topic", isPresented: $isAddTopicModalPresented) {
-            TextField("New Topic", text: $newTopic)
-            Button("Add") {
-                if !newTopic.isEmpty {
-                    if topics.contains(newTopic) {
-                        isAddTopicModalPresented = false
-                    } else {
-                        dataManager.topics.append(newTopic)
-                        onTopicSelected(newTopic)
-                        newTopic = ""
-                        isAddTopicModalPresented = false
-                        presentationMode.wrappedValue.dismiss()
+        .toolbar(){
+            ToolbarItem(placement: .navigationBarTrailing) {
+                if !edit{
+                    Button{
+                        isAddTopicModalPresented = true
+                    }label:{
+                        Image(systemName: "plus.circle")
+                    }
+                    .alert("Add Topic", isPresented: $isAddTopicModalPresented) {
+                        TextField("New Topic", text: $newTopic)
+                        Button("Add") {
+                            if !newTopic.isEmpty {
+                                if topics.contains(newTopic) {
+                                    isAddTopicModalPresented = false
+                                } else {
+                                    dataManager.topics.append(newTopic)
+                                    onTopicSelected(newTopic)
+                                    newTopic = ""
+                                    isAddTopicModalPresented = false
+                                    presentationMode.wrappedValue.dismiss()
+                                }
+                            }
+                            isAddTopicModalPresented = false
+                        }
+                        Button("Cancel") {
+                            newTopic = ""
+                            isAddTopicModalPresented = false
+                        }
+                    } message: {
+                        Text("Please enter your topic.")
                     }
                 }
-                isAddTopicModalPresented = false
             }
-            Button("Cancel") {
-                newTopic = ""
-                isAddTopicModalPresented = false
-            }
-        } message: {
-            Text("Please enter your topic.")
+            
         }
         .onAppear {
             topics = dataManager.scannedImages.map(\.topic).removingDuplicates()

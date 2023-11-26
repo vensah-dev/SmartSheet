@@ -24,11 +24,6 @@ struct ContentView: View {
                 .tabItem{
                     Label("Calendar", systemImage: "calendar")
                 }
-            
-            StatsView()
-                .tabItem{
-                    Label("Statistics", systemImage: "chart.bar.fill")
-                }
         }
     }
 }
