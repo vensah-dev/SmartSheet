@@ -20,7 +20,7 @@ struct HomeView: View {
     ]
     
     init() {
-        _streak = State(initialValue: max(UserDefaults.standard.integer(forKey: "streak"), 0))
+        _streak = State(initialValue: max(UserDefaults.standard.integer(forKey: "streak"), 1))
     }
     
     var body: some View {
@@ -37,11 +37,11 @@ struct HomeView: View {
                 HStack(spacing: 10) {
                     ForEach(DaysOfTheWeek, id: \.self) { x in
                         VStack {
-                            Image(systemName: x == currentDay() ? "flame.fill" : "flame")
+                            Image(systemName: isDayInStreak(day: x) ? "flame.fill" : "flame")
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
                                 .frame(height: 24)
-                                .foregroundColor(x == currentDay() ? .orange : .gray)
+                                .foregroundColor(isDayInStreak(day: x) ? .orange : .gray)
                             
                             Text(x)
                                 .font(.system(size: 10, weight: .black))
@@ -66,6 +66,16 @@ struct HomeView: View {
         .onDisappear {
             NotificationCenter.default.removeObserver(self, name: UIApplication.willEnterForegroundNotification, object: nil)
         }
+    }
+    
+    private func isDayInStreak(day: String) -> Bool {
+        let currentDay = currentDay()
+        let currentDayIndex = DaysOfTheWeek.firstIndex(of: currentDay) ?? 0
+        let dayIndex = DaysOfTheWeek.firstIndex(of: day) ?? 0
+
+        let daysSinceLastLogin = (currentDayIndex - dayIndex + 7) % 7
+
+        return daysSinceLastLogin < min(streak, 7)  // Ensure streak is capped at 7
     }
     
     private func updateImage() {
@@ -102,4 +112,3 @@ struct HomeView_Previews: PreviewProvider {
         HomeView()
     }
 }
-
