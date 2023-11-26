@@ -29,7 +29,7 @@ struct FilesView: View {
                     
                     Divider()
                         .padding(.init(top: 5, leading: 15, bottom: 5, trailing: 0))
-
+                    
                     ScrollView(.horizontal){
                         HStack{
                             ForEach(uniqueSubjects.indices, id: \.self){ i in
@@ -60,7 +60,7 @@ struct FilesView: View {
                         .padding()
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                         .listRowBackground(Color.red.opacity(0.0))
-
+                    
                 }
                 
                 ForEach(uniqueTopics.indices, id: \.self) { index in
@@ -68,46 +68,46 @@ struct FilesView: View {
                     Section(isExpanded: $sectionStates[index],
                             content: {
                         if sectionStates[index] {
-
+                            
                             ForEach(displayFiles, id: \.id) { img in
-                                    let images = img.image
-                                    let subject = img.subject
-                                    let currentTopic = img.topic
-                                    if selectedSubjectIndex == -1 || subject == uniqueSubjects[selectedSubjectIndex], currentTopic == topic {
-                                        NavigationLink(
-                                            destination: ImageDetail(
-                                                title: img.title,
-                                                image: images,
-                                                dataManager: dataManager
-                                            )
-                                        ) {
-                                            HStack {
-                                                Image(uiImage: img.image.first ?? UIImage())
-                                                    .resizable()
-                                                    .aspectRatio(contentMode: .fill)
-                                                    .frame(width: 60, height: 60)
-                                                    .cornerRadius(5)
+                                let images = img.image
+                                let subject = img.subject
+                                let currentTopic = img.topic
+                                if selectedSubjectIndex == -1 || subject == uniqueSubjects[selectedSubjectIndex], currentTopic == topic {
+                                    NavigationLink(
+                                        destination: ImageDetail(
+                                            title: img.title,
+                                            image: images,
+                                            dataManager: dataManager
+                                        )
+                                    ) {
+                                        HStack {
+                                            Image(uiImage: img.image.first ?? UIImage())
+                                                .resizable()
+                                                .aspectRatio(contentMode: .fill)
+                                                .frame(width: 60, height: 60)
+                                                .cornerRadius(5)
+                                            
+                                            VStack(alignment: .leading) {
+                                                Text(img.title)
+                                                    .foregroundColor(Color.accentColor)
+                                                    .font(.headline)
                                                 
-                                                VStack(alignment: .leading) {
-                                                    Text(img.title)
-                                                        .foregroundColor(Color.accentColor)
-                                                        .font(.headline)
-                                                    
-                                                    if !img.caption.isEmpty {
-                                                        Text(img.caption)
-                                                            .font(.caption)
-                                                            .foregroundColor(.secondary)
-                                                    }
+                                                if !img.caption.isEmpty {
+                                                    Text(img.caption)
+                                                        .font(.caption)
+                                                        .foregroundColor(.secondary)
                                                 }
-                                                
-                                                Spacer()
                                             }
+                                            
+                                            Spacer()
                                         }
                                     }
                                 }
-                                .onDelete(perform: { indices in
-                                    delete(at: indices)
-                                })
+                            }
+                            .onDelete(perform: { indices in
+                                delete(at: indices)
+                            })
                         }
                     },
                             header:{Text(topic)}
@@ -131,21 +131,15 @@ struct FilesView: View {
             .listStyle(.sidebar)
             .navigationBarTitle("Files")
             .navigationBarItems(leading: EditButton(), trailing:
-                                    HStack {
-                Picker("Subject", selection: $selectedSubjectIndex) {
-                    Text("All").tag(-1)
-                }
-                .pickerStyle(MenuPickerStyle())
-                
-                Button{
-                    showWorksheetView.toggle()
-                }label:{
-                    Image(systemName: "plus.circle")
-                }
+                                    Button{
+                showWorksheetView.toggle()
+            }label:{
+                Image(systemName: "plus.circle")
+            }
                 .fullScreenCover(isPresented: $showWorksheetView){
                     WorksheetDetailView(scannedImages: $dataManager.scannedImages, dataManager: dataManager)
                 }
-            })
+            )
         }
     }
     
