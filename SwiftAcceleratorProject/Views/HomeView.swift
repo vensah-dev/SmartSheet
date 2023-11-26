@@ -8,33 +8,98 @@
 import SwiftUI
 
 struct HomeView: View {
-    @State var streak = 4
-    @State var nextStreak = 10
-    @State var bestStreak = 7
-    @State var StreakCompletion = 40.0
-    @State var OrangeText: Color = Color(UIColor(red: 255/255, green: 161/255, blue: 20/255, alpha: 0.8))
-    @State var lightOrangeText: Color = Color(UIColor(red: 255/255, green: 242/255, blue: 242/255, alpha: 1))
+    @State private var streak: Int
+    @State var DaysOfTheWeek: [String] = [
+        "Sun",
+        "Mon",
+        "Tue",
+        "Wed",
+        "Thu",
+        "Fri",
+        "Sat",
+    ]
+    
+    init() {
+        _streak = State(initialValue: max(UserDefaults.standard.integer(forKey: "streak"), 0))
+    }
     
     var body: some View {
-        GeometryReader { geometry in
-            ZStack {
-                Image("streaksNormal")
+        NavigationView {
+            VStack {
+                Image("\(streak)")
                     .resizable()
                     .scaledToFit()
+                    .padding([.leading, .trailing], 16)
+                    .onAppear {
+                        updateImage()
+                    }
                 
-                Text(String(streak))
-                    .font(.system(size: 72, weight: .bold))
-                    .position(x: ((geometry.size.width / 2) - 30), y: ((geometry.size.height / 2) - 20))
-                
-                Text(String(bestStreak))
-                    .font(.system(size: 102, weight: .bold))
-                    .position(x: ((geometry.size.width / 2) + 130), y: ((geometry.size.height / 2) + 10))
+                HStack(spacing: 10) {
+                    ForEach(DaysOfTheWeek, id: \.self) { x in
+                        VStack {
+                            Image(systemName: x == currentDay() ? "flame.fill" : "flame")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(height: 24)
+                                .foregroundColor(x == currentDay() ? .orange : .gray)
+                            
+                            Text(x)
+                                .font(.system(size: 10, weight: .black))
+                        }
+                        .padding(11)
+                    }
+                }
                 
             }
+            .navigationTitle("Hey there!")
+            .frame(maxWidth: .infinity)
+            .edgesIgnoringSafeArea(.all)
+            .listStyle(GroupedListStyle())
+            .scrollContentBackground(.hidden)
+            .opacity(1)
         }
+        .onAppear {
+            NotificationCenter.default.addObserver(forName: UIApplication.willEnterForegroundNotification, object: nil, queue: .main) { _ in
+                updateImage()
+            }
+        }
+        .onDisappear {
+            NotificationCenter.default.removeObserver(self, name: UIApplication.willEnterForegroundNotification, object: nil)
+        }
+    }
+    
+    private func updateImage() {
+        let lastOpenedDate = UserDefaults.standard.object(forKey: "lastOpenedDate") as? Date
+        let currentDate = Date.now
+        
+        if let lastOpenedDate = lastOpenedDate, Calendar.current.isDate(currentDate, equalTo: lastOpenedDate, toGranularity: .day) {
+            return
+        }
+        
+        if let lastOpenedDate = lastOpenedDate, Calendar.current.isDate(currentDate.addingTimeInterval(-86400), equalTo: lastOpenedDate, toGranularity: .day) {
+            streak += 1
+        } else {
+            streak = 1
+        }
+        
+        if streak > 7 {
+            streak = 1
+        }
+        
+        UserDefaults.standard.set(streak, forKey: "streak")
+        UserDefaults.standard.set(currentDate, forKey: "lastOpenedDate")
+    }
+    
+    private func currentDay() -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "E"
+        return dateFormatter.string(from: Date.now)
     }
 }
 
-#Preview {
-    HomeView()
+struct HomeView_Previews: PreviewProvider {
+    static var previews: some View {
+        HomeView()
+    }
 }
+
