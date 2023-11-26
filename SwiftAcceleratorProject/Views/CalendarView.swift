@@ -18,7 +18,7 @@ struct CalendarView: View {
             List{
                 Section{
                     VStack() {
-                        DatePicker("Select Date", selection: $selectedDate, displayedComponents: [.date])
+                        DatePicker("Select Date", selection: $selectedDate, displayedComponents: [.date, .hourAndMinute])
                             .padding(.horizontal)
                             .datePickerStyle(.graphical)
                     }
@@ -35,10 +35,11 @@ struct CalendarView: View {
                 Section(header: Text("Events").textCase(nil)){
                     
                     ForEach(dataManager.Events.filter { x in
-                        let StartDate = x.startDate
-                        let EndDate = x.endDate
+                        let cal = Calendar.current
+                        let startStartDate = cal.date(bySettingHour: 0, minute: 0, second: 0, of: x.startDate) ?? x.startDate
+                        let endEndDate = cal.date(bySettingHour: 23, minute: 59, second: 59, of: x.endDate) ?? x.endDate
                         
-                        let DateRange = StartDate...EndDate
+                        let DateRange = startStartDate...endEndDate
                         
                         if(DateRange.contains(selectedDate)){
                             return true

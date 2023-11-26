@@ -29,7 +29,7 @@ struct CreateNewEventView: View {
                         "Start Date",
                         selection: $EventStartDate,
                         in: Date()...,
-                        displayedComponents: [.date]
+                        displayedComponents: [.date, .hourAndMinute]
                     )
                     .foregroundStyle(Color.accentColor)
                     .tint(Color.accentColor)
@@ -38,7 +38,7 @@ struct CreateNewEventView: View {
                         "End Date",
                         selection: $EventEndDate,
                         in: EventStartDate...,
-                        displayedComponents: [.date]
+                        displayedComponents: [.date, .hourAndMinute]
                     )
                     .foregroundStyle(Color.accentColor)
                     .tint(Color.accentColor)
@@ -54,6 +54,12 @@ struct CreateNewEventView: View {
                             .foregroundStyle(Color.accentColor)
                     }
                     .onAppear(perform: Validate)
+                    .onChange(of: EventStartDate){
+                        Validate()
+                    }
+                    .onChange(of: EventEndDate){
+                        Validate()
+                    }
                     .foregroundStyle(Color.accentColor)
                     .disabled(DisableCreate)
                 }
@@ -73,7 +79,7 @@ struct CreateNewEventView: View {
     }
     
     func Validate(){
-        if(title != ""){
+        if(!title.trimmingCharacters(in: .whitespaces).isEmpty){
             if (EventEndDate >= EventStartDate) {
                 DisableCreate = false
             } else {
