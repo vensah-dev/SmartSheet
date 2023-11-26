@@ -30,7 +30,7 @@ struct FilesView: View {
                     Divider()
                         .padding(.init(top: 5, leading: 15, bottom: 5, trailing: 0))
                     
-                    ScrollView(.horizontal){
+                    ScrollView(.horizontal, showsIndicators: false){
                         HStack{
                             ForEach(uniqueSubjects.indices, id: \.self){ i in
                                 Button{
