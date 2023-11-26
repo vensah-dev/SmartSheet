@@ -9,6 +9,7 @@ import SwiftUI
 
 struct ImageDetail: View {
     @State var index: Int = 0
+    @State var title: String
     @State var image: [UIImage]
     @StateObject var dataManager: DataManager
     
@@ -173,6 +174,9 @@ struct ImageDetail: View {
         .navigationTitle($dataManager.scannedImages[index].title)
         .navigationBarTitleDisplayMode(isEditing ? .inline : .large)
         .navigationBarItems(trailing: editButton)
+        .onAppear{
+            getIndex(title: title)
+        }
         
         
     }
@@ -189,6 +193,18 @@ struct ImageDetail: View {
     
     private func updateSelectedDurationLabel() {
         selectedDurationLabel = String(format: "%02d:%02d:00", durationHours, durationMinutes)
+    }
+    
+    func getIndex(title: String){
+        var i = 0
+        
+        for x in dataManager.scannedImages{
+            if(x.title == title){
+                index = i
+            }
+            
+            i += 1
+        }
     }
 }
 
