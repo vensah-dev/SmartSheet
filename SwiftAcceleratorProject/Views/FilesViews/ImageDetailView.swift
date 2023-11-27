@@ -44,6 +44,7 @@ struct ImageDetail: View {
                             .aspectRatio(contentMode: .fill)
                             .frame(width: 400, height: 300)
                             .cornerRadius(22)
+                            .padding()
                     }
                     .fullScreenCover(isPresented: $ShowImage, content:{
                         ImageDetailView(images: image, currentIndex: index, dataManager: dataManager, isViewLocked: $isViewLocked)
@@ -53,6 +54,7 @@ struct ImageDetail: View {
                         TextField("Notes", text: $dataManager.scannedImages[index].caption)
                             .disabled(!isEditing)
                             .foregroundStyle(.secondary)
+                            .padding()
                     }
                 }
                 .padding()
