@@ -151,7 +151,7 @@ struct FilesView: View {
             return dataManager.scannedImages
         }
         else{
-            return dataManager.scannedImages.filter{ $0.title.contains(searchText)}
+            return dataManager.scannedImages.filter{ $0.title.lowercased().contains(searchText.lowercased())}
         }
     }
     
