@@ -179,6 +179,7 @@ struct WorksheetDetailView: View {
     
     private func updateSelectedDurationLabel() {
         selectedDurationLabel = String(format: "%02d:%02d:00", durationHours, durationMinutes)
+        dataManager.saveScannedImages()
     }
 }
 

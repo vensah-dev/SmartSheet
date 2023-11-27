@@ -36,22 +36,23 @@ struct ImageDetail: View {
                     Button{
                         ShowImage.toggle()
                     }label:{
-                        Image(uiImage: image.first ?? UIImage())
+                        Image(uiImage: image[0])
                             .resizable()
                             .aspectRatio(contentMode: .fill)
-                            .frame(height: 300)
-                            .cornerRadius(20)
-                            .padding(10)
+                            .frame(width: 400, height: 300)
+                            .cornerRadius(22)
                     }
                     .fullScreenCover(isPresented: $ShowImage, content:{
                         ImageDetailView(images: image, currentIndex: index, dataManager: dataManager)
                     })
+                    
                     if(!dataManager.scannedImages[index].caption.isEmpty || isEditing){
                         TextField("Notes", text: $dataManager.scannedImages[index].caption)
                             .disabled(!isEditing)
                             .foregroundStyle(.secondary)
                     }
                 }
+                .padding()
             }
             .listRowBackground(Color.red.opacity(0.0))
             
@@ -98,7 +99,7 @@ struct ImageDetail: View {
                                 isDurationPickerPresented.toggle()
                             }) {
                                 HStack {
-                                    Text(selectedDurationLabel)
+                                    Text(String(dataManager.scannedImages[index].durationHours!) + String(dataManager.scannedImages[index].durationMinutes!))
                                         .foregroundStyle(.blue)
                                 }
                             }
