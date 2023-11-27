@@ -2,7 +2,7 @@ import SwiftUI
 
 struct TimerView: View {
     @State private var disableTimer: Timer?
-    @State private var disableTimerDuration: TimeInterval = 300
+    @State private var disableTimerDuration: TimeInterval = 36000
     @State private var timerName = "Timer"
     
     @Environment(\.presentationMode) var presentationMode
@@ -51,7 +51,7 @@ struct TimerView: View {
                     title: Text("Timer Finished"),
                     message: Text("The timer has ended."),
                     dismissButton: .default(Text("OK")){
-                        isViewLocked = false // Unlock the view when disableTimer is finished
+                        isViewLocked = true // Lock the view when disableTimer is started
                         presentationMode.wrappedValue.dismiss()
                     }
                 )
@@ -82,6 +82,7 @@ struct TimerView: View {
                     disableTimer?.invalidate()
                     disableTimer = nil
                     showAlert = true
+                    isViewLocked = false // Lock the view when disableTimer is started
                 }
             }
 
@@ -92,8 +93,6 @@ struct TimerView: View {
                     disableTimer = nil
                 }
             }
-
-            isViewLocked = true // Lock the view when disableTimer is started
         }
     
     private func formattedTime(_ time: TimeInterval) -> String {

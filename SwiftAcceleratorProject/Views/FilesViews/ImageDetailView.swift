@@ -17,9 +17,12 @@ struct ImageDetail: View {
     @State private var isEditing = false
     @State private var ShowImage = false
     
+    @State var isViewLocked = Bool()
+    
+    @State var practicePaper = false
+    
     @State private var selectedSubject = ""
     @State private var selectedTopic = ""
-    @State private var practicePaper = false
     @State private var isDurationPickerPresented = false
     @State private var durationHours = 0
     @State private var durationMinutes = 0
@@ -43,7 +46,7 @@ struct ImageDetail: View {
                             .cornerRadius(22)
                     }
                     .fullScreenCover(isPresented: $ShowImage, content:{
-                        ImageDetailView(images: image, currentIndex: index, dataManager: dataManager)
+                        ImageDetailView(images: image, currentIndex: index, dataManager: dataManager, isViewLocked: $isViewLocked)
                     })
                     
                     if(!dataManager.scannedImages[index].caption.isEmpty || isEditing){
@@ -88,6 +91,7 @@ struct ImageDetail: View {
                             Text(dataManager.scannedImages[index].topic)
                         }
                     }
+                    
                     
                     Toggle("Practice Paper", isOn: $practicePaper)
                     
@@ -176,6 +180,7 @@ struct ImageDetail: View {
         .navigationBarTitleDisplayMode(isEditing ? .inline : .large)
         .navigationBarItems(trailing: editButton)
         .onAppear{
+            practicePaper = !(dataManager.scannedImages[index].durationMinutes == 0 || dataManager.scannedImages[index].durationHours == 0)
             getIndex(title: title)
         }
         
@@ -216,28 +221,32 @@ struct ImageDetailView: View {
     @State private var loadedImages: [UIImage] = []
     
     @Environment(\.dismiss) var dismiss
-    @State var isViewLocked = false
+    @Binding var isViewLocked: Bool
     
     var body: some View {
         NavigationStack{
             ZStack {
-                ScrollView(.vertical) {
-                    LazyVStack(spacing: 20) {
-                        ForEach(loadedImages.indices, id: \.self) { index in
-                            TimerView(isViewLocked: $isViewLocked,  durationHours: dataManager.scannedImages[index].durationHours ?? 0, durationMinutes: dataManager.scannedImages[index].durationMinutes ?? 0, lockAfterDuration: dataManager.scannedImages[index].lockAfterDuration ?? false)
-                            Image(uiImage: loadedImages[index])
-                                .resizable()
-                                .aspectRatio(contentMode: .fill)
-                                .clipped()
-                                .padding(.horizontal, 10)
-                        }
-                    }
-                    .padding(.vertical, 10)
-                }
                 if isViewLocked {
+                    Text("F**K U")
                     Color(.systemBackground)
                         .blur(radius: 10)
                         .edgesIgnoringSafeArea(.all)
+                }
+                if(!isViewLocked){
+                    ScrollView(.vertical) {
+                        LazyVStack(spacing: 20) {
+                            ForEach(loadedImages.indices, id: \.self) { index in
+                                TimerView(isViewLocked: $isViewLocked,  durationHours: dataManager.scannedImages[index].durationHours ?? 0, durationMinutes: dataManager.scannedImages[index].durationMinutes ?? 0, lockAfterDuration: dataManager.scannedImages[index].lockAfterDuration ?? false)
+                                Image(uiImage: loadedImages[index])
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fill)
+                                    .clipped()
+                                    .padding(.horizontal, 10)
+                            }
+                        }
+                        .padding(.vertical, 10)
+                    }
+
                 }
             }
             .toolbar(){
