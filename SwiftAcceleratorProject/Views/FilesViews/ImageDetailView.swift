@@ -28,7 +28,6 @@ struct ImageDetail: View {
     @State private var durationMinutes = 0
     @State private var lockAfterDuration = false
     @State private var isCompleted = false
-    @State private var selectedDurationLabel = "Select"
     
     
     var body: some View {
@@ -42,7 +41,7 @@ struct ImageDetail: View {
                         Image(uiImage: image[0])
                             .resizable()
                             .aspectRatio(contentMode: .fill)
-                            .frame(width: 350, height: 300)
+                            .frame(width: 380, height: 300)
                             .cornerRadius(22)
                             .padding()
                     }
@@ -57,7 +56,6 @@ struct ImageDetail: View {
                             .padding(.leading, 15)
                     }
                 }
-                .padding()
             }
             .listRowBackground(Color.red.opacity(0.0))
             
@@ -105,7 +103,7 @@ struct ImageDetail: View {
                                 isDurationPickerPresented.toggle()
                             }) {
                                 HStack {
-                                    Text(String(dataManager.scannedImages[index].durationHours!) + String(dataManager.scannedImages[index].durationMinutes!))
+                                    Text(String(format: "%02d:%02d:00", dataManager.scannedImages[index].durationHours ?? 0, dataManager.scannedImages[index].durationMinutes ?? 0))
                                         .foregroundStyle(.blue)
                                 }
                             }
@@ -122,12 +120,10 @@ struct ImageDetail: View {
                                 Spacer()
                             }
                             .onChange(of: durationHours) { _ in
-                                updateSelectedDurationLabel()
                                 dataManager.scannedImages[index].durationHours = durationHours
                                 dataManager.saveScannedImages()
                             }
                             .onChange(of: durationMinutes) { _ in
-                                updateSelectedDurationLabel()
                                 dataManager.scannedImages[index].durationMinutes = durationMinutes
                                 dataManager.saveScannedImages()
                             }
@@ -153,11 +149,14 @@ struct ImageDetail: View {
                     
                     Toggle("Practice Paper", isOn: $practicePaper)
                         .disabled(true)
-                    
-                    HStack {
-                        Text("Duration")
-                        Spacer()
-                        Text(String(dataManager.scannedImages[index].durationHours!) + String(dataManager.scannedImages[index].durationMinutes!))
+                    if practicePaper{
+                        HStack {
+                            Text("Duration")
+                            Spacer()
+                            
+                            Text(String(format: "%02d:%02d:00", dataManager.scannedImages[index].durationHours ?? 0, dataManager.scannedImages[index].durationMinutes ?? 0))
+                        }
+
                     }
                 }
             }
@@ -166,8 +165,16 @@ struct ImageDetail: View {
         .navigationBarTitleDisplayMode(isEditing ? .inline : .large)
         .navigationBarItems(trailing: editButton)
         .onAppear{
-            practicePaper = !(dataManager.scannedImages[index].durationMinutes == 0 || dataManager.scannedImages[index].durationHours == 0)
             getIndex(title: title)
+            
+            if(dataManager.scannedImages[index].durationMinutes == 0 && dataManager.scannedImages[index].durationHours == 0){
+                practicePaper = false
+            }
+            else{
+                practicePaper = true
+            }
+            
+            dataManager.scannedImages[index].used += 1
         }
         
         
@@ -181,10 +188,6 @@ struct ImageDetail: View {
         }) {
             Text(isEditing ? "Done" : "Edit")
         }
-    }
-    
-    private func updateSelectedDurationLabel() {
-        selectedDurationLabel = String(format: "%02d:%02d:00", durationHours, durationMinutes)
     }
     
     func getIndex(title: String){
@@ -208,31 +211,23 @@ struct ImageDetailView: View {
     
     @Environment(\.dismiss) var dismiss
     @Binding var isViewLocked: Bool
+    @State var lockAfterDuration = Bool()
     
     var body: some View {
         NavigationStack{
             ZStack {
-                if isViewLocked {
-                    Text("F**K U")
-                    Color(.systemBackground)
-                        .blur(radius: 10)
-                        .edgesIgnoringSafeArea(.all)
-                }
-                if(!isViewLocked){
-                    ScrollView(.vertical) {
-                        LazyVStack(spacing: 20) {
-                            ForEach(loadedImages.indices, id: \.self) { index in
-                                TimerView(isViewLocked: $isViewLocked,  durationHours: dataManager.scannedImages[index].durationHours ?? 0, durationMinutes: dataManager.scannedImages[index].durationMinutes ?? 0, lockAfterDuration: dataManager.scannedImages[index].lockAfterDuration ?? false)
-                                Image(uiImage: loadedImages[index])
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fill)
-                                    .clipped()
-                                    .padding(.horizontal, 10)
-                            }
+                ScrollView(.vertical) {
+                    LazyVStack(spacing: 20) {
+                        ForEach(loadedImages.indices, id: \.self) { index in
+                            TimerView(isViewLocked: $isViewLocked, durationHours: dataManager.scannedImages[index].durationHours ?? 0, durationMinutes: dataManager.scannedImages[index].durationMinutes ?? 0, lockAfterDuration: lockAfterDuration)
+                            Image(uiImage: loadedImages[index])
+                                .resizable()
+                                .aspectRatio(contentMode: .fill)
+                                .clipped()
+                                .padding(.horizontal, 10)
                         }
-                        .padding(.vertical, 10)
                     }
-
+                    .padding(.vertical, 10)
                 }
             }
             .toolbar(){

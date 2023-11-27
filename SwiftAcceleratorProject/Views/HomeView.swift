@@ -89,12 +89,11 @@ struct HomeView: View {
                     
                     ForEach(dataManager.Events.filter { x in
                         let cal = Calendar.current
-                        let startStartDate = cal.date(bySettingHour: 0, minute: 0, second: 0, of: x.startDate) ?? x.startDate
                         let endEndDate = cal.date(bySettingHour: 23, minute: 59, second: 59, of: x.endDate) ?? x.endDate
                         
                         let DateRange = Date.now...Date().addingTimeInterval(TimeInterval(86400*3))
                         
-                        if(DateRange.contains(selectedDate)){
+                        if(DateRange.contains(endEndDate)){
                             return true
                         }
                         else{
