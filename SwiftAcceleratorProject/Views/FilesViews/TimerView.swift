@@ -50,7 +50,8 @@ struct TimerView: View {
                 Alert(
                     title: Text("Timer Finished"),
                     message: Text("The timer has ended."),
-                    dismissButton: .default(Text("OK")) {
+                    dismissButton: .default(Text("OK")){
+                        isViewLocked = false // Unlock the view when disableTimer is finished
                         presentationMode.wrappedValue.dismiss()
                     }
                 )
@@ -81,7 +82,6 @@ struct TimerView: View {
                     disableTimer?.invalidate()
                     disableTimer = nil
                     showAlert = true
-                    isViewLocked = false // Unlock the view when disableTimer is finished
                 }
             }
 

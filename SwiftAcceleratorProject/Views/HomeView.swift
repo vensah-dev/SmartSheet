@@ -126,9 +126,9 @@ struct HomeView: View {
                 }
             }
             .listStyle(InsetGroupedListStyle())
-            .navigationTitle("Hey there!")
+            .navigationTitle("Home")
         }
-        .navigationTitle("Hey there!")
+        .navigationTitle("Home")
         .onAppear {
             refreshSuggestions()
             NotificationCenter.default.addObserver(forName: UIApplication.willEnterForegroundNotification, object: nil, queue: .main) { _ in
