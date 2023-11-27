@@ -86,7 +86,11 @@ struct FilesView: View {
                                                 .resizable()
                                                 .aspectRatio(contentMode: .fill)
                                                 .frame(width: 60, height: 60)
-                                                .cornerRadius(5)
+                                                .clipShape(RoundedRectangle(cornerRadius: 5))
+                                                .overlay(
+                                                    RoundedRectangle(cornerRadius: 5)
+                                                        .stroke(Color.accentColor, lineWidth: 2)
+                                                )
                                             
                                             VStack(alignment: .leading) {
                                                 Text(img.title)

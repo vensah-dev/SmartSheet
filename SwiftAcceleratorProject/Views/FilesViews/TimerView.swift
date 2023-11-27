@@ -1,14 +1,13 @@
 import SwiftUI
 
 struct TimerView: View {
-    @State private var disableTimer: Timer?
-    @State private var disableTimerDuration: TimeInterval = 36000
-    @State private var timerName = "Timer"
+    @State private var timerName = "Timer 1"
     
     @Environment(\.presentationMode) var presentationMode
     @State private var remainingTime: TimeInterval = 0
-    @Binding var isViewLocked: Bool
+    @State private var isViewLocked: Bool = false
     @State private var timer: Timer?
+    @State private var disableTimer: Timer?
     @State private var showAlert = false
     
     @State var durationHours: Int
@@ -19,51 +18,50 @@ struct TimerView: View {
     }
     
     var body: some View {
-        if durationMinutes != 0 {
-            ZStack {
-                Rectangle()
-                    .frame(height: 50)
-                    .background(Color.blue)
-                    .cornerRadius(22)
-                    .overlay (
-                        HStack {
-                            Text(timerName)
-                                .foregroundColor(.white)
-                                .padding(.leading, 15)
-                            
-                            Spacer()
-                            
-                            Text("\(formattedTime(remainingTime))")
-                                .foregroundStyle(.white)
-                                .padding(.trailing, 15)
-                        }
-                    )
-            }
-            .padding(.init(top: 0, leading: 25, bottom: 0, trailing: 25))
-            .onAppear {
-                startTimer()
-            }
-            .onDisappear {
-                stopTimer()
-            }
-            .alert(isPresented: $showAlert) {
-                Alert(
-                    title: Text("Timer Finished"),
-                    message: Text("The timer has ended."),
-                    dismissButton: .default(Text("OK")){
-                        isViewLocked = true // Lock the view when disableTimer is started
-                        presentationMode.wrappedValue.dismiss()
+        ZStack {
+            Rectangle()
+                .frame(height: 50)
+                .background(Color.blue)
+                .cornerRadius(22)
+                .overlay (
+                    HStack {
+                        Text(timerName)
+                            .foregroundColor(.white)
+                            .padding(.leading, 15)
+                        
+                        Spacer()
+                        
+                        Text("\(formattedTime(remainingTime))")
+                            .foregroundStyle(.white)
+                            .padding(.trailing, 15)
                     }
                 )
-            }
+        }
+        .padding(.init(top: 0, leading: 25, bottom: 0, trailing: 25))
+        .onAppear {
+            startTimer()
+        }
+        .onDisappear {
+            stopTimer()
+        }
+        .alert(isPresented: $showAlert) {
+            Alert(
+                title: Text("Timer Finished"),
+                message: Text("The timer has ended."),
+                dismissButton: .default(Text("OK")) {
+                    presentationMode.wrappedValue.dismiss()
+                }
+            )
         }
     }
     
     private func startTimer() {
         remainingTime = stopAfterDuration
-        timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
+        let timeInterval: TimeInterval = 1  // Set your desired update frequency here
+        
+        timer = Timer.scheduledTimer(withTimeInterval: timeInterval, repeats: true) { _ in
             if remainingTime > 0 {
-                remainingTime -= 1
+                remainingTime -= timeInterval
             } else {
                 showAlert = true
                 stopTimer()
@@ -72,28 +70,9 @@ struct TimerView: View {
     }
     
     private func stopTimer() {
-            timer?.invalidate()
-            timer = nil
-
-            disableTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
-                if remainingTime > 0 {
-                    remainingTime -= 1
-                } else {
-                    disableTimer?.invalidate()
-                    disableTimer = nil
-                    showAlert = true
-                    isViewLocked = false // Lock the view when disableTimer is started
-                }
-            }
-
-            // Start a timer to stop disableTimer after 5 minutes
-            Timer.scheduledTimer(withTimeInterval: disableTimerDuration, repeats: false) { _ in
-                DispatchQueue.main.async {
-                    disableTimer?.invalidate()
-                    disableTimer = nil
-                }
-            }
-        }
+        timer?.invalidate()
+        timer = nil
+    }
     
     private func formattedTime(_ time: TimeInterval) -> String {
         let hours = Int(time) / 3600
