@@ -42,7 +42,7 @@ struct ImageDetail: View {
                         Image(uiImage: image[0])
                             .resizable()
                             .aspectRatio(contentMode: .fill)
-                            .frame(width: 400, height: 300)
+                            .frame(width: 350, height: 300)
                             .cornerRadius(22)
                             .padding()
                     }
@@ -54,7 +54,7 @@ struct ImageDetail: View {
                         TextField("Notes", text: $dataManager.scannedImages[index].caption)
                             .disabled(!isEditing)
                             .foregroundStyle(.secondary)
-                            .padding()
+                            .padding(.leading, 15)
                     }
                 }
                 .padding()
@@ -133,18 +133,8 @@ struct ImageDetail: View {
                             }
                         }
                         
-                        Toggle("Lock after duration", isOn: $lockAfterDuration)
-                            .onChange(of: lockAfterDuration) { _ in
-                                dataManager.scannedImages[index].lockAfterDuration = lockAfterDuration
-                                dataManager.saveScannedImages()
-                            }
                     }
-                    
-                    Toggle("Completed", isOn: $isCompleted)
-                        .onChange(of: isCompleted) { _ in
-                            dataManager.scannedImages[index].completed = isCompleted
-                            dataManager.saveScannedImages()
-                        }
+    
                 }
                 else{
                     //subjects
@@ -169,12 +159,6 @@ struct ImageDetail: View {
                         Spacer()
                         Text(String(dataManager.scannedImages[index].durationHours!) + String(dataManager.scannedImages[index].durationMinutes!))
                     }
-                    
-                    Toggle("Lock after duration", isOn: $lockAfterDuration)
-                        .disabled(true)
-                    
-                    Toggle("Completed", isOn: $isCompleted)
-                        .disabled(true)
                 }
             }
         }

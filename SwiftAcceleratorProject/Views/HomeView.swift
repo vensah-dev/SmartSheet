@@ -73,16 +73,13 @@ struct HomeView: View {
                                     .frame(width: 60, height: 60)
                                     .cornerRadius(5)
                                 
-                                VStack {
-                                    Text(scannedImage.title)
-                                    if !scannedImage.caption.isEmpty {
-                                        Text(scannedImage.caption)
-                                    }
-                                }
+                                Text(scannedImage.title)
+                                    .bold()
+                                    .foregroundStyle(Color.accentColor)
                                 
                                 Spacer()
                                 
-                                Text("Details")
+                                Text("More")
                             }
                         }
                     }

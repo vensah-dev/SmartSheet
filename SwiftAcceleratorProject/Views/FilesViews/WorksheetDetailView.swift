@@ -1,7 +1,6 @@
 import SwiftUI
 
 struct WorksheetDetailView: View {
-    @State private var lockAfterDuration = false
     @State var ShowCreate = false
     @State private var title = ""
     @State private var subtitle = ""
@@ -89,7 +88,6 @@ struct WorksheetDetailView: View {
                             }
                         }
                         
-                        Toggle("Lock after duration", isOn: $lockAfterDuration)
                     }
                 }
             }
@@ -167,7 +165,6 @@ struct WorksheetDetailView: View {
             image: scannedUIImage,
             durationHours: self.durationHours,
             durationMinutes: self.durationMinutes,
-            lockAfterDuration: self.lockAfterDuration,
             subject: self.selectedSubject,
             topic: self.selectedTopic
         )

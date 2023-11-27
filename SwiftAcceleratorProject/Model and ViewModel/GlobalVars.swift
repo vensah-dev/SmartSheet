@@ -33,7 +33,6 @@ struct ScannedImage: Identifiable, Equatable {
     var subject: String
     var topic: String
     var used: Int = 0
-    var completed: Bool = false
     
     static func == (lhs: ScannedImage, rhs: ScannedImage) -> Bool {
         return lhs.id == rhs.id
