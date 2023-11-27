@@ -222,6 +222,7 @@ struct ImageDetailView: View {
             ScrollView(.vertical) {
                 LazyVStack(spacing: 20) {
                     ForEach(loadedImages.indices, id: \.self) { index in
+                        TimerView(durationHours: dataManager.scannedImages[index].durationHours ?? 0, durationMinutes: dataManager.scannedImages[index].durationMinutes ?? 0, lockAfterDuration: dataManager.scannedImages[index].lockAfterDuration ?? false)
                         Image(uiImage: loadedImages[index])
                             .resizable()
                             .aspectRatio(contentMode: .fill)
@@ -253,3 +254,5 @@ struct ImageDetailView: View {
         }
     }
 }
+
+
