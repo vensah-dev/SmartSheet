@@ -18,40 +18,44 @@ struct TimerView: View {
     }
     
     var body: some View {
-        ZStack {
-            Rectangle()
-                .frame(height: 50)
-                .background(Color.blue)
-                .cornerRadius(22)
-                .overlay (
-                    HStack {
-                        Text(timerName)
-                            .foregroundColor(.white)
-                            .padding(.leading, 15)
-                        
-                        Spacer()
-                        
-                        Text("\(formattedTime(remainingTime))")
-                            .foregroundStyle(.white)
-                            .padding(.trailing, 15)
+        if durationHours == 0 && durationMinutes == 0 {
+            //show nothing
+        } else {
+            ZStack {
+                Rectangle()
+                    .frame(height: 50)
+                    .background(Color.blue)
+                    .cornerRadius(22)
+                    .overlay (
+                        HStack {
+                            Text(timerName)
+                                .foregroundColor(.white)
+                                .padding(.leading, 15)
+                            
+                            Spacer()
+                            
+                            Text("\(formattedTime(remainingTime))")
+                                .foregroundStyle(.white)
+                                .padding(.trailing, 15)
+                        }
+                    )
+            }
+            .padding(.init(top: 0, leading: 25, bottom: 0, trailing: 25))
+            .onAppear {
+                startTimer()
+            }
+            .onDisappear {
+                stopTimer()
+            }
+            .alert(isPresented: $showAlert) {
+                Alert(
+                    title: Text("Timer Finished"),
+                    message: Text("The timer has ended."),
+                    dismissButton: .default(Text("OK")) {
+                        presentationMode.wrappedValue.dismiss()
                     }
                 )
-        }
-        .padding(.init(top: 0, leading: 25, bottom: 0, trailing: 25))
-        .onAppear {
-            startTimer()
-        }
-        .onDisappear {
-            stopTimer()
-        }
-        .alert(isPresented: $showAlert) {
-            Alert(
-                title: Text("Timer Finished"),
-                message: Text("The timer has ended."),
-                dismissButton: .default(Text("OK")) {
-                    presentationMode.wrappedValue.dismiss()
-                }
-            )
+            }
         }
     }
     

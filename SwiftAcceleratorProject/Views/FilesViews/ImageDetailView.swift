@@ -94,6 +94,16 @@ struct ImageDetail: View {
                     
                     
                     Toggle("Practice Paper", isOn: $practicePaper)
+                        .onChange(of: practicePaper) { newValue in
+                            if !newValue {
+                                // If Practice Paper is toggled off, set both durationHours and durationMinutes to 0
+                                durationHours = 0
+                                durationMinutes = 0
+                                dataManager.scannedImages[index].durationHours = durationHours
+                                dataManager.scannedImages[index].durationMinutes = durationMinutes
+                                dataManager.saveScannedImages()
+                            }
+                        }
                     
                     if practicePaper {
                         HStack {
@@ -130,7 +140,7 @@ struct ImageDetail: View {
                         }
                         
                     }
-    
+                    
                 }
                 else{
                     //subjects
@@ -156,7 +166,7 @@ struct ImageDetail: View {
                             
                             Text(String(format: "%02d:%02d:00", dataManager.scannedImages[index].durationHours ?? 0, dataManager.scannedImages[index].durationMinutes ?? 0))
                         }
-
+                        
                     }
                 }
             }
