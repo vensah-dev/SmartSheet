@@ -161,7 +161,7 @@ struct ImageDetail: View {
                     HStack {
                         Text("Duration")
                         Spacer()
-                        Text(selectedDurationLabel)
+                        Text(String(dataManager.scannedImages[index].durationHours!) + String(dataManager.scannedImages[index].durationMinutes!))
                     }
                     
                     Toggle("Lock after duration", isOn: $lockAfterDuration)
