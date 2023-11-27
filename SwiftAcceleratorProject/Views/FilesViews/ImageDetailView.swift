@@ -216,22 +216,29 @@ struct ImageDetailView: View {
     @State private var loadedImages: [UIImage] = []
     
     @Environment(\.dismiss) var dismiss
-    
+    @State var isViewLocked = false
     
     var body: some View {
         NavigationStack{
-            ScrollView(.vertical) {
-                LazyVStack(spacing: 20) {
-                    ForEach(loadedImages.indices, id: \.self) { index in
-                        TimerView(durationHours: dataManager.scannedImages[index].durationHours ?? 0, durationMinutes: dataManager.scannedImages[index].durationMinutes ?? 0, lockAfterDuration: dataManager.scannedImages[index].lockAfterDuration ?? false)
-                        Image(uiImage: loadedImages[index])
-                            .resizable()
-                            .aspectRatio(contentMode: .fill)
-                            .clipped()
-                            .padding(.horizontal, 10)
+            ZStack {
+                ScrollView(.vertical) {
+                    LazyVStack(spacing: 20) {
+                        ForEach(loadedImages.indices, id: \.self) { index in
+                            TimerView(isViewLocked: $isViewLocked,  durationHours: dataManager.scannedImages[index].durationHours ?? 0, durationMinutes: dataManager.scannedImages[index].durationMinutes ?? 0, lockAfterDuration: dataManager.scannedImages[index].lockAfterDuration ?? false)
+                            Image(uiImage: loadedImages[index])
+                                .resizable()
+                                .aspectRatio(contentMode: .fill)
+                                .clipped()
+                                .padding(.horizontal, 10)
+                        }
                     }
+                    .padding(.vertical, 10)
                 }
-                .padding(.vertical, 10)
+                if isViewLocked {
+                    Color(.systemBackground)
+                        .blur(radius: 10)
+                        .edgesIgnoringSafeArea(.all)
+                }
             }
             .toolbar(){
                 ToolbarItem(placement: .navigationBarLeading) {
