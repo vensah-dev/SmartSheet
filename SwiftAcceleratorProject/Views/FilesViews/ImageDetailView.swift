@@ -99,7 +99,7 @@ struct ImageDetail: View {
                                 isDurationPickerPresented.toggle()
                             }) {
                                 HStack {
-                                    Text(selectedDurationLabel)
+                                    Text(String(dataManager.scannedImages[index].durationHours!) + String(dataManager.scannedImages[index].durationMinutes!))
                                         .foregroundStyle(.blue)
                                 }
                             }
