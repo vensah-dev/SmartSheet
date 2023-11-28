@@ -47,7 +47,7 @@ struct CalendarView: View {
 
                     let formattedDates: [String] = sortedEvents.map { item in
                         let dateFormatter = DateFormatter()
-                        dateFormatter.dateFormat = "HH:mm"
+                        dateFormatter.dateFormat = "h:mm a"
                         return dateFormatter.string(from: item.startDate)
                     }
 
