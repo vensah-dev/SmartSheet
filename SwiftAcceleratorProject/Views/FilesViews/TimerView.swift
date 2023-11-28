@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct TimerView: View {
-    @State private var timerName = "Timer 1"
+    @State private var timerName = "Timer"
     
     @Environment(\.presentationMode) var presentationMode
     @State private var remainingTime: TimeInterval = 0
