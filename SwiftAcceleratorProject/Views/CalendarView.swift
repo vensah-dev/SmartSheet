@@ -9,7 +9,7 @@ import SwiftUI
 
 struct CalendarView: View {
     @UIApplicationDelegateAdaptor private var appDelegate: AppDelegate
-    @ObservedObject var dataManager = DataManager()
+    @ObservedObject var dataManager: DataManager
     @State var DisplayEvents: [Event] = [Event(title: "", details: "")]
     @State var selectedDate: Date = Date()
     @State private var CreateNew = false
@@ -58,7 +58,7 @@ struct CalendarView: View {
                         let formattedDate = formattedDates[dataManager.Events.firstIndex(of: item)!]
                         
                         NavigationLink(destination:{
-                            EventDetailView( event: item, Events: $dataManager.Events)
+                            EventDetailView(dataManager: dataManager, event: item, Events: $dataManager.Events)
                         }, label:{
                             HStack{
                                 Text(item.title)
@@ -86,7 +86,7 @@ struct CalendarView: View {
                 }
             }
             .sheet(isPresented: $CreateNew){
-                CreateNewEventView(Events: $dataManager.Events, Edit: false)
+                CreateNewEventView(dataManager: dataManager, Events: $dataManager.Events, Edit: false)
             }
         }
         .onDisappear{
@@ -103,8 +103,4 @@ struct CalendarView: View {
         dataManager.Events.remove(atOffsets: offsets)
         dataManager.saveEvents()
     }
-}
-
-#Preview {
-    CalendarView()
 }

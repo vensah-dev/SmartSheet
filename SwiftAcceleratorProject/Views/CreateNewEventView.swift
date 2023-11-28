@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct CreateNewEventView: View {
-    @ObservedObject var dataManager = DataManager()
+    @ObservedObject var dataManager: DataManager
     @Binding var Events: [Event]
     @State var title = ""
     @State var description = ""

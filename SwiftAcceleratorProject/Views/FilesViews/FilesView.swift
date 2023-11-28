@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct FilesView: View {
-    @StateObject var dataManager = DataManager()
+    @StateObject var dataManager: DataManager
     @State var searchText = ""
     @State private var selectedSubjectIndex = -1
     @State var filterSubject: String = ""

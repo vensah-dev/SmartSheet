@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct TopicView: View {
-    @ObservedObject var dataManager = DataManager()
+    @ObservedObject var dataManager: DataManager
     @State private var isAddTopicModalPresented = false
     @Binding var selectedTopic: String
     @State private var newTopic = ""

@@ -9,7 +9,7 @@ import SwiftUI
 
 struct StatsView: View {      
     @State public var suggestions: [ScannedImage] = []
-    @StateObject private var dataManager = DataManager()
+    @StateObject private var dataManager: DataManager
     @State var DaysOfTheWeek: [String] = [
         "Sun",
         "Mon",
@@ -24,8 +24,3 @@ struct StatsView: View {
         Text("hello")
     }
 }
-
-#Preview {
-    StatsView()
-}
-

@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct SubjectView: View {
-    @ObservedObject var dataManager = DataManager()
+    @ObservedObject var dataManager: DataManager
     @State private var isAddSubjectModalPresented = false
     @Binding var selectedSubject: String
     @State private var newSubject = ""

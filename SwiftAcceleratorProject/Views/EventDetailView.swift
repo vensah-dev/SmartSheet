@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct EventDetailView: View {
-    @ObservedObject var dataManager = DataManager()
+    @ObservedObject var dataManager: DataManager
     @State var event: Event
     @Binding var Events: [Event]
     @State var index = 0

@@ -10,19 +10,20 @@ import SwiftUI
 
 struct ContentView: View {
     @UIApplicationDelegateAdaptor private var appDelegate: AppDelegate
+    @ObservedObject var dataManager = DataManager()
     var body: some View {
         TabView{
-            HomeView()
+            HomeView(dataManager: dataManager)
                 .tabItem{
                     Label("Home", systemImage: "house")
                 }
             
-            FilesView()
+            FilesView(dataManager: dataManager)
                 .tabItem{
                     Label("Files", systemImage: "doc.fill")
                 }
             
-            CalendarView()
+            CalendarView(dataManager: dataManager)
                 .tabItem{
                     Label("Calendar", systemImage: "calendar")
                 }
