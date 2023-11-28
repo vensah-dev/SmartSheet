@@ -16,19 +16,19 @@ struct TimerView: View {
     }
     
     var body: some View {
-        if durationHours == 0 && durationMinutes == 0 {
-            //show nothing
-        } else {
+
+        if !(durationHours == 0 && durationMinutes == 0){
             ZStack {
                 RoundedRectangle(cornerRadius: 5)
                     .fill(Color.accentColor)
-                    .cornerRadius(22)
+                    .cornerRadius(5)
+                    .opacity(0.5)
                 
                 Text("\(formattedTime(remainingTime))")
                     .padding(10)
                     .foregroundColor(.black)
             }
-            .padding(.init(top: 0, leading: 0, bottom: 0, trailing: 0))
+            .padding(.init(top: 5, leading: 0, bottom: 5, trailing: 0))
             .onAppear {
                 startTimer()
             }

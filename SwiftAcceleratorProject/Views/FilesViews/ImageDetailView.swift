@@ -237,7 +237,7 @@ struct ImageDetailView: View {
                 }
                 .padding(.vertical, 10)
             }
-            
+            .navigationTitle(dataManager.scannedImages[currentIndex].title)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button(action: {
