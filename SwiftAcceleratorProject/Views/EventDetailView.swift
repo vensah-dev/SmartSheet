@@ -61,9 +61,6 @@ struct EventDetailView: View {
             
             index = i
         }
-        .onDisappear {
-            Events[index] = event
-        }
         .alert(isPresented: $showAlert) {
             Alert(title: Text("Validation Error"), message: Text("Start date and time must be less than end date and time."), dismissButton: .default(Text("OK")))
         }
@@ -78,6 +75,8 @@ struct EventDetailView: View {
                 }
                 withAnimation {
                     isEditing.toggle()
+                    Events[index] = event // Update the Events array
+                    dataManager.saveEvents() // Save changes
                 }
             } else {
                 showAlert.toggle()
