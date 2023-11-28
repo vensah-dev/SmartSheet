@@ -67,43 +67,60 @@ struct HomeView: View {
                 }
                 
                 Section(header: Text("Events").textCase(.uppercase)) {
-                    let formattedDates: [String] = dataManager.Events.map { item in
-                        let dateFormatter = DateFormatter()
-                        dateFormatter.dateFormat = "HH:mm"
-                        return dateFormatter.string(from: item.startDate)
-                    }
-                    
-                    ForEach(dataManager.Events.filter { x in
+                    let filteredEvents = dataManager.Events.filter { x in
                         let cal = Calendar.current
+                        let startStartDate = cal.date(bySettingHour: 0, minute: 0, second: 0, of: x.startDate) ?? x.startDate
                         let endEndDate = cal.date(bySettingHour: 23, minute: 59, second: 59, of: x.endDate) ?? x.endDate
-                        
-                        let DateRange = Date.now...Date().addingTimeInterval(TimeInterval(86400*3))
-                        
-                        if DateRange.contains(endEndDate) {
-                            return true
-                        } else {
-                            return false
+
+                        let dateRange = startStartDate...endEndDate
+
+                        return dateRange.contains(selectedDate)
+                    }
+
+                    let groupedEvents = Dictionary(grouping: filteredEvents) { event in
+                        Calendar.current.startOfDay(for: event.endDate)
+                    }
+
+                    let sortedGroups = groupedEvents.sorted { $0.key < $1.key }
+
+                    ForEach(sortedGroups, id: \.key) { date, eventsInSameDay in
+                        let sortedEvents = eventsInSameDay.sorted { $0.startDate < $1.startDate }
+
+                        let formattedDates: [String] = sortedEvents.map { item in
+                            let dateFormatter = DateFormatter()
+                            dateFormatter.dateFormat = "HH:mm"
+                            return dateFormatter.string(from: item.startDate)
                         }
-                        
-                    }, id: \.id) { item in
-                        let formattedDate = formattedDates[dataManager.Events.firstIndex(of: item)!]
-                        NavigationLink(destination:{
-                            EventDetailView(dataManager: dataManager, event: item, Events: $dataManager.Events)
-                        }, label:{
-                            HStack{
-                                Text(item.title)
-                                    .bold()
-                                    .foregroundStyle(Color.accentColor)
-                                
-                                Spacer()
-                                
-                                Text("\(formattedDate)")
-                                    .foregroundStyle(.secondary)
-                            }
-                            .padding([.top, .bottom],  5)
-                        })
+
+                        ForEach(0..<sortedEvents.count, id: \.self) { index in
+                            let item = sortedEvents[index]
+                            let formattedDate = formattedDates[index]
+
+                            NavigationLink(destination: {
+                                EventDetailView(dataManager: dataManager, event: item, Events: $dataManager.Events)
+                            }, label: {
+                                HStack {
+                                    VStack(alignment: .leading) {
+                                        Text(item.title)
+                                            .bold()
+                                            .foregroundStyle(Color.accentColor)
+
+                                        Text("Due: \(item.endDate, format: .dateTime.month().day())")
+                                            .foregroundStyle(.secondary)
+                                            .font(.caption)
+                                    }
+
+                                    Spacer()
+
+                                    Text("\(formattedDate)")
+                                        .foregroundStyle(.secondary)
+                                }
+                                .padding([.top, .bottom],  5)
+                            })
+                        }
                     }
                 }
+
             }
             .refreshable {
                 refreshSuggestions()

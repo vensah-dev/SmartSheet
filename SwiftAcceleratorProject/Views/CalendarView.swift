@@ -33,40 +33,45 @@ struct CalendarView: View {
                 }
                 
                 Section(header: Text("Events").textCase(.uppercase)){
-                    
-                    let formattedDates: [String] = dataManager.Events.map { item in
+
+                    let filteredEvents = dataManager.Events.filter { x in
+                        let cal = Calendar.current
+                        let startStartDate = cal.date(bySettingHour: 0, minute: 0, second: 0, of: x.startDate) ?? x.startDate
+                        let endEndDate = cal.date(bySettingHour: 23, minute: 59, second: 59, of: x.endDate) ?? x.endDate
+
+                        let dateRange = startStartDate...endEndDate
+
+                        return dateRange.contains(selectedDate)
+                    }
+
+                    let sortedEvents = filteredEvents.sorted { $0.startDate < $1.startDate }
+
+                    let formattedDates: [String] = sortedEvents.map { item in
                         let dateFormatter = DateFormatter()
                         dateFormatter.dateFormat = "HH:mm"
                         return dateFormatter.string(from: item.startDate)
                     }
-                    
-                    ForEach(dataManager.Events.filter { x in
-                        let cal = Calendar.current
-                        let startStartDate = cal.date(bySettingHour: 0, minute: 0, second: 0, of: x.startDate) ?? x.startDate
-                        let endEndDate = cal.date(bySettingHour: 23, minute: 59, second: 59, of: x.endDate) ?? x.endDate
-                        
-                        let DateRange = startStartDate...endEndDate
-                        
-                        if(DateRange.contains(selectedDate)){
-                            return true
-                        }
-                        else{
-                            return false
-                        }
-                        
-                    }, id: \.id){ item in
-                        let formattedDate = formattedDates[dataManager.Events.firstIndex(of: item)!]
-                        
+
+                    ForEach(0..<sortedEvents.count, id: \.self) { index in
+                        let item = sortedEvents[index]
+                        let formattedDate = formattedDates[index]
+
                         NavigationLink(destination:{
                             EventDetailView(dataManager: dataManager, event: item, Events: $dataManager.Events)
                         }, label:{
                             HStack{
-                                Text(item.title)
-                                    .bold()
-                                    .foregroundStyle(Color.accentColor)
-                                
+                                VStack(alignment: .leading) {
+                                    Text(item.title)
+                                        .bold()
+                                        .foregroundStyle(Color.accentColor)
+                                    
+                                    Text("Due: \(item.endDate, format: .dateTime.month().day())")
+                                        .foregroundStyle(.secondary)
+                                        .font(.caption)
+                                }
+
                                 Spacer()
-                                
+
                                 Text("\(formattedDate)")
                                     .foregroundStyle(.secondary)
                             }
@@ -77,7 +82,6 @@ struct CalendarView: View {
                         delete(at: indices)
                     })
                 }
-                
             }
             .listStyle(.sidebar)
             .toolbar(){

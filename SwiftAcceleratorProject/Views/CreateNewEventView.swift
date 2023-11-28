@@ -12,6 +12,9 @@ struct CreateNewEventView: View {
     
     @State var DisableCreate = false
     
+    @State private var showAlert = false
+    @State private var alertMessage = ""
+    
     @Environment(\.dismiss) var dismiss
     
     var body: some View {
@@ -33,22 +36,26 @@ struct CreateNewEventView: View {
                     )
                     .foregroundStyle(Color.accentColor)
                     .tint(Color.accentColor)
-                    
+
                     DatePicker(
                         "End Date",
                         selection: $EventEndDate,
-                        in: EventStartDate...Calendar.current.date(bySettingHour: 23, minute: 59, second: 59, of: EventStartDate)!,
+                        in: EventStartDate..., // Allow selection starting from the selected start date
                         displayedComponents: [.date, .hourAndMinute]
                     )
                     .foregroundStyle(Color.accentColor)
                     .tint(Color.accentColor)
                 }
             }
-            .toolbar(){
+            .toolbar() {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button {
-                        Events.append(Event(title: title, details: description, startDate: EventStartDate, endDate: EventEndDate))
-                        dismiss()
+                        if validateInputs() {
+                            Events.append(Event(title: title, details: description, startDate: EventStartDate, endDate: EventEndDate))
+                            dismiss()
+                        } else {
+                            showAlert = true
+                        }
                     } label: {
                         Text("Save")
                             .foregroundStyle(Color.accentColor)
@@ -76,10 +83,17 @@ struct CreateNewEventView: View {
             .navigationTitle("Create New Event")
             .navigationBarTitleDisplayMode(.inline)
         }
+        .alert(isPresented: $showAlert) {
+            Alert(
+                title: Text("Validation Error"),
+                message: Text(alertMessage),
+                dismissButton: .default(Text("OK"))
+            )
+        }
     }
     
-    func Validate(){
-        if(!title.trimmingCharacters(in: .whitespaces).isEmpty){
+    func Validate() {
+        if (!title.trimmingCharacters(in: .whitespaces).isEmpty) {
             if (EventEndDate >= EventStartDate) {
                 DisableCreate = false
             } else {
@@ -99,6 +113,33 @@ struct CreateNewEventView: View {
             }
         } else {
             DisableCreate = true
+        }
+    }
+    
+    func validateInputs() -> Bool {
+        if !title.trimmingCharacters(in: .whitespaces).isEmpty {
+            if EventEndDate >= EventStartDate {
+                let startTime = Calendar.current.component(.hour, from: EventStartDate) * 60 + Calendar.current.component(.minute, from: EventStartDate)
+                let endTime = Calendar.current.component(.hour, from: EventEndDate) * 60 + Calendar.current.component(.minute, from: EventEndDate)
+
+                if startTime < endTime {
+                    if Events.contains(where: { $0.title == title }) {
+                        alertMessage = "An event with the same title already exists."
+                        return false
+                    } else {
+                        return true
+                    }
+                } else {
+                    alertMessage = "End time must be after start time."
+                    return false
+                }
+            } else {
+                alertMessage = "End date must be after or equal to start date."
+                return false
+            }
+        } else {
+            alertMessage = "Title cannot be empty."
+            return false
         }
     }
 }
