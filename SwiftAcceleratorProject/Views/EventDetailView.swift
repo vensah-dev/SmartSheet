@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct EventDetailView: View {
+    @UIApplicationDelegateAdaptor private var appDelegate: AppDelegate
     @ObservedObject var dataManager: DataManager
     @State var event: Event
     @Binding var Events: [Event]
@@ -70,7 +71,7 @@ struct EventDetailView: View {
         Button(action: {
             if validateDateAndTime() {
                 if !isEditing {
-                    Events[index].sentNotification = false
+                    appDelegate.scheduleLocalNotification(date: event.endDate, title: "Smart Sheet", caption: "\(event.title) is starting soon!", identifier: event.title)
                     dataManager.saveEvents()
                 }
                 withAnimation {

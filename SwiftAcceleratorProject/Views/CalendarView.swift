@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct CalendarView: View {
-    @UIApplicationDelegateAdaptor private var appDelegate: AppDelegate
     @ObservedObject var dataManager: DataManager
     @State var DisplayEvents: [Event] = [Event(title: "", details: "")]
     @State var selectedDate: Date = Date()
@@ -79,7 +78,11 @@ struct CalendarView: View {
                         })
                     }
                     .onDelete(perform: { indices in
-                        delete(at: indices)
+                        var index: Int = 0
+                        for i in indices{
+                            index = i
+                        }
+                        delete(at: indices, index: index)
                     })
                 }
             }
@@ -94,16 +97,13 @@ struct CalendarView: View {
             }
         }
         .onDisappear{
-            
             dataManager.saveEvents()
-            for x in dataManager.Events{
-                if(!x.sentNotification){
-                    appDelegate.scheduleLocalNotification(date: x.startDate, title: "Smart Sheet", caption: "\(x.title) is starting soon!")
-                }
-            }
         }
     }
-    func delete(at offsets: IndexSet) {
+    func delete(at offsets: IndexSet, index: Int) {
+        UNUserNotificationCenter.current().removeDeliveredNotifications(withIdentifiers: [dataManager.Events[index].title])
+        UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [dataManager.Events[index].title])
+        
         dataManager.Events.remove(atOffsets: offsets)
         dataManager.saveEvents()
     }

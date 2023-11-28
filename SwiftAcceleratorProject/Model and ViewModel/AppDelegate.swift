@@ -31,7 +31,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         completionHandler()
     }
 
-    func scheduleLocalNotification(date: Date, title: String, caption: String, repeatNotification: Bool = false) {
+    func scheduleLocalNotification(date: Date, title: String, caption: String, repeatNotification: Bool = false, identifier: String) {
         print("Scheduling notification: \(title)")
 
         UNUserNotificationCenter.current().getNotificationSettings { settings in
@@ -44,7 +44,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                 let dateInfo = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: date)
                 let trigger = UNCalendarNotificationTrigger(dateMatching: dateInfo, repeats: repeatNotification)
 
-                let request = UNNotificationRequest(identifier: title, content: content, trigger: trigger)
+                let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
 
                 let notificationCenter = UNUserNotificationCenter.current()
                 notificationCenter.add(request) { error in

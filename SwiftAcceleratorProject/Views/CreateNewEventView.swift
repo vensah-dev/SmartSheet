@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct CreateNewEventView: View {
+    @UIApplicationDelegateAdaptor private var appDelegate: AppDelegate
     @ObservedObject var dataManager: DataManager
     @Binding var Events: [Event]
     @State var title = ""
@@ -50,12 +51,14 @@ struct CreateNewEventView: View {
             .toolbar() {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button {
+                        
                         if validateInputs() {
                             Events.append(Event(title: title, details: description, startDate: EventStartDate, endDate: EventEndDate))
                             dismiss()
                         } else {
                             showAlert = true
                         }
+                        appDelegate.scheduleLocalNotification(date: EventEndDate, title: "Smart Sheet", caption: "\(title) is starting soon!", identifier: title)
                     } label: {
                         Text("Save")
                             .foregroundStyle(Color.accentColor)

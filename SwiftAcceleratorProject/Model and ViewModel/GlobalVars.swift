@@ -17,8 +17,6 @@ struct Event: Identifiable, Codable, Equatable {
     var details: String
     var startDate: Date = Date.now
     var endDate: Date = Date.now
-    var sentNotification: Bool = false
-    
 }
 
 //Files
