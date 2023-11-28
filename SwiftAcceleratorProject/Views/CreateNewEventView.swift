@@ -28,7 +28,7 @@ struct CreateNewEventView: View {
                     DatePicker(
                         "Start Date",
                         selection: $EventStartDate,
-                        in: Date()...,
+                        in: Calendar.current.date(bySettingHour: 0, minute: 0, second: 0, of: Date())!...,
                         displayedComponents: [.date, .hourAndMinute]
                     )
                     .foregroundStyle(Color.accentColor)
@@ -37,7 +37,7 @@ struct CreateNewEventView: View {
                     DatePicker(
                         "End Date",
                         selection: $EventEndDate,
-                        in: EventStartDate...,
+                        in: EventStartDate...Calendar.current.date(bySettingHour: 23, minute: 59, second: 59, of: EventStartDate)!,
                         displayedComponents: [.date, .hourAndMinute]
                     )
                     .foregroundStyle(Color.accentColor)
