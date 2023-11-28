@@ -23,7 +23,6 @@ struct TimerView: View {
                     .fill(Color.accentColor)
                     .cornerRadius(5)
                     .opacity(0.5)
-                    .padding()
                 
                 Text("\(formattedTime(remainingTime))")
                     .padding(10)
