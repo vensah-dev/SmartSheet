@@ -13,12 +13,13 @@ struct EventDetailView: View {
     @Binding var Events: [Event]
     @State var index = 0
     @State var isEditing = false
+    @State private var showAlert = false
     
     @Environment(\.dismiss) var dismiss
     
     var body: some View {
-        List{
-            Section(header: Text("Date")){
+        List {
+            Section(header: Text("Date")) {
                 DatePicker(
                     "Start Date",
                     selection: $event.startDate,
@@ -38,7 +39,7 @@ struct EventDetailView: View {
                 .disabled(!isEditing)
             }
             
-            Section(header: Text("Description")){
+            Section(header: Text("Description")) {
                 TextField("Enter a description", text: $event.details)
                     .disabled(!isEditing)
             }
@@ -46,13 +47,12 @@ struct EventDetailView: View {
         .opacity(0.8)
         .navigationTitle($event.title)
         .navigationBarTitleDisplayMode(isEditing ? .inline : .large)
-        
         .navigationBarItems(trailing: editButton)
-        .onAppear{
+        .onAppear {
             var i = 0
             
-            for x in Events{
-                if(x.title == event.title){
+            for x in Events {
+                if x.title == event.title {
                     break
                 }
                 
@@ -61,21 +61,33 @@ struct EventDetailView: View {
             
             index = i
         }
-        .onDisappear{
+        .onDisappear {
             Events[index] = event
         }
+        .alert(isPresented: $showAlert) {
+            Alert(title: Text("Validation Error"), message: Text("Start date and time must be less than end date and time."), dismissButton: .default(Text("OK")))
+        }
     }
+    
     private var editButton: some View {
         Button(action: {
-            if(!isEditing){
-                Events[index].sentNotification = false
-                dataManager.saveEvents()
-            }
-            withAnimation {
-                isEditing.toggle()
+            if validateDateAndTime() {
+                if !isEditing {
+                    Events[index].sentNotification = false
+                    dataManager.saveEvents()
+                }
+                withAnimation {
+                    isEditing.toggle()
+                }
+            } else {
+                showAlert.toggle()
             }
         }) {
             Text(isEditing ? "Done" : "Edit")
         }
+    }
+    
+    private func validateDateAndTime() -> Bool {
+        return event.startDate < event.endDate
     }
 }
