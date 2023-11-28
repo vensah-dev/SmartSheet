@@ -51,7 +51,7 @@ struct HomeView: View {
                                     .clipShape(RoundedRectangle(cornerRadius: 5))
                                     .overlay(
                                         RoundedRectangle(cornerRadius: 5)
-                                            .stroke(Color.accentColor, lineWidth: 2)
+                                            .stroke(Color.accentColor, lineWidth: 1)
                                     )
                                 
                                 Text(scannedImage.title)

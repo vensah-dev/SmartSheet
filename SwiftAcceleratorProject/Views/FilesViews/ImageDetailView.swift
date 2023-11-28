@@ -224,30 +224,32 @@ struct ImageDetailView: View {
     @State var lockAfterDuration = Bool()
     
     var body: some View {
-        NavigationStack{
-            ZStack {
-                ScrollView(.vertical) {
-                    LazyVStack(spacing: 20) {
-                        TimerView(durationHours: dataManager.scannedImages[currentIndex].durationHours ?? 0, durationMinutes: dataManager.scannedImages[currentIndex].durationMinutes ?? 0, lockAfterDuration: lockAfterDuration)
-                        ForEach(loadedImages.indices, id: \.self) { index in
-                            Image(uiImage: loadedImages[index])
-                                .resizable()
-                                .aspectRatio(contentMode: .fill)
-                                .clipped()
-                                .padding(.horizontal, 10)
-                        }
+        NavigationStack {
+            ScrollView(.vertical) {
+                LazyVStack(spacing: 20) {
+                    ForEach(loadedImages.indices, id: \.self) { index in
+                        Image(uiImage: loadedImages[index])
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                            .clipped()
+                            .padding(.horizontal, 10)
                     }
-                    .padding(.vertical, 10)
                 }
+                .padding(.vertical, 10)
             }
-            .toolbar(){
+            
+            .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    Button{
+                    Button(action: {
                         dismiss()
-                    }label:{
+                    }) {
                         Text("Done")
-                            .foregroundStyle(Color.accentColor)
+                            .foregroundColor(.accentColor)
                     }
+                }
+
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    TimerView(durationHours: dataManager.scannedImages[currentIndex].durationHours ?? 0, durationMinutes: dataManager.scannedImages[currentIndex].durationMinutes ?? 0, lockAfterDuration: lockAfterDuration)
                 }
             }
             .onAppear {
@@ -262,5 +264,3 @@ struct ImageDetailView: View {
         }
     }
 }
-
-

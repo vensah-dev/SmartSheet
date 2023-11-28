@@ -1,8 +1,6 @@
 import SwiftUI
 
 struct TimerView: View {
-    @State private var timerName = "Timer"
-    
     @Environment(\.presentationMode) var presentationMode
     @State private var remainingTime: TimeInterval = 0
     @State private var isViewLocked: Bool = false
@@ -22,25 +20,15 @@ struct TimerView: View {
             //show nothing
         } else {
             ZStack {
-                Rectangle()
-                    .frame(height: 50)
-                    .background(Color.blue)
+                RoundedRectangle(cornerRadius: 5)
+                    .fill(Color.accentColor)
                     .cornerRadius(22)
-                    .overlay (
-                        HStack {
-                            Text(timerName)
-                                .foregroundColor(.white)
-                                .padding(.leading, 15)
-                            
-                            Spacer()
-                            
-                            Text("\(formattedTime(remainingTime))")
-                                .foregroundStyle(.white)
-                                .padding(.trailing, 15)
-                        }
-                    )
+                
+                Text("\(formattedTime(remainingTime))")
+                    .padding(10)
+                    .foregroundColor(.black)
             }
-            .padding(.init(top: 0, leading: 25, bottom: 0, trailing: 25))
+            .padding(.init(top: 0, leading: 0, bottom: 0, trailing: 0))
             .onAppear {
                 startTimer()
             }
