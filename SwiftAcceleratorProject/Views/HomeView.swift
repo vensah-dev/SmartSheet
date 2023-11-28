@@ -37,7 +37,8 @@ struct HomeView: View {
                 .listRowBackground(Color.red.opacity(0.0))
                 
                 Section(header: Text("Suggestions").textCase(.uppercase)) {
-                    ForEach(suggestions, id: \.id) { scannedImage in
+                    let suggestion = suggestions.isEmpty || suggestions.count < 5 ? suggestions[0...] : suggestions[0..<5]
+                    ForEach(suggestion, id: \.id) { scannedImage in
                         NavigationLink(destination: ImageDetail(
                             title: scannedImage.title,
                             image: scannedImage.image,
@@ -51,7 +52,7 @@ struct HomeView: View {
                                     .clipShape(RoundedRectangle(cornerRadius: 5))
                                     .overlay(
                                         RoundedRectangle(cornerRadius: 5)
-                                            .stroke(Color.accentColor, lineWidth: 1)
+                                            .stroke(Color.accentColor.opacity(0.5), lineWidth: 0.5)
                                     )
                                 
                                 Text(scannedImage.title)
@@ -59,8 +60,6 @@ struct HomeView: View {
                                     .foregroundStyle(Color.accentColor)
                                 
                                 Spacer()
-                                
-                                Text("More")
                             }
                         }
                     }
@@ -133,12 +132,12 @@ struct HomeView: View {
         }
     }
     private func loadInitialSuggestions() {
-        self.suggestions = generateRandomSubset(dataManager.scannedImages, count: 5)
+        self.suggestions = dataManager.scannedImages.sorted{$0.used < $1.used}
     }
 
     private func refreshSuggestions() {
         DispatchQueue.main.async {
-            self.suggestions = generateRandomSubset(dataManager.scannedImages, count: 5)
+            self.suggestions = dataManager.scannedImages.sorted{$0.used < $1.used}
         }
     }
 

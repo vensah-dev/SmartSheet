@@ -86,7 +86,9 @@ class DataManager: ObservableObject {
                 durationMinutes: scannedImage.durationMinutes,
                 lockAfterDuration: scannedImage.lockAfterDuration,
                 subject: scannedImage.subject,
-                topic: scannedImage.topic
+                topic: scannedImage.topic,
+                used: scannedImage.used
+
             )
         }
 
@@ -118,7 +120,8 @@ class DataManager: ObservableObject {
                     durationMinutes: scannedImageWithImageData.durationMinutes,
                     lockAfterDuration: scannedImageWithImageData.lockAfterDuration,
                     subject: scannedImageWithImageData.subject,
-                    topic: scannedImageWithImageData.topic
+                    topic: scannedImageWithImageData.topic,
+                    used: scannedImageWithImageData.used
                 )
             }
         }
@@ -135,4 +138,5 @@ struct ScannedImageWithImageData: Codable {
     var lockAfterDuration: Bool?
     var subject: String
     var topic: String
+    var used: Int
 }

@@ -89,7 +89,7 @@ struct FilesView: View {
                                                 .clipShape(RoundedRectangle(cornerRadius: 5))
                                                 .overlay(
                                                     RoundedRectangle(cornerRadius: 5)
-                                                        .stroke(Color.accentColor, lineWidth: 1)
+                                                        .stroke(Color.accentColor.opacity(0.5), lineWidth: 0.5)
                                                 )
                                             
                                             VStack(alignment: .leading) {
