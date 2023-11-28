@@ -11,7 +11,7 @@ import SwiftUI
 import Swift
 
 //Events
-struct Event: Identifiable, Codable {
+struct Event: Identifiable, Codable, Equatable {
     var id = UUID()
     var title: String
     var details: String

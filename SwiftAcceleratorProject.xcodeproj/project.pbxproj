@@ -361,6 +361,7 @@
 				DEVELOPMENT_TEAM = 37822KKR43;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = SwiftAcceleratorProject/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Smart Sheet";
 				INFOPLIST_KEY_NSCameraUsageDescription = "Camera is used for scanning worksheets";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -395,6 +396,7 @@
 				DEVELOPMENT_TEAM = 37822KKR43;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = SwiftAcceleratorProject/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Smart Sheet";
 				INFOPLIST_KEY_NSCameraUsageDescription = "Camera is used for scanning worksheets";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;

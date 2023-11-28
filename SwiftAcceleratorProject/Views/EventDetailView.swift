@@ -17,37 +17,36 @@ struct EventDetailView: View {
     @Environment(\.dismiss) var dismiss
     
     var body: some View {
-        NavigationStack{
-            List{
-                Section(header: Text("Date")){
-                    DatePicker(
-                        "Start Date",
-                        selection: $event.startDate,
-                        displayedComponents: [.date, .hourAndMinute]
-                    )
-                    .foregroundColor(Color.accentColor)
-                    .tint(Color.accentColor)
-                    .disabled(!isEditing)
-                    
-                    DatePicker(
-                        "End Date",
-                        selection: $event.endDate,
-                        displayedComponents: [.date, .hourAndMinute]
-                    )
-                    .foregroundColor(Color.accentColor)
-                    .tint(Color.accentColor)
-                    .disabled(!isEditing)
-                }
+        List{
+            Section(header: Text("Date")){
+                DatePicker(
+                    "Start Date",
+                    selection: $event.startDate,
+                    displayedComponents: [.date, .hourAndMinute]
+                )
+                .foregroundColor(Color.accentColor)
+                .tint(Color.accentColor)
+                .disabled(!isEditing)
                 
-                Section(header: Text("Description")){
-                    TextField("", text: $event.details)
-                        .disabled(!isEditing)
-                }
+                DatePicker(
+                    "End Date",
+                    selection: $event.endDate,
+                    displayedComponents: [.date, .hourAndMinute]
+                )
+                .foregroundColor(Color.accentColor)
+                .tint(Color.accentColor)
+                .disabled(!isEditing)
             }
-            .opacity(0.8)
-            .navigationTitle($event.title)
-            .navigationBarTitleDisplayMode(isEditing ? .inline : .large)
+            
+            Section(header: Text("Description")){
+                TextField("Enter a description", text: $event.details)
+                    .disabled(!isEditing)
+            }
         }
+        .opacity(0.8)
+        .navigationTitle($event.title)
+        .navigationBarTitleDisplayMode(isEditing ? .inline : .large)
+        
         .navigationBarItems(trailing: editButton)
         .onAppear{
             var i = 0
@@ -80,5 +79,3 @@ struct EventDetailView: View {
         }
     }
 }
-
-

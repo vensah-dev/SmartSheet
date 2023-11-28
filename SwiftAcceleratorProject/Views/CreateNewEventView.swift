@@ -6,7 +6,7 @@ struct CreateNewEventView: View {
     @State var title = ""
     @State var description = ""
     @State var EventStartDate: Date = Date.now
-    @State var EventEndDate: Date = Date.now
+    @State var EventEndDate: Date = Date.now + 3600
     
     @State var Edit: Bool
     

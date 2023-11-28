@@ -24,7 +24,7 @@ struct CalendarView: View {
                             .datePickerStyle(.graphical)
                     }
                     .navigationBarItems(trailing:
-                    Button{
+                                            Button{
                         CreateNew = true
                     }label:{
                         Image(systemName: "plus.circle")
@@ -33,6 +33,12 @@ struct CalendarView: View {
                 }
                 
                 Section(header: Text("Events").textCase(.uppercase)){
+                    
+                    let formattedDates: [String] = dataManager.Events.map { item in
+                        let dateFormatter = DateFormatter()
+                        dateFormatter.dateFormat = "HH:mm"
+                        return dateFormatter.string(from: item.startDate)
+                    }
                     
                     ForEach(dataManager.Events.filter { x in
                         let cal = Calendar.current
@@ -49,20 +55,22 @@ struct CalendarView: View {
                         }
                         
                     }, id: \.id){ item in
+                        let formattedDate = formattedDates[dataManager.Events.firstIndex(of: item)!]
+                        
                         NavigationLink(destination:{
                             EventDetailView( event: item, Events: $dataManager.Events)
                         }, label:{
                             HStack{
-                                VStack(alignment: .leading){
-                                    Text(item.title)
-                                        .bold()
-                                        .foregroundStyle(Color.accentColor)
-                                    
-                                    Text("Due: \(item.endDate, format: .dateTime.month().day())")
-                                        .foregroundStyle(.secondary)
-                                        .font(.caption)
-                                }
+                                Text(item.title)
+                                    .bold()
+                                    .foregroundStyle(Color.accentColor)
+                                
+                                Spacer()
+                                
+                                Text("\(formattedDate)")
+                                    .foregroundStyle(.secondary)
                             }
+                            .padding([.top, .bottom],  5)
                         })
                     }
                     .onDelete(perform: { indices in
@@ -86,7 +94,7 @@ struct CalendarView: View {
             dataManager.saveEvents()
             for x in dataManager.Events{
                 if(!x.sentNotification){
-                    appDelegate.scheduleLocalNotification(date: x.endDate, title: "Event Reminder", caption: x.title)
+                    appDelegate.scheduleLocalNotification(date: x.startDate, title: "Smart Sheet", caption: "\(x.title) is starting soon!")
                 }
             }
         }

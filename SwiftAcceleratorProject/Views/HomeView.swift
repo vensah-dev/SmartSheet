@@ -91,6 +91,12 @@ struct HomeView: View {
                 
                 Section(header: Text("Events").textCase(.uppercase)){
                     
+                    let formattedDates: [String] = dataManager.Events.map { item in
+                        let dateFormatter = DateFormatter()
+                        dateFormatter.dateFormat = "HH:mm"
+                        return dateFormatter.string(from: item.startDate)
+                    }
+                    
                     ForEach(dataManager.Events.filter { x in
                         let cal = Calendar.current
                         let endEndDate = cal.date(bySettingHour: 23, minute: 59, second: 59, of: x.endDate) ?? x.endDate
@@ -105,22 +111,21 @@ struct HomeView: View {
                         }
                         
                     }, id: \.id){ item in
+                        let formattedDate = formattedDates[dataManager.Events.firstIndex(of: item)!]
                         NavigationLink(destination:{
                             EventDetailView( event: item, Events: $dataManager.Events)
                         }, label:{
                             HStack{
-                                VStack(alignment: .leading){
-                                    Text(item.title)
-                                        .bold()
-                                        .foregroundStyle(Color.accentColor)
-                                    
-                                    Text("Due: \(item.endDate, format: .dateTime.month().day())")
-                                        .foregroundStyle(.secondary)
-                                        .font(.caption)
-                                }
+                                Text(item.title)
+                                    .bold()
+                                    .foregroundStyle(Color.accentColor)
                                 
                                 Spacer()
+                                
+                                Text("\(formattedDate)")
+                                    .foregroundStyle(.secondary)
                             }
+                            .padding([.top, .bottom],  5)
                         })
                     }
                 }

@@ -1,24 +1,16 @@
-//
-//  AppDelegate.swift
-//  SwiftAcceleratorProject
-//
-//  Created by Venkatesh Devendran on 26/11/2023.
-//
-
-
 import UIKit
 import UserNotifications
 
 class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
     
     let notificationCenter = UNUserNotificationCenter.current()
-    
+
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         requestAuthForLocalNotifications()
         return true
     }
-    
-    func requestAuthForLocalNotifications(){
+
+    func requestAuthForLocalNotifications() {
         notificationCenter.delegate = self
         let options: UNAuthorizationOptions = [.alert, .sound, .badge]
         notificationCenter.requestAuthorization(options: options) { (didAllow, error) in
@@ -27,31 +19,45 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             }
         }
     }
-    
-    func scheduleLocalNotification(date: Date, title: String, caption: String, repeatNotification: Bool = false){
-      //checking the notification setting whether it's authorized or not to send a request.
-        UNUserNotificationCenter.current().getNotificationSettings { (settings) in
-            if settings.authorizationStatus == UNAuthorizationStatus.authorized{
-              //1. create contents
+
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        // Handle notification when app is in the foreground
+        completionHandler([.banner, .sound, .badge])
+    }
+
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        // Handle the notification response here
+        // You can navigate to a specific screen or perform other actions
+        completionHandler()
+    }
+
+    func scheduleLocalNotification(date: Date, title: String, caption: String, repeatNotification: Bool = false) {
+        print("Scheduling notification: \(title)")
+
+        UNUserNotificationCenter.current().getNotificationSettings { settings in
+            if settings.authorizationStatus == .authorized {
                 let content = UNMutableNotificationContent()
-                    content.title = title
-                    content.body = caption
-                    content.sound = UNNotificationSound.default
-                //2. create trigger [calendar, timeinterval, location, pushnoti]
-                let dateInfo = Calendar.current.dateComponents([.year,.month,.day,.hour,.minute], from: date)
+                content.title = title
+                content.body = caption
+                content.sound = UNNotificationSound.default
+
+                let dateInfo = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: date)
                 let trigger = UNCalendarNotificationTrigger(dateMatching: dateInfo, repeats: repeatNotification)
-                //3. make a request
+
                 let request = UNNotificationRequest(identifier: title, content: content, trigger: trigger)
+
                 let notificationCenter = UNUserNotificationCenter.current()
-                notificationCenter.add(request) { (error) in
-                    if error != nil{
-                        print("error in notification! ")
+                notificationCenter.add(request) { error in
+                    if let error = error {
+                        print("Error scheduling notification: \(error.localizedDescription)")
+                    } else {
+                        print("Notification scheduled successfully!")
                     }
                 }
-           }
-           else {
-              print("user denied")
-           }
-       }
+            } else {
+                print("User denied notification permission")
+            }
+        }
     }
 }
+
