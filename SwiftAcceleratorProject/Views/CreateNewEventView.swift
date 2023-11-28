@@ -58,7 +58,7 @@ struct CreateNewEventView: View {
                         } else {
                             showAlert = true
                         }
-                        appDelegate.scheduleLocalNotification(date: EventEndDate, title: "Smart Sheet", caption: "\(title) is starting soon!", identifier: title)
+                        appDelegate.scheduleLocalNotification(date: EventStartDate, title: "Smart Sheet", caption: "\(title) is starting soon!", identifier: title)
                     } label: {
                         Text("Save")
                             .foregroundStyle(Color.accentColor)

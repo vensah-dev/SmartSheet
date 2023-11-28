@@ -71,7 +71,8 @@ struct EventDetailView: View {
         Button(action: {
             if validateDateAndTime() {
                 if !isEditing {
-                    appDelegate.scheduleLocalNotification(date: event.endDate, title: "Smart Sheet", caption: "\(event.title) is starting soon!", identifier: event.title)
+                    appDelegate.scheduleLocalNotification(date: event.startDate, title: "Smart Sheet", caption: "\(event.title) is starting soon!", identifier: event.title)
+
                     dataManager.saveEvents()
                 }
                 withAnimation {
