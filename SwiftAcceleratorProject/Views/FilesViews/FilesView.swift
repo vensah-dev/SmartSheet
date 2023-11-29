@@ -109,9 +109,11 @@ struct FilesView: View {
                                     }
                                 }
                             }
-                            .onDelete(perform: { indices in
-                                delete(at: indices)
-                            })
+                            .onDelete { indices in
+                                let scannedImagesToDelete = indices.map { displayFiles[$0] }
+                                dataManager.scannedImages.removeAll { scannedImagesToDelete.contains($0) }
+                                dataManager.saveScannedImages()
+                            }
                         }
                     },
                             header:{Text(topic).textCase(.uppercase)}
