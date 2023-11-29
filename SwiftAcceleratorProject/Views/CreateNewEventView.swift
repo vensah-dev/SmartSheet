@@ -48,7 +48,7 @@ struct CreateNewEventView: View {
                     .tint(Color.accentColor)
                 }
             }
-            .toolbar() {
+            .toolbar(){
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button {
                         
