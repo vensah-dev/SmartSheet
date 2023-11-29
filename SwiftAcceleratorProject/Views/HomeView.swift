@@ -94,7 +94,7 @@ struct HomeView: View {
                         ForEach(0..<sortedEvents.count, id: \.self) { index in
                             let item = sortedEvents[index]
                             let formattedDate = formattedDates[index]
-
+                            
                             NavigationLink(destination: {
                                 EventDetailView(dataManager: dataManager, event: item, Events: $dataManager.Events)
                             }, label: {
@@ -119,10 +119,6 @@ struct HomeView: View {
                         }
                     }
                 }
-
-            }
-            .refreshable {
-                refreshSuggestions()
             }
             .onAppear {
                 loadInitialSuggestions()
@@ -133,16 +129,5 @@ struct HomeView: View {
     }
     private func loadInitialSuggestions() {
         self.suggestions = dataManager.scannedImages.sorted{$0.used < $1.used}
-    }
-
-    private func refreshSuggestions() {
-        DispatchQueue.main.async {
-            self.suggestions = dataManager.scannedImages.sorted{$0.used < $1.used}
-        }
-    }
-
-    private func generateRandomSubset<T>(_ array: [T], count: Int) -> [T] {
-        let shuffledArray = array.shuffled()
-        return Array(shuffledArray.prefix(count))
     }
 }
