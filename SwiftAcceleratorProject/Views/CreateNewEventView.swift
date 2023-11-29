@@ -64,10 +64,10 @@ struct CreateNewEventView: View {
                             .foregroundStyle(Color.accentColor)
                     }
                     .onAppear(perform: Validate)
-                    .onChange(of: EventStartDate){
+                    .onChange(of: EventStartDate){ _ in
                         Validate()
                     }
-                    .onChange(of: EventEndDate){
+                    .onChange(of: EventEndDate){ _ in
                         Validate()
                     }
                     .foregroundStyle(Color.accentColor)

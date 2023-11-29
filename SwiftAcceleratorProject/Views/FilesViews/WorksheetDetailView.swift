@@ -109,10 +109,10 @@ struct WorksheetDetailView: View {
                             .bold()
                             .foregroundStyle(Color.accentColor)
                     }
-                    .onChange(of: selectedTopic){
+                    .onChange(of: selectedTopic){ _ in
                         validateFields()
                     }
-                    .onChange(of: selectedSubject){
+                    .onChange(of: selectedSubject){ _ in
                         validateFields()
                     }
                     .disabled(!ShowCreate)

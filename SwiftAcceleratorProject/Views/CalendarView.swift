@@ -86,7 +86,6 @@ struct CalendarView: View {
                     })
                 }
             }
-            .listStyle(.sidebar)
             .toolbar(){
                 ToolbarItem(placement: .navigationBarLeading) {
                     EditButton()

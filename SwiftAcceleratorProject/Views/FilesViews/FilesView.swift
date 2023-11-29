@@ -65,63 +65,119 @@ struct FilesView: View {
                 
                 ForEach(uniqueTopics.indices, id: \.self) { index in
                     let topic = uniqueTopics[index]
-                    Section(isExpanded: $sectionStates[index],
-                            content: {
-                        if sectionStates[index] {
-                            
-                            ForEach(displayFiles, id: \.id) { img in
-                                let images = img.image
-                                let subject = img.subject
-                                let currentTopic = img.topic
-                                if selectedSubjectIndex == -1 || subject == uniqueSubjects[selectedSubjectIndex], currentTopic == topic {
-                                    NavigationLink(
-                                        destination: ImageDetail(
-                                            title: img.title,
-                                            image: images,
-                                            dataManager: dataManager
-                                        )
-                                    ) {
-                                        HStack {
-                                            Image(uiImage: img.image.first ?? UIImage())
-                                                .resizable()
-                                                .aspectRatio(contentMode: .fill)
-                                                .frame(width: 60, height: 60)
-                                                .clipShape(RoundedRectangle(cornerRadius: 5))
-                                                .overlay(
-                                                    RoundedRectangle(cornerRadius: 5)
-                                                        .stroke(Color.accentColor.opacity(0.5), lineWidth: 0.5)
-                                                )
-                                            
-                                            VStack(alignment: .leading) {
-                                                Text(img.title)
-                                                    .foregroundColor(Color.accentColor)
-                                                    .font(.headline)
+                    if #available(iOS 17, *){
+                        Section(isExpanded: $sectionStates[index],
+                                content: {
+                            if sectionStates[index] {
+                                
+                                ForEach(displayFiles, id: \.id) { img in
+                                    let images = img.image
+                                    let subject = img.subject
+                                    let currentTopic = img.topic
+                                    if selectedSubjectIndex == -1 || subject == uniqueSubjects[selectedSubjectIndex], currentTopic == topic {
+                                        NavigationLink(
+                                            destination: ImageDetail(
+                                                title: img.title,
+                                                image: images,
+                                                dataManager: dataManager
+                                            )
+                                        ) {
+                                            HStack {
+                                                Image(uiImage: img.image.first ?? UIImage())
+                                                    .resizable()
+                                                    .aspectRatio(contentMode: .fill)
+                                                    .frame(width: 60, height: 60)
+                                                    .clipShape(RoundedRectangle(cornerRadius: 5))
+                                                    .overlay(
+                                                        RoundedRectangle(cornerRadius: 5)
+                                                            .stroke(Color.accentColor.opacity(0.5), lineWidth: 0.5)
+                                                    )
                                                 
-                                                if !img.caption.isEmpty {
-                                                    Text(img.caption)
-                                                        .font(.caption)
-                                                        .foregroundColor(.secondary)
+                                                VStack(alignment: .leading) {
+                                                    Text(img.title)
+                                                        .foregroundColor(Color.accentColor)
+                                                        .font(.headline)
+                                                    
+                                                    if !img.caption.isEmpty {
+                                                        Text(img.caption)
+                                                            .font(.caption)
+                                                            .foregroundColor(.secondary)
+                                                    }
                                                 }
+                                                
+                                                Spacer()
                                             }
-                                            
-                                            Spacer()
                                         }
                                     }
                                 }
+                                .onDelete { indices in
+                                    let scannedImagesToDelete = indices.map { displayFiles[$0] }
+                                    dataManager.scannedImages.removeAll { scannedImagesToDelete.contains($0) }
+                                    dataManager.saveScannedImages()
+                                }
                             }
-                            .onDelete { indices in
-                                let scannedImagesToDelete = indices.map { displayFiles[$0] }
-                                dataManager.scannedImages.removeAll { scannedImagesToDelete.contains($0) }
-                                dataManager.saveScannedImages()
+                        },
+                                header:{Text(topic).textCase(.uppercase)}
+                        )
+                    }
+                    else{
+                        Section(content: {
+                            if sectionStates[index] {
+                                
+                                ForEach(displayFiles, id: \.id) { img in
+                                    let images = img.image
+                                    let subject = img.subject
+                                    let currentTopic = img.topic
+                                    if selectedSubjectIndex == -1 || subject == uniqueSubjects[selectedSubjectIndex], currentTopic == topic {
+                                        NavigationLink(
+                                            destination: ImageDetail(
+                                                title: img.title,
+                                                image: images,
+                                                dataManager: dataManager
+                                            )
+                                        ) {
+                                            HStack {
+                                                Image(uiImage: img.image.first ?? UIImage())
+                                                    .resizable()
+                                                    .aspectRatio(contentMode: .fill)
+                                                    .frame(width: 60, height: 60)
+                                                    .clipShape(RoundedRectangle(cornerRadius: 5))
+                                                    .overlay(
+                                                        RoundedRectangle(cornerRadius: 5)
+                                                            .stroke(Color.accentColor.opacity(0.5), lineWidth: 0.5)
+                                                    )
+                                                
+                                                VStack(alignment: .leading) {
+                                                    Text(img.title)
+                                                        .foregroundColor(Color.accentColor)
+                                                        .font(.headline)
+                                                    
+                                                    if !img.caption.isEmpty {
+                                                        Text(img.caption)
+                                                            .font(.caption)
+                                                            .foregroundColor(.secondary)
+                                                    }
+                                                }
+                                                
+                                                Spacer()
+                                            }
+                                        }
+                                    }
+                                }
+                                .onDelete { indices in
+                                    let scannedImagesToDelete = indices.map { displayFiles[$0] }
+                                    dataManager.scannedImages.removeAll { scannedImagesToDelete.contains($0) }
+                                    dataManager.saveScannedImages()
+                                }
                             }
-                        }
-                    },
-                            header:{Text(topic).textCase(.uppercase)}
-                    )
+                        },
+                                header:{Text(topic).textCase(.uppercase)}
+                        )
+                    }
                 }
                 
             }
-            .onChange(of: dataManager.scannedImages){
+            .onChange(of: dataManager.scannedImages){ _ in
                 uniqueSubjects = Array(Set(dataManager.scannedImages.map { $0.subject }))
                 
                 uniqueTopics = Array(Set(dataManager.scannedImages.map { $0.topic }))
